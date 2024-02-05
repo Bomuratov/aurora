@@ -97,6 +97,7 @@ DATABASES = {
 }
 
 
+
 # DATABASES = {
 #     "default": dj_database_url.parse("postgres://testdb_58uy_user:dKgGp6isU0D84InriWz0AgoONFxGE7aS@dpg-cmu07m2cn0vc73bi6v1g-a.oregon-postgres.render.com/testdb_58uy")
 # }
