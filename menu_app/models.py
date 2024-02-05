@@ -1,12 +1,34 @@
 from django.db import models
 from django.contrib.auth.models import User
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models import SET_NULL, PROTECT, CASCADE
-from .utils import upload_path_rest, upload_logo_rest, upload_path_menu
 from django_extensions.db.fields import AutoSlugField
+
+
+
+
+def upload_path_menu(instance, filename):
+    file = filename.rfind(".")
+    formatt = filename[file:]
+    name = instance.name + formatt
+    return "{0}/category/{1}/{2}".format(
+        instance.restaurant.name, instance.category.name, name
+    )
+
+
+def upload_path_rest(instance, file):
+    return "{0}/backgroud/{1}".format(instance.name, file)
+
+
+def upload_logo_rest(instance, file):
+    return "{0}/logo/{1}".format(instance.name, file)
+
+
+
+
+
 
 
 class Basemodel(models.Model):
@@ -59,5 +81,7 @@ class Menu(Basemodel):
 
     def __str__(self):
         return f"{self.name} in {self.restaurant.name}"
+
+
 
 
