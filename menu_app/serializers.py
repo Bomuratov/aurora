@@ -22,12 +22,14 @@ class RestaurantSerializer(ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
+    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     restaurant = serializers.PrimaryKeyRelatedField(queryset=Restaurant.objects.all())
 
 
     class Meta:
         model = Category
-        fields = ["id", "restaurant", "name"]
+        fields = ["id", "restaurant", "name", "order", "created_by", "update_by"]
 
 
 class MenuSerializer(ModelSerializer):

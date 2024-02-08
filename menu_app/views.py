@@ -3,6 +3,10 @@ from .serializers import *
 from .models import *
 from menu_app.serializers import MyTokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
+
 
 
 class RestaurantView(CustomViewSet):
@@ -18,6 +22,14 @@ class CategoryView(CustomViewSet):
     def get_queryset(self):
         return self.get_filtered_queryset(Category, "restaurant", "restaurant_name")
     
+    @action(detail=False, methods=['post'], url_path='update_order')
+    def post_update(self, request):
+        category_ids = request.data 
+        for index, category_id in enumerate(category_ids):
+            category = Category.objects.get(id=category_id)
+            category.order = index 
+            category.save()
+        return Response({'message': 'ok'}, status=status.HTTP_200_OK)
 
 
 

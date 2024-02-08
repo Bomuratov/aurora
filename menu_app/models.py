@@ -61,10 +61,14 @@ class Restaurant(Basemodel):
 class Category(Basemodel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225)
+    order = models.IntegerField(default=0)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        ordering = ['order']
 
 
 class Menu(Basemodel):
