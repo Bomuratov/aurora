@@ -35,4 +35,5 @@ adminrouter = AdminRouter()
 adminrouter.register(r'restaurants', RestaurantAdminView, basename='restaurant')
 adminrouter.register(r'categorys', CategoryAdminView, basename='category')
 adminrouter.register(r'menus', MenuAdminView, basename='menu')
+adminrouter.register(r'promos', PromoAdminView, basename='promo')
 

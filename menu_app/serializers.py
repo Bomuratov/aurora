@@ -51,6 +51,15 @@ class MenuSerializer(ModelSerializer):
         ]
 
 
+class PromoSerializer(ModelSerializer):
+    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    restaurant = serializers.PrimaryKeyRelatedField(queryset=Restaurant.objects.all())
+    class Meta:
+        model = Promo
+        fields = "__all__"
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

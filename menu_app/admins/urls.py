@@ -15,5 +15,10 @@ urlpatterns = [
 
     # Api Menu
     path("menu/<str:restaurant_name>", MenuAdminView.as_view({"get":"list"}), name="menu"),
+
+
+
+    # Api Promo
+    path("promo/<str:restaurant_name>", PromoAdminView.as_view({"get":"list"}), name="promo"),
     
 ]

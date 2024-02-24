@@ -1,4 +1,4 @@
-from menu_app.views import RestaurantView, CategoryView, MenuView
+from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -17,6 +17,12 @@ class CategoryAdminView(CategoryView):
 
 
 class MenuAdminView(MenuView):
+    # permission_classes = (IsAuthenticated,)
+    lookup_field="pk"
+    pass
+
+
+class PromoAdminView(PromoView):
     # permission_classes = (IsAuthenticated,)
     lookup_field="pk"
     pass

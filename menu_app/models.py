@@ -26,7 +26,8 @@ def upload_logo_rest(instance, file):
     return "{0}/logo/{1}".format(instance.name, file)
 
 
-
+def upload_path_promo(instance, file):
+    return "{0}/promo/{1}/{2}".format(instance.restaurant.name, instance.name, file)
 
 
 
@@ -89,3 +90,13 @@ class Menu(Basemodel):
 
 
 
+class Promo(Basemodel):
+    restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
+    name = models.CharField(max_length=225)
+    info = models.CharField(max_length=225)
+    photo = models.FileField(upload_to=upload_path_promo)
+    price = models.PositiveIntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f"Promo is {self.restaurant.name}, {self.name}"

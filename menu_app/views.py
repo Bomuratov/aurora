@@ -6,13 +6,14 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-
+from django_filters import rest_framework as filters
 
 
 class RestaurantView(CustomViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
-
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('user_id',)
 
 
 class CategoryView(CustomViewSet):
@@ -21,25 +22,31 @@ class CategoryView(CustomViewSet):
 
     def get_queryset(self):
         return self.get_filtered_queryset(Category, "restaurant", "restaurant_name")
-    
-    @action(detail=False, methods=['post'], url_path='update_order')
+
+    @action(detail=False, methods=["post"], url_path="update_order")
     def post_update(self, request):
-        category_ids = request.data 
+        category_ids = request.data
         for index, category_id in enumerate(category_ids):
             category = Category.objects.get(id=category_id)
-            category.order = index 
+            category.order = index
             category.save()
-        return Response({'message': 'ok'}, status=status.HTTP_200_OK)
-
+        return Response({"message": "ok"}, status=status.HTTP_200_OK)
 
 
 class MenuView(CustomViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
 
-
     def get_queryset(self):
         return self.get_filtered_queryset(Menu, "restaurant", "restaurant_name")
+
+
+class PromoView(CustomViewSet):
+    queryset = Promo.objects.all()
+    serializer_class = PromoSerializer
+
+    def get_queryset(self):
+        return self.get_filtered_queryset(Promo, "restaurant", "restaurant_name")
     
 
 class CustomTokenObtain(TokenObtainPairView):
