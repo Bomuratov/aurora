@@ -67,6 +67,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
+        token["vendor"] = ', '.join(Restaurant.objects.filter(user_id=user.id).values_list('name', flat=True))
         return token
 
 
