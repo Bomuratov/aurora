@@ -71,6 +71,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 
+
+
+
 # class AdressTableSerializer(ModelSerializer):
 #     class Meta:
 #         model = Adress_table
