@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+
 # import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 from datetime import timedelta
@@ -8,7 +9,7 @@ from datetime import timedelta
 SECRET_KEY = "django-insecure-pl+(h+sfdiotagz&rz&lo45w^qa)j0b=sbcfv&r1(&##n-44s%"
 
 
-DEBUG = True
+DEBUG = os.environ.get("DEBUG", False)
 
 
 ALLOWED_HOSTS = ["*"]
@@ -50,7 +51,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "django_extensions",
     "corsheaders",
-    'django_filters',
+    "django_filters",
     # apps
     "menu_app",
 ]
@@ -92,12 +93,14 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "postgres"),
+        "USER": os.environ.get("POSTGRES_USER", "postgres"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", ""),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", 5432),
     }
 }
-
-
 
 # DATABASES = {
 #     "default": dj_database_url.parse("postgres://testdb_58uy_user:dKgGp6isU0D84InriWz0AgoONFxGE7aS@dpg-cmu07m2cn0vc73bi6v1g-a.oregon-postgres.render.com/testdb_58uy")
@@ -105,21 +108,15 @@ DATABASES = {
 
 
 REST_FRAMEWORK = {
-
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend',
-      
-    ),
+    "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
     # 'DEFAULT_AUTHENTICATION_CLASSES': [
     #     'rest_framework.authentication.BasicAuthentication',
     #     'rest_framework.authentication.SessionAuthentication',
     # ],
 }
-
 
 
 # Password validation
@@ -158,7 +155,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 # STATICFILES_DIRS = ((os.path.join(BASE_DIR, "static")),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -249,3 +246,9 @@ JAZZMIN_UI_TWEAKS = {
         "success": "btn-success",
     },
 }
+
+
+try:
+    from .settings_dev import *
+except ImportError:
+    pass
