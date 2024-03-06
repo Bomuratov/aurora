@@ -60,7 +60,7 @@ class GenerateQR(APIView):
              os.makedirs(output_folder)
 
 
-        qr.add_data(f"http://localhost:8000/api/client/menu/{name_rest}")
+        qr.add_data(f"https://www.aurora-app.uz/vendor/{name_rest}")
    
 
         qr.make(fit=True)
