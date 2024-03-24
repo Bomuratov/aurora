@@ -79,7 +79,7 @@ class GenerateQR(APIView):
 class DownloadQR(APIView):
     def get(self, request):
         user = request.user
-        queryset = Restaurant.objects.filter(created_by=user)
+        queryset = Restaurant.objects.filter(user=user)
         restaurant_names = queryset.values_list("name", flat=True)
         name_rest = ", ".join(restaurant_names)
         qr_image_path = os.path.join(
