@@ -73,8 +73,9 @@ class GenerateQR(APIView):
 
         output_path = os.path.join(output_folder, f"menu_qr1.png")
         image.save(output_path)
-        return Response({"image_path": os.path.join(settings.MEDIA_ROOT, output_path)}, status=status.HTTP_201_CREATED)
-
+        img_path = f"{name_rest}/qrcodes/menu_qr1.png"
+        img_url = f"https://aurora-api.uz/media/{quote(img_path)}"
+        return Response({"image_path": img_url}, status=status.HTTP_201_CREATED)
 
 class DownloadQR(APIView):
     def get(self, request):
