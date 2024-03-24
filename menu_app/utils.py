@@ -73,7 +73,7 @@ class GenerateQR(APIView):
 
         output_path = os.path.join(output_folder, f"menu_qr1.png")
         image.save(output_path)
-        return Response({"image_path": output_path}, status=status.HTTP_201_CREATED)
+        return Response({"image_path": os.path.join(settings.MEDIA_ROOT, output_path)}, status=status.HTTP_201_CREATED)
 
 
 class DownloadQR(APIView):
