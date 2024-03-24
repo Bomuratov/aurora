@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Restaurant
+from urllib.parse import quote
 
 
 class GenerateQR(APIView):
@@ -55,7 +56,7 @@ class GenerateQR(APIView):
             border=8,
         )
 
-        data = f"https://www.aurora-app.uz/vendor/{name_rest}/"
+        data = f"https://www.aurora-app.uz/vendor/{quote(name_rest)}/"
         qr.add_data(data)
         qr.make(fit=True)
         image = qr.make_image(
