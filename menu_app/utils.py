@@ -42,7 +42,7 @@ class GenerateQR(APIView):
     def post(self, request):
 
         user = request.user
-        queryset = Restaurant.objects.filter(created_by=user)
+        queryset = Restaurant.objects.filter(user=user)
         restaurant_names = queryset.values_list('name', flat=True)
         restaurant_logo = queryset.values_list('logo', flat=True)
 
