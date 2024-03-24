@@ -83,7 +83,7 @@ class DownloadQR(APIView):
         restaurant_names = queryset.values_list("name", flat=True)
         name_rest = ", ".join(restaurant_names)
         qr_image_path = os.path.join(
-            settings.MEDIA_ROOT, f"{name_rest}/qrcodes", "menu_qr.png"
+            settings.MEDIA_ROOT, f"{name_rest}/qrcodes", "menu_qr1.png"
         )
 
         if os.path.exists(qr_image_path):
