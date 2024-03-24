@@ -90,7 +90,7 @@ class DownloadQR(APIView):
 
             with open(qr_image_path, "rb") as file:
                 response = HttpResponse(file.read(), content_type="image/png")
-                response["Content-Disposition"] = "attachment; filename=qr_menu.png"
+                response["Content-Disposition"] = "attachment; filename=menu_qr1.png"
                 return response
         else:
             return HttpResponse(status=404)
