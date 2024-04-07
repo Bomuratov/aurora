@@ -28,6 +28,13 @@ class MenuAdminView(MenuView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"image": serializer.data})
+    
+    def update(self, request, pk):
+        request.data["photo"] = image_resize(request.data["photo"])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"image": serializer.data})
 
 
 class PromoAdminView(PromoView):
