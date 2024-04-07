@@ -11,6 +11,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Restaurant
 from urllib.parse import quote
+import asyncio
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import io
+
 
 
 class GenerateQR(APIView):
@@ -115,4 +119,17 @@ def image_resize(image):
     img = img.resize((res_width, hsize), Image.Resampling.LANCZOS)
     temp_file = TemporaryUploadedFile(name=f"resized_image.{image_format}", size=1, content_type=f'image/{image_format}', charset=None)
     img.save(temp_file, format=f'{image_format}')
+    return temp_file
+
+async def image_resize_asyc(image):
+    res_width = 1920
+    loop = asyncio.get_event_loop() 
+    img = await loop.run_in_executor(None, Image.open, image)
+    image_format = "png" if img.mode == "RGBA" else "jpeg"
+    wpercent = (res_width / float(img.size[0])) 
+    hsize = int((float(img.size[1]) * float(wpercent))) 
+    img = img.resize((res_width, hsize), Image.Resampling.LANCZOS)
+    img_buffer = io.BytesIO()
+    img.save(img_buffer, format=f'{image_format}')
+    temp_file = InMemoryUploadedFile(img_buffer, None, f"resized_image.{image_format}", f'image/{image_format}', img_buffer.getbuffer().nbytes, None)
     return temp_file

@@ -1,8 +1,8 @@
 from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from menu_app.utils import image_resize
-
+from menu_app.utils import image_resize, image_resize_asyc
+import asyncio
 
 
 
@@ -39,7 +39,7 @@ class MenuAdminView(MenuView):
             return Response({"Ошибочка": "Не нашлось запись с переданным идентификатором"})
         resized_image = request.data.get("photo")
         if resized_image:
-            request.data["photo"] = image_resize(resized_image)
+            request.data["photo"] = asyncio.run(image_resize_asyc(resized_image))
         serializer = self.serializer_class(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
         serializer.save()
