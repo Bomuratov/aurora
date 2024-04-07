@@ -27,14 +27,21 @@ class MenuAdminView(MenuView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"image": serializer.data})
+        return Response({"data": serializer.data})
     
-    def update(self, request, pk):
+    def update(self, request, *args, **kwargs):
+        pk = kwargs.get("pk", None)
+        if not pk:
+            return Response({"Ошибочка": "Вы не передали идентификатор записи метод UPDATE не определeн"})
+        try:
+            instance = self.queryset.get(pk=pk)
+        except:
+            return Response({"Ошибочка": "Не нашлось запись с переданным идентификатором"})
         request.data["photo"] = image_resize(request.data["photo"])
-        serializer = self.get_serializer(data=request.data)
+        serializer = self.serializer_class(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response({"image": serializer.data})
+        return Response({"data": serializer.data})
 
 
 class PromoAdminView(PromoView):
