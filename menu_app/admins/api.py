@@ -37,8 +37,8 @@ class MenuAdminView(MenuView):
             instance = self.queryset.get(pk=pk)
         except:
             return Response({"Ошибочка": "Не нашлось запись с переданным идентификатором"})
-        resize_image = image_resize(request.data["photo"])
-        if resize_image:
+        if request.data["photo"]:
+            resize_image = image_resize(request.data["photo"])
             request.data["photo"] = resize_image
         serializer = self.serializer_class(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
