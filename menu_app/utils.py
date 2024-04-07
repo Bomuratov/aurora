@@ -1,4 +1,5 @@
 import os
+from django.core.files.uploadedfile import TemporaryUploadedFile
 import qrcode
 from qrcode.image.styles.moduledrawers.pil import RoundedModuleDrawer
 from qrcode.image.styledpil import StyledPilImage
@@ -103,3 +104,15 @@ class DownloadQR(APIView):
         print("######################")
         print("######################")
         """
+
+
+def image_resize(image):
+    res_width = 1920 
+    img = Image.open(image)
+    image_format = "png" if img.mode == "RGBA" else "jpeg"
+    wpercent = (res_width / float(img.size[0])) 
+    hsize = int((float(img.size[1]) * float(wpercent))) 
+    img = img.resize((res_width, hsize), Image.Resampling.LANCZOS)
+    temp_file = TemporaryUploadedFile(name=f"resized_image.{image_format}", size=1, content_type=f'image/{image_format}', charset=None)
+    img.save(temp_file, format=f'{image_format}')
+    return temp_file
