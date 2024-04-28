@@ -65,7 +65,7 @@ class Restaurant(Basemodel):
 class Category(Basemodel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     order = models.IntegerField(default=0)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
