@@ -2,6 +2,7 @@ from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from menu_app.utils import image_resize, image_resize_asyc
+from menu_app.models import Category
 import asyncio
 
 
@@ -42,7 +43,16 @@ class MenuAdminView(MenuView):
             request.data["photo"] = asyncio.run(image_resize_asyc(resized_image))
         serializer = self.serializer_class(data=request.data, instance=instance)
         serializer.is_valid(raise_exception=True)
+        cat_id = request.data["category"]
         serializer.save()
+
+        # Филтрация категории по активности
+        instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
+        
+        # Филтрация категории для приминение изменение активности
+        category = Category.objects.get(id=int(cat_id))
+        category.is_active = instance
+        category.save()
         return Response({"data": serializer.data})
 
 
