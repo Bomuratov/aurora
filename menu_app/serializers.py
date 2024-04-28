@@ -29,7 +29,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ["id", "restaurant", "name", "order", "created_by", "update_by"]
+        fields = ["id", "restaurant", "name", "order", "created_by", "update_by", "is_active"]
 
 
 class MenuSerializer(ModelSerializer):
@@ -48,6 +48,7 @@ class MenuSerializer(ModelSerializer):
             "category",
             "restaurant",
             "photo",
+            "availability",
         ]
 
 

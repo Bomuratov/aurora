@@ -51,6 +51,9 @@ class Restaurant(Basemodel):
     user = models.ForeignKey(User, PROTECT, null=True, blank=True)
     name = models.CharField(max_length=225, null=True, blank=True)
     adress = models.CharField(max_length=225)
+    is_active = models.BooleanField(default=False)
+    telegram = models.CharField(max_length=255, null=True, blank=True)
+    instagramm = models.CharField(max_length=255, null=True, blank=True)
     photo = models.FileField(upload_to=upload_path_rest, null=True, blank=False)
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
@@ -62,6 +65,7 @@ class Restaurant(Basemodel):
 class Category(Basemodel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225)
+    is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
@@ -81,6 +85,7 @@ class Menu(Basemodel):
         Category, CASCADE, null=True, blank=True, related_name="title"
     )
     is_active = models.BooleanField(default=True)
+    availability = models.BooleanField(default=True)
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
 

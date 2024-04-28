@@ -14,5 +14,5 @@ class CustomViewSet(ModelViewSet):
         name = self.kwargs.get(lookup_field)
         if name:
             filter_param = f"{filter_field}__name"
-            queryset = queryset.filter(**{filter_param: name})
+            queryset = queryset.filter(**{filter_param: name, 'restaurant__is_active': True})
         return queryset
