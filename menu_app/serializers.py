@@ -64,7 +64,7 @@ class PromoSerializer(ModelSerializer):
             "id",
             "restaurant",
             "name",
-            "info",
+            "description",
             "price",
             "is_active",
             "photo",
