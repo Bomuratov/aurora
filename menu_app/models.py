@@ -98,7 +98,7 @@ class Menu(Basemodel):
 class Promo(Basemodel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225, null=True, blank=True)
-    info = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     photo = models.FileField(upload_to=upload_path_promo, null=True, blank=True)
     price = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=False)

@@ -133,3 +133,37 @@ async def image_resize_asyc(image):
     img.save(img_buffer, format=f'{image_format}')
     temp_file = InMemoryUploadedFile(img_buffer, None, f"resized_image.{image_format}", f'image/{image_format}', img_buffer.getbuffer().nbytes, None)
     return temp_file
+
+
+def crop_image_by_percentage(
+    image_path, x, y, width, height, scaleX=1, scaleY=1, rotate=0
+):
+    res_width = 1920
+    with Image.open(image_path) as image:
+
+        if scaleX != 1 or scaleY != 1:
+            image = image.resize(
+                (int(image.width * scaleX), int(image.height * scaleY)), Image.ANTIALIAS
+            )
+        if rotate:
+            image = image.rotate(-rotate, expand=True)
+        cropped_image = image.crop((x, y, x + width, y + height))        
+        wpercent = res_width / float(cropped_image.size[0])
+        hsize = int((float(cropped_image.size[1]) * float(wpercent)))
+        cropped_image = cropped_image.resize((res_width, hsize), Image.Resampling.LANCZOS)
+        
+        
+        image_format = "png" if image.mode == "RGBA" else "jpeg"
+        img_byte_arr = io.BytesIO()
+        cropped_image.save(img_byte_arr, format=f"{image_format}")
+        img_byte_arr.seek(0)
+        img_tmp = TemporaryUploadedFile(
+            name=f'cropped_image.{image_format}',
+            size=img_byte_arr.getbuffer().nbytes,
+            content_type=f'image/{image_format}',
+            charset=None,
+        )
+        img_tmp.write(img_byte_arr.read())
+        img_tmp.seek(0)
+        
+        return img_tmp  
