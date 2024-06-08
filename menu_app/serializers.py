@@ -59,7 +59,7 @@ class PromoSerializer(ModelSerializer):
     photo = serializers.FileField(required=False)
     
     class Meta:
-        model = Menu
+        model = Promo
         fields = [
             "id",
             "restaurant",
