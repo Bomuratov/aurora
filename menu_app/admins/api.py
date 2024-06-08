@@ -116,7 +116,7 @@ class PromoAdminView(PromoView):
             scaleX = float(sizes["scaleX"])
             scaleY = float(sizes["scaleY"])
             request.data["photo"] = crop_image_by_percentage(
-                image_path=request.data["photo"],
+                image_path=request.data.get("photo", None),
                 x=x,
                 y=y,
                 width=width,
@@ -125,8 +125,14 @@ class PromoAdminView(PromoView):
                 scaleY=scaleY,
                 rotate=rotate,
             )
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        print("Comment", request.data['description'])
+        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+        print("Validated description", serializer.validated_data['description'])
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
         serializer.save()
         return response.Response({"data": serializer.data})
 

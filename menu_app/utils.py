@@ -138,6 +138,8 @@ async def image_resize_asyc(image):
 def crop_image_by_percentage(
     image_path, x, y, width, height, scaleX=1, scaleY=1, rotate=0
 ):
+    if image_path == None:
+        return
     res_width = 1920
     with Image.open(image_path) as image:
 
