@@ -34,7 +34,7 @@ class MenuAdminView(MenuView):
             scaleX = float(sizes["scaleX"])
             scaleY = float(sizes["scaleY"])
             cropped_img = crop_image_by_percentage(
-                image_path=request.data.get("photo", None),
+                image_path=request.data["photo"],
                 x=x,
                 y=y,
                 width=width,
@@ -116,7 +116,7 @@ class PromoAdminView(PromoView):
             scaleX = float(sizes["scaleX"])
             scaleY = float(sizes["scaleY"])
             request.data["photo"] = crop_image_by_percentage(
-                image_path=request.data.get("photo", None),
+                image_path=request.data["photo"],
                 x=x,
                 y=y,
                 width=width,
