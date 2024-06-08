@@ -125,14 +125,8 @@ class PromoAdminView(PromoView):
                 scaleY=scaleY,
                 rotate=rotate,
             )
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        print("Comment", request.data['description'])
-        print("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-        print("Validated description", serializer.validated_data['description'])
-        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
         serializer.save()
         return response.Response({"data": serializer.data})
 
