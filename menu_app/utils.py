@@ -154,27 +154,17 @@ def crop_image_by_percentage(
         hsize = int((float(cropped_image.size[1]) * float(wpercent)))
         cropped_image = cropped_image.resize((res_width, hsize), Image.Resampling.LANCZOS)
         
-        
         image_format = "png" if image.mode == "RGBA" else "jpeg"
-        with io.BytesIO() as img_byte_arr:
-            cropped_image.save(img_byte_arr, format=f"{image_format}")
-            img_byte_arr.seek(0)
-            
-            img_tmp = TemporaryUploadedFile(
-                name=f'cropped_image.{image_format}',
-                size=img_byte_arr.getbuffer().nbytes,
-                content_type=f'image/{image_format}',
-                charset=None,
-            )
-        # img_byte_arr = io.BytesIO()
-        # cropped_image.save(img_byte_arr, format=f"{image_format}")
-        # img_byte_arr.seek(0)
-        # img_tmp = TemporaryUploadedFile(
-        #     name=f'cropped_image.{image_format}',
-        #     size=img_byte_arr.getbuffer().nbytes,
-        #     content_type=f'image/{image_format}',
-        #     charset=None,
-        # )
+
+        img_byte_arr = io.BytesIO()
+        cropped_image.save(img_byte_arr, format=f"{image_format}")
+        img_byte_arr.seek(0)
+        img_tmp = TemporaryUploadedFile(
+            name=f'cropped_image.{image_format}',
+            size=img_byte_arr.getbuffer().nbytes,
+            content_type=f'image/{image_format}',
+            charset=None,
+        )
         img_tmp.write(img_byte_arr.read())
         img_tmp.seek(0)
         
