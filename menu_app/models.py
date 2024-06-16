@@ -62,6 +62,9 @@ class Restaurant(Basemodel):
     photo = models.FileField(upload_to=upload_path_rest, null=True, blank=False)
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
+    availability_orders = models.BooleanField(default=False)
+    orders_chat_id = models.IntegerField(null=True, blank=True) 
+    waiter_chat_id = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.name
