@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models import SET_NULL, PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -63,8 +64,8 @@ class Restaurant(Basemodel):
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
     availability_orders = models.BooleanField(default=False)
-    orders_chat_id = models.IntegerField(null=True, blank=True) 
-    waiter_chat_id = models.IntegerField(null=True, blank=True)
+    orders_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-1000000000), MaxValueValidator(1000000000)]) 
+    waiter_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-1000000000), MaxValueValidator(1000000000)])
 
     def __str__(self):
         return self.name
