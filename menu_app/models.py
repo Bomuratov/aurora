@@ -64,8 +64,8 @@ class Restaurant(Basemodel):
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
     availability_orders = models.BooleanField(default=False)
-    orders_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-1000000000), MaxValueValidator(1000000000)]) 
-    waiter_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-1000000000), MaxValueValidator(1000000000)])
+    orders_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-100000000000000), MaxValueValidator(100000000000000)]) 
+    waiter_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-100000000000000), MaxValueValidator(100000000000000)])
 
     def __str__(self):
         return self.name
