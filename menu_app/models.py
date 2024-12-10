@@ -62,7 +62,7 @@ class Restaurant(Basemodel):
     instagramm = models.CharField(max_length=255, null=True, blank=True)
     photo = models.FileField(upload_to=upload_path_rest, null=True, blank=False)
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
-    slug = AutoSlugField(populate_from='name', null=True, blank=True)
+    # slug = AutoSlugField(populate_from='name', null=True, blank=True)
     availability_orders = models.BooleanField(default=False)
     orders_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-9999999999999), MaxValueValidator(9999999999999)]) 
     waiter_chat_id = models.IntegerField(null=True, blank=True, validators=[MinValueValidator(-9999999999999), MaxValueValidator(9999999999999)])
@@ -96,7 +96,7 @@ class Menu(Basemodel):
     is_active = models.BooleanField(default=True)
     availability = models.BooleanField(default=True)
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
-    slug = AutoSlugField(populate_from='name', null=True, blank=True)
+    # slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} in {self.restaurant.name}"
