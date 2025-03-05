@@ -1,8 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.core.exceptions import ValidationError
+from apps.core.models import BaseModel
 from django.db.models import SET_NULL, PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -38,22 +36,7 @@ def upload_path_promo(instance, filename):
 
 
 
-class Basemodel(models.Model):
-    created_time = models.DateTimeField(auto_now_add=True, editable=False, null=True)
-    update_time = models.DateTimeField(auto_now=True, editable=False, null=True)
-    created_by = models.ForeignKey(
-        User, SET_NULL, null=True, blank=True, related_name="created_%(model_name)ss"
-    )
-    update_by = models.ForeignKey(
-        User, SET_NULL, null=True, blank=True, related_name="updated_%(model_name)ss"
-    )
-
-    class Meta:
-        abstract = True
-        ordering = ("id",)
-
-
-class Restaurant(Basemodel):
+class Restaurant(BaseModel):
     user = models.ForeignKey(User, PROTECT, null=True, blank=True)
     name = models.CharField(max_length=225, null=True, blank=True)
     adress = models.CharField(max_length=225)
@@ -71,7 +54,7 @@ class Restaurant(Basemodel):
         return self.name
 
 
-class Category(Basemodel):
+class Category(BaseModel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225)
     is_active = models.BooleanField(default=False)
@@ -85,7 +68,7 @@ class Category(Basemodel):
         ordering = ['order']
 
 
-class Menu(Basemodel):
+class Menu(BaseModel):
     name = models.CharField(max_length=225, null=True, blank=False)
     description = models.TextField(null=True, blank=False)
     price = models.IntegerField(null=True, blank=False)
@@ -104,7 +87,7 @@ class Menu(Basemodel):
 
 
 
-class Promo(Basemodel):
+class Promo(BaseModel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
