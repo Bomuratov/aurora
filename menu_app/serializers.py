@@ -5,11 +5,6 @@ from .models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-class BasemodelSerializer(ModelSerializer):
-    class Meta:
-        model = Basemodel
-        fields = "__all__"
-
 
 class RestaurantSerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
