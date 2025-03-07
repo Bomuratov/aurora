@@ -13,7 +13,7 @@ from datetime import timedelta
 SECRET_KEY = "django-insecure-pl+(h+sfdiotagz&rz&lo45w^qa)j0b=sbcfv&r1(&##n-44s%"
 
 
-DEBUG = os.environ.get("DEBUG", True)
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
