@@ -26,6 +26,9 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("", include(("menu_app.urls", "core"), namespace="menu_app")),
+    path("api/v1/", include([
+        path("auth/", include("users.urls")),
+    ])),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

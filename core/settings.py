@@ -1,5 +1,8 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +58,7 @@ INSTALLED_APPS = [
     "django_filters",
     # apps
     "menu_app",
+    "users"
 ]
 
 MIDDLEWARE = [
@@ -139,6 +143,9 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
+
+AUTH_USER_MODEL = "users.User"
+PASSWORD_MIN_LENGTH = 8
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
