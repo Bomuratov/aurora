@@ -1,4 +1,5 @@
 from .settings import *
+
 DEBUG = True
 
 DATABASES = {
@@ -6,7 +7,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "aurora",
         "USER": "aurora",
-        "PASSWORD": "admin",
+        "PASSWORD": "N4:>g0z}r2Xx",
         "HOST": "localhost",
         "PORT": "5432",
     }
