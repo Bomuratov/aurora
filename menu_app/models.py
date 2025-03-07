@@ -38,10 +38,10 @@ class BaseModel(models.Model):
     created_time = models.DateTimeField(auto_now_add=True, editable=False, null=True)
     update_time = models.DateTimeField(auto_now=True, editable=False, null=True)
     created_by = models.ForeignKey(
-        "users.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="created_%(model_name)ss"
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_%(model_name)ss"
     )
     update_by = models.ForeignKey(
-        "users.User", on_delete=models.SET_NULL, null=True, blank=True, related_name="updated_%(model_name)ss"
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="updated_%(model_name)ss"
     )
 
     class Meta:
@@ -51,7 +51,7 @@ class BaseModel(models.Model):
 
 
 class Restaurant(BaseModel):
-    user = models.ForeignKey("users.User", PROTECT, null=True, blank=True)
+    user = models.ForeignKey(User, PROTECT, null=True, blank=True)
     name = models.CharField(max_length=225, null=True, blank=True)
     adress = models.CharField(max_length=225)
     is_active = models.BooleanField(default=False)
