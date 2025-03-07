@@ -27,7 +27,7 @@ urlpatterns = [
     path("", include(("menu_app.urls", "core"), namespace="menu_app")),
     path("api/v1/", include([
         path("auth/", include("users.urls")),
-    ])),
+   ])),
 ]
 
 
