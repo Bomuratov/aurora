@@ -1,11 +1,8 @@
 from pathlib import Path
 import os
-import sys
 
 # import dj_database_url
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-sys.path.append(os.path.join(BASE_DIR, "apps"))
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 from datetime import timedelta
 
@@ -58,7 +55,6 @@ INSTALLED_APPS = [
     "django_filters",
     # apps
     "menu_app",
-    "core"
 ]
 
 MIDDLEWARE = [

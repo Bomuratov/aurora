@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from apps.core.models import BaseModel
 from django.db.models import SET_NULL, PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -33,6 +32,21 @@ def upload_path_promo(instance, filename):
         instance.restaurant.name, instance.name, name
     )
 
+
+
+class BaseModel(models.Model):
+    created_time = models.DateTimeField(auto_now_add=True, editable=False, null=True)
+    update_time = models.DateTimeField(auto_now=True, editable=False, null=True)
+    created_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="created_%(model_name)ss"
+    )
+    update_by = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="updated_%(model_name)ss"
+    )
+
+    class Meta:
+        abstract = True
+        ordering = ("id",)
 
 
 
