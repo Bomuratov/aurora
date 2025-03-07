@@ -27,6 +27,7 @@ class RestaurantAdmin(admin.ModelAdmin):
     actions_on_bottom = True
 
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "is_active", "order",)
     list_display_links = ("name",)
