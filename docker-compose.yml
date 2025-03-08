@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: aurora_db
+    environment:
+      POSTGRES_USER: aurora
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: aurora
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./old_db_backup.sql:/docker-entrypoint-initdb.d/backup.sql
+
+
+volumes:
+  postgres_data:
