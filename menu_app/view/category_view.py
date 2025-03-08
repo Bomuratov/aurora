@@ -13,6 +13,7 @@ class CategoryView(viewsets.ModelViewSet):
 
 
 
+
     @decorators.action(detail=False, methods=["post"], url_path="update_order")
     @extend_schema(tags=["Category API v1.01"])
     def post_update(self, request):
