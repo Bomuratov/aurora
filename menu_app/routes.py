@@ -1,5 +1,5 @@
 from rest_framework.routers import Route, DynamicRoute, SimpleRouter, DefaultRouter
-from .views import *
+from .view import *
 
 
 router = DefaultRouter()

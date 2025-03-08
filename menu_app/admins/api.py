@@ -4,21 +4,23 @@ from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
 from menu_app.utils import image_resize, image_resize_asyc, crop_image_by_percentage
 from menu_app.models import Category
 import json
+from drf_spectacular.utils import extend_schema
 
 
 
-
+@extend_schema(tags=["Restaurant API for admins"])
 class RestaurantAdminView(RestaurantView):
     # permission_classes = (IsAuthenticated,)
     pass
 
 
+@extend_schema(tags=["Category API for admins"])
 class CategoryAdminView(CategoryView):
     permission_classes = (IsAuthenticated,)
     lookup_field="pk"
     pass
 
-
+@extend_schema(tags=["Menu API for admins"])
 class MenuAdminView(MenuView):
     permission_classes = (IsAuthenticated,)
     lookup_field="pk"
@@ -101,6 +103,7 @@ class MenuAdminView(MenuView):
 
 
 
+@extend_schema(tags=["Promo API for admins"])
 class PromoAdminView(PromoView):
     permission_classes = (IsAuthenticated,)
     lookup_field="pk"

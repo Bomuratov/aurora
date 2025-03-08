@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "corsheaders",
     "django_filters",
+    'drf_spectacular',
     # apps
     "menu_app",
     "users"
@@ -123,6 +124,7 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.BasicAuthentication',
     #     'rest_framework.authentication.SessionAuthentication',
     # ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
@@ -176,6 +178,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# swagger settings
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Aurora backend API',
+    'DESCRIPTION': 'This API routes for application Aurora.\n website: https://aurora-app.uz',
+    'VERSION': 'v1.01',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+}
 
 # JWT Authentication settings
 
