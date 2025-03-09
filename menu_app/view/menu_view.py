@@ -1,13 +1,10 @@
 import json
-from rest_framework import viewsets, response, permissions
+from rest_framework import viewsets, response, status
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
 from menu_app.models import Menu, Category
-from menu_app.serializers import MenuSerializer
+from menu_app.serializer.menu_serializer import MenuSerializer
 from menu_app.utils import crop_image_by_percentage
-
-
-
 
 
 @extend_schema(tags=["Menu API v1.01"])
@@ -17,31 +14,37 @@ class MenuView(viewsets.ModelViewSet):
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name"]
     
-    def create(self, request):
-        if request.data["crop"]:
-            sizes = json.loads(request.data["crop"])
-            x = float(sizes["x"])
-            y = float(sizes["y"])
-            width = float(sizes["width"])
-            height = float(sizes["height"])
-            rotate = float(sizes["rotate"])
-            scaleX = float(sizes["scaleX"])
-            scaleY = float(sizes["scaleY"])
-            cropped_img = crop_image_by_percentage(
-                image_path=request.data["photo"],
-                x=x,
-                y=y,
-                width=width,
-                height=height,
-                scaleX=scaleX,
-                scaleY=scaleY,
-                rotate=rotate,
-            )
-            request.data["photo"] = cropped_img
+    def create(self, request, *args, **kwargs):
+        crop_data = request.data.get("crop")
+        if crop_data:
+            try:
+                sizes = json.loads(crop_data)
+                x = float(sizes["x"])
+                y = float(sizes["y"])
+                width = float(sizes["width"])
+                height = float(sizes["height"])
+                rotate = float(sizes["rotate"])
+                scaleX = float(sizes["scaleX"])
+                scaleY = float(sizes["scaleY"])
+                
+                image_path = request.data.get("photo")
+                if image_path:
+                    request.data["photo"] = crop_image_by_percentage(
+                        image_path=image_path,
+                        x=x, y=y, width=width, height=height,
+                        scaleX=scaleX, scaleY=scaleY, rotate=rotate
+                    )
+            except (json.JSONDecodeError, KeyError, ValueError, TypeError) as e:
+                return response.Response(
+                    {"message": f"Данные для обработки фото неправилно: {str(e)}", "code": 2},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return response.Response({"data": serializer.data})
+        
+        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, *args, **kwargs):
         pk = kwargs.get("pk", None)
@@ -77,7 +80,7 @@ class MenuView(viewsets.ModelViewSet):
                     scaleY=scaleY,
                     rotate=rotate,
                 )
-        serializer = self.serializer_class(data=request.data, instance=instance)
+        serializer = self.serializer_class(data=request.data, instance=instance, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)
         cat_id = request.data["category"]
         serializer.save()
