@@ -17,7 +17,7 @@ class MenuAdmin(admin.ModelAdmin):
 
 
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ("name", "adress", "is_active",)
+    list_display = ("name", "address", "is_active",)
     list_display_links = ("name",)
     list_editable = ("is_active",)
     list_filter = ("user",)
