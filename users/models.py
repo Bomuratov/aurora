@@ -31,6 +31,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     phone=models.CharField(max_length=14, null=True, blank=True, unique=True, validators=[UZB_PHONE_VALIDATOR])
+    avatar = models.ImageField(upload_to="media", null=True)
     telegram_id = models.PositiveBigIntegerField(null=True, blank=True)
     user_registered_at = models.DateTimeField(auto_now_add=True, editable=False, null=True)
     is_active = models.BooleanField(default=False)
