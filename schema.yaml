@@ -1,0 +1,1985 @@
+openapi: 3.0.3
+info:
+  title: Aurora backend API
+  version: v1.01
+  description: |-
+    This API routes for application Aurora.
+     website: https://aurora-app.uz
+paths:
+  /api/admins/categories/update_order/:
+    post:
+      operationId: api_admins_categories_update_order_create
+      tags:
+      - api
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/admins/category/{restaurant_name}:
+    get:
+      operationId: api_admins_category_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/admins/categorys:
+    get:
+      operationId: api_admins_categorys_list
+      tags:
+      - Category API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: api_admins_categorys_create
+      tags:
+      - Category API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/admins/categorys/{id}:
+    get:
+      operationId: api_admins_categorys_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: api_admins_categorys_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: api_admins_categorys_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/admins/download/qr:
+    get:
+      operationId: api_admins_download_qr_retrieve
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/admins/generate/qr:
+    post:
+      operationId: api_admins_generate_qr_create
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/admins/menu/{restaurant_name}:
+    get:
+      operationId: api_admins_menu_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Menu API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+          description: ''
+  /api/admins/menus:
+    get:
+      operationId: api_admins_menus_list
+      tags:
+      - Menu API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+          description: ''
+    post:
+      operationId: api_admins_menus_create
+      tags:
+      - Menu API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+  /api/admins/menus/{id}:
+    get:
+      operationId: api_admins_menus_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+    put:
+      operationId: api_admins_menus_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+    delete:
+      operationId: api_admins_menus_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/admins/promo/{restaurant_name}:
+    get:
+      operationId: api_admins_promo_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Promo API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/admins/promos:
+    get:
+      operationId: api_admins_promos_list
+      tags:
+      - Promo API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+    post:
+      operationId: api_admins_promos_create
+      tags:
+      - Promo API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/admins/promos/{id}:
+    get:
+      operationId: api_admins_promos_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+    put:
+      operationId: api_admins_promos_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+    delete:
+      operationId: api_admins_promos_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API for admins
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/admins/restaurants:
+    get:
+      operationId: api_admins_restaurants_list
+      parameters:
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+          nullable: true
+      tags:
+      - Restaurant API for admins
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+          description: ''
+    post:
+      operationId: api_admins_restaurants_create
+      tags:
+      - Restaurant API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+  /api/admins/restaurants/{name}:
+    get:
+      operationId: api_admins_restaurants_retrieve
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Restaurant API for admins
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+    put:
+      operationId: api_admins_restaurants_update
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Restaurant API for admins
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+    delete:
+      operationId: api_admins_restaurants_destroy
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Restaurant API for admins
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/client/category/{restaurant_name}:
+    get:
+      operationId: api_client_category_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Category API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/client/cateogrys:
+    get:
+      operationId: api_client_cateogrys_list
+      tags:
+      - Category API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/client/menu/{restaurant_name}:
+    get:
+      operationId: api_client_menu_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Menu API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+          description: ''
+  /api/client/menus:
+    get:
+      operationId: api_client_menus_list
+      tags:
+      - Menu API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+          description: ''
+  /api/client/promo/{restaurant_name}:
+    get:
+      operationId: api_client_promo_list
+      parameters:
+      - in: path
+        name: restaurant_name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Promo API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/client/restaurant/{name}:
+    get:
+      operationId: api_client_restaurant_retrieve
+      parameters:
+      - in: path
+        name: name
+        schema:
+          type: string
+        required: true
+      tags:
+      - Restaurant API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+  /api/client/restaurants:
+    get:
+      operationId: api_client_restaurants_list
+      parameters:
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+          nullable: true
+      tags:
+      - Restaurant API for clients
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+          description: ''
+  /api/v1/auth/refresh:
+    post:
+      operationId: api_v1_auth_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/v1/auth/register:
+    post:
+      operationId: api_v1_auth_register_create
+      tags:
+      - Authentication API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+  /api/v1/auth/user:
+    get:
+      operationId: api_v1_auth_user_list
+      tags:
+      - Authentication API
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserRegister'
+          description: ''
+  /api/v1/auth/user/{id}:
+    get:
+      operationId: api_v1_auth_user_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Authentication API
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+    put:
+      operationId: api_v1_auth_user_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Authentication API
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRegisterRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegister'
+          description: ''
+    delete:
+      operationId: api_v1_auth_user_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - Authentication API
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/auth/user/login:
+    post:
+      operationId: api_v1_auth_user_login_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserTokenRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserTokenRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserTokenRequest'
+        required: true
+      responses:
+        '200':
+          description: No response body
+  /api/v1/category/:
+    get:
+      operationId: api_v1_category_list
+      parameters:
+      - in: query
+        name: restaurant__name
+        schema:
+          type: string
+      tags:
+      - Category API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: api_v1_category_create
+      tags:
+      - Category API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/category/{id}/:
+    get:
+      operationId: api_v1_category_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: api_v1_category_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    patch:
+      operationId: api_v1_category_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategoryRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: api_v1_category_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - Category API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/category/update_order/:
+    post:
+      operationId: api_v1_category_update_order_create
+      tags:
+      - Category API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/menu/:
+    get:
+      operationId: api_v1_menu_list
+      parameters:
+      - in: query
+        name: restaurant__name
+        schema:
+          type: string
+      tags:
+      - Menu API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Menu'
+          description: ''
+    post:
+      operationId: api_v1_menu_create
+      tags:
+      - Menu API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+  /api/v1/menu/{id}/:
+    get:
+      operationId: api_v1_menu_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+    put:
+      operationId: api_v1_menu_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MenuRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+    patch:
+      operationId: api_v1_menu_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedMenuRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedMenuRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedMenuRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Menu'
+          description: ''
+    delete:
+      operationId: api_v1_menu_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this menu.
+        required: true
+      tags:
+      - Menu API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/promo/:
+    get:
+      operationId: api_v1_promo_list
+      parameters:
+      - in: query
+        name: restaurant__name
+        schema:
+          type: string
+      tags:
+      - Promo API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Promo'
+          description: ''
+    post:
+      operationId: api_v1_promo_create
+      tags:
+      - Promo API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+  /api/v1/promo/{id}/:
+    get:
+      operationId: api_v1_promo_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+    put:
+      operationId: api_v1_promo_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PromoRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+    patch:
+      operationId: api_v1_promo_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API v1.01
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedPromoRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedPromoRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedPromoRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Promo'
+          description: ''
+    delete:
+      operationId: api_v1_promo_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this promo.
+        required: true
+      tags:
+      - Promo API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/v1/restaurant/:
+    get:
+      operationId: api_v1_restaurant_list
+      parameters:
+      - in: query
+        name: user_id
+        schema:
+          type: integer
+          nullable: true
+      tags:
+      - Restaurant API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Restaurant'
+          description: ''
+    post:
+      operationId: api_v1_restaurant_create
+      tags:
+      - Restaurant API v1.01
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+  /api/v1/restaurant/{id}/:
+    get:
+      operationId: api_v1_restaurant_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this restaurant.
+        required: true
+      tags:
+      - Restaurant API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+    put:
+      operationId: api_v1_restaurant_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this restaurant.
+        required: true
+      tags:
+      - Restaurant API v1.01
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RestaurantRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+    patch:
+      operationId: api_v1_restaurant_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this restaurant.
+        required: true
+      tags:
+      - Restaurant API v1.01
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedRestaurantRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedRestaurantRequest'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedRestaurantRequest'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Restaurant'
+          description: ''
+    delete:
+      operationId: api_v1_restaurant_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this restaurant.
+        required: true
+      tags:
+      - Restaurant API v1.01
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        restaurant:
+          type: integer
+        name:
+          type: string
+          maxLength: 225
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_active:
+          type: boolean
+      required:
+      - id
+      - name
+      - restaurant
+    CategoryRequest:
+      type: object
+      properties:
+        restaurant:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 225
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_active:
+          type: boolean
+      required:
+      - name
+      - restaurant
+    Menu:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        is_active:
+          type: boolean
+        category:
+          type: integer
+        restaurant:
+          type: integer
+        photo:
+          type: string
+          format: uri
+        availability:
+          type: boolean
+      required:
+      - category
+      - id
+      - restaurant
+    MenuRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          minLength: 1
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+          minLength: 1
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        is_active:
+          type: boolean
+        category:
+          type: integer
+        restaurant:
+          type: integer
+        photo:
+          type: string
+          format: binary
+        availability:
+          type: boolean
+      required:
+      - category
+      - restaurant
+    PatchedCategoryRequest:
+      type: object
+      properties:
+        restaurant:
+          type: integer
+        name:
+          type: string
+          minLength: 1
+          maxLength: 225
+        order:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        is_active:
+          type: boolean
+    PatchedMenuRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          minLength: 1
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+          minLength: 1
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        is_active:
+          type: boolean
+        category:
+          type: integer
+        restaurant:
+          type: integer
+        photo:
+          type: string
+          format: binary
+        availability:
+          type: boolean
+    PatchedPromoRequest:
+      type: object
+      properties:
+        restaurant:
+          type: integer
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        is_active:
+          type: boolean
+        photo:
+          type: string
+          format: binary
+    PatchedRestaurantRequest:
+      type: object
+      properties:
+        photo:
+          type: string
+          format: binary
+        logo:
+          type: string
+          format: binary
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        adress:
+          type: string
+          minLength: 1
+          maxLength: 225
+        is_active:
+          type: boolean
+        telegram:
+          type: string
+          nullable: true
+          maxLength: 255
+        instagramm:
+          type: string
+          nullable: true
+          maxLength: 255
+        availability_orders:
+          type: boolean
+        orders_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+        waiter_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+    Promo:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        restaurant:
+          type: integer
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        is_active:
+          type: boolean
+        photo:
+          type: string
+          format: uri
+      required:
+      - id
+      - restaurant
+    PromoRequest:
+      type: object
+      properties:
+        restaurant:
+          type: integer
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        description:
+          type: string
+          nullable: true
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          nullable: true
+        is_active:
+          type: boolean
+        photo:
+          type: string
+          format: binary
+      required:
+      - restaurant
+    Restaurant:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        created_time:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        update_time:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        adress:
+          type: string
+          maxLength: 225
+        is_active:
+          type: boolean
+        telegram:
+          type: string
+          nullable: true
+          maxLength: 255
+        instagramm:
+          type: string
+          nullable: true
+          maxLength: 255
+        photo:
+          type: string
+          format: uri
+          nullable: true
+        logo:
+          type: string
+          format: uri
+          nullable: true
+        availability_orders:
+          type: boolean
+        orders_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+        waiter_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+      required:
+      - adress
+      - created_time
+      - id
+      - update_time
+    RestaurantRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+          maxLength: 225
+        adress:
+          type: string
+          minLength: 1
+          maxLength: 225
+        is_active:
+          type: boolean
+        telegram:
+          type: string
+          nullable: true
+          maxLength: 255
+        instagramm:
+          type: string
+          nullable: true
+          maxLength: 255
+        photo:
+          type: string
+          format: binary
+          nullable: true
+        logo:
+          type: string
+          format: binary
+          nullable: true
+        availability_orders:
+          type: boolean
+        orders_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+        waiter_chat_id:
+          type: integer
+          maximum: 9999999999999
+          minimum: -9999999999999
+          format: int64
+          nullable: true
+      required:
+      - adress
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+      required:
+      - access
+      - refresh
+    TokenRefreshRequest:
+      type: object
+      properties:
+        refresh:
+          type: string
+          minLength: 1
+      required:
+      - refresh
+    UserRegister:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        first_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        last_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone:
+          type: string
+          pattern: ^(\+998)(\d{9})$
+        email:
+          type: string
+          format: email
+        user_registered_at:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+      required:
+      - email
+      - id
+      - phone
+      - user_registered_at
+    UserRegisterRequest:
+      type: object
+      properties:
+        first_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        last_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone:
+          type: string
+          minLength: 1
+          pattern: ^(\+998)(\d{9})$
+        email:
+          type: string
+          format: email
+          minLength: 1
+        password_1:
+          type: string
+          writeOnly: true
+          minLength: 8
+        password_2:
+          type: string
+          writeOnly: true
+          minLength: 8
+      required:
+      - email
+      - password_1
+      - password_2
+      - phone
+    UserTokenRequest:
+      type: object
+      properties:
+        phone:
+          type: string
+          writeOnly: true
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - phone
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

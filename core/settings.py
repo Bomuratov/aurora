@@ -125,6 +125,7 @@ REST_FRAMEWORK = {
     #     'rest_framework.authentication.SessionAuthentication',
     # ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
 
 
@@ -184,6 +185,7 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'This API routes for application Aurora.\n website: https://aurora-app.uz',
     'VERSION': 'v1.01',
     'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
 
 }
 
