@@ -20,6 +20,7 @@ class CategoryAdminView(CategoryView):
     lookup_field="pk"
     pass
 
+
 @extend_schema(tags=["Menu API for admins"])
 class MenuAdminView(MenuView):
     permission_classes = (IsAuthenticated,)
