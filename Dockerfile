@@ -10,10 +10,10 @@ ENV PYTHONUNBUFFERED 1
 RUN pip install --upgrade pip
 
 # Копируем зависимости
-COPY req.txt .
+COPY requirements.txt .
 
 # Устанавливаем зависимости
-RUN pip install -r req.txt.txt
+RUN pip install -r requirements.txt
 
 # Копируем зависимости
 COPY . .
