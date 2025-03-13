@@ -12,7 +12,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./old_db_backup.sql:/docker-entrypoint-initdb.d/backup.sql
+      # - ./new_backup.sql:/docker-entrypoint-initdb.d/backup.sql
 
 
 volumes:

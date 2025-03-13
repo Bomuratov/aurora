@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User
+from .models import User, UserRole, Permissions
 
 
 
@@ -13,3 +13,5 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
+admin.site.register(UserRole)
+admin.site.register(Permissions)

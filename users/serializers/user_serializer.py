@@ -3,6 +3,10 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    permissions = serializers.ListField(
+        child=serializers.CharField(), source="get_custom_permissions"
+    )
+    role=serializers.CharField(source="get_user_role")
 
     class Meta:
         model = User
@@ -16,5 +20,8 @@ class UserSerializer(serializers.ModelSerializer):
             "user_registered_at",
             "is_active",
             "is_user",
-            "is_vendor"
+            "is_vendor",
+            "role",
+            "permissions",
+
             ]
