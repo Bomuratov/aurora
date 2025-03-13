@@ -41,8 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_user = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    role = models.ForeignKey("users.UserRole", on_delete=models.CASCADE, null=True, blank=True, related_name="user_role")
-    permissions = models.ManyToManyField("users.Permissions", related_name="user_perms")
+    role = models.ForeignKey("users.UserRole", on_delete=models.SET_NULL, null=True, blank=True, related_name="user_role")
+    permissions = models.ManyToManyField("users.Permissions", related_name="user_perms", blank=True)
 
     USERNAME_FIELD = "phone"
     objects = UserManager()
@@ -59,6 +59,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     def get_user_role(self):
         return self.role.role
+    
+    def get_user_role_perms(self):
+        return self.role.permissions
 
 class Permissions(models.Model):
     code = models.CharField(choices=PERMISSIONS, max_length=255)
@@ -85,7 +88,7 @@ class UserRole(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.role and self.code.exists():
-            permissions = [f"{self.role}_{perm.code}" for perm in self.code.all()]
+            permissions = [f"{perm.perms}" for perm in self.code.all()]
             self.permissions = permissions
         super().save(*args, **kwargs)
 

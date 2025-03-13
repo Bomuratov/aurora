@@ -7,6 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
         child=serializers.CharField(), source="get_custom_permissions"
     )
     role=serializers.CharField(source="get_user_role")
+    role_permissions = serializers.CharField(source="get_user_role_perms")
 
     class Meta:
         model = User
@@ -23,5 +24,5 @@ class UserSerializer(serializers.ModelSerializer):
             "is_vendor",
             "role",
             "permissions",
-
+            "role_permissions",
             ]
