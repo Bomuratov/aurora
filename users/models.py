@@ -63,6 +63,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_user_role_perms(self):
         return self.role.permissions
 
+
 class Permissions(models.Model):
     code = models.CharField(choices=PERMISSIONS, max_length=255)
     content = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
@@ -72,7 +73,7 @@ class Permissions(models.Model):
         return f"{self.code}_{self.content.model}"
     
     def save(self, *args, **kwargs):
-        if self.content:  # Проверяем, что content не None
+        if self.content:
             self.perms = f"{self.code}_{self.content.model}"
         super().save(*args, **kwargs)
     
