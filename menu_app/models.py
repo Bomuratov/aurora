@@ -109,7 +109,7 @@ class Menu(BaseModel):
     category = models.ForeignKey(
         Category, CASCADE, null=True, blank=True, related_name="title"
     )
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     availability = models.BooleanField(default=True)
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     thumb = models.FileField(upload_to=upload_path_menu, null=True, blank=True)
