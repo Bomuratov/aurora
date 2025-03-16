@@ -7,7 +7,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "aurora",
         "USER": "aurora",
-        "PASSWORD": "N4:>g0z}r2Xx",
+        "PASSWORD": "admin",
         "HOST": "localhost",
         "PORT": "5432",
     }
