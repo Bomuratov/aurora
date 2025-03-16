@@ -3,6 +3,25 @@ from django.contrib.auth.models import User
 from django.db.models import SET_NULL, PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
 from django.core.validators import MaxValueValidator, MinValueValidator
+from PIL import Image
+import io
+from django.core.files.base import ContentFile
+
+def thumbnail(image, size=(200, 200)):
+    """
+    Уменьшает изображение до указанного размера с сохранением пропорций.
+
+    :param image: Загруженный объект файла (models.ImageField).
+    :param size: Размер (ширина, высота) thumbnail'а.
+    :return: Уменьшенный файл для сохранения в модели.
+    """
+    img = Image.open(image)
+    img.thumbnail(size, Image.Resampling.LANCZOS)  # Уменьшает изображение
+
+    # Сохранение в памяти
+    img_io = io.BytesIO()
+    img.save(img_io, format=img.format)
+    return ContentFile(img_io.getvalue(), name=image.name)
 
 
 
@@ -93,10 +112,16 @@ class Menu(BaseModel):
     is_active = models.BooleanField(default=True)
     availability = models.BooleanField(default=True)
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
+    thumb = models.FileField(upload_to=upload_path_menu, null=True, blank=True)
     # slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} in {self.restaurant.name}"
+    
+    def save(self, *args, **kwargs):
+        if self.photo:
+            self.thumb = thumbnail(self.photo, size=(150, 150))
+        return super().save(*args, **kwargs)
 
 
 
