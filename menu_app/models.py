@@ -118,6 +118,7 @@ class Menu(BaseModel):
     def __str__(self):
         return f"{self.name} in {self.restaurant.name}"
     
+
     def save(self, *args, **kwargs):
         if self.photo:
             self.thumb = thumbnail(self.photo, size=(150, 150))
