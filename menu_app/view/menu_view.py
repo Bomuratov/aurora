@@ -15,7 +15,7 @@ class MenuView(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     filter_backends = [filters.DjangoFilterBackend]
-    filterset_fields = ["restaurant__name"]
+    filterset_fields = ["restaurant__name", "category_id"]
     
     def create(self, request):
         if request.data["crop"]:
