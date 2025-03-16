@@ -10,3 +10,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
+
+    def create(self, request, *args, **kwargs):
+        print("Request data:", request)  # Выведет, что реально приходит
+        return super().create(request, *args, **kwargs)
