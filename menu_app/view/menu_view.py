@@ -33,6 +33,8 @@ class MenuView(viewsets.ModelViewSet):
 class UpdatePhotoMenu(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = PhotoMenuSerializer
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_fields = ["restaurant__name", "category_id"]
 
     def update(self, request, *args, **kwargs):
         pk = kwargs.get("pk", None)
