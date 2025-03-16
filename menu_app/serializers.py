@@ -45,7 +45,6 @@ class MenuSerializer(ModelSerializer):
             "name",
             "category",
             "restaurant",
-            "photo",
             "price",
             "description",
             "is_active",
