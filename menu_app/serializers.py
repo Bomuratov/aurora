@@ -27,6 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
             "restaurant",
             "name",
             "order",
+            "photo",
             "created_by",
             "update_by",
             "is_active",
