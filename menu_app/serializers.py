@@ -51,6 +51,10 @@ class MenuSerializer(ModelSerializer):
             "availability",
             "photo",
         ]
+        extra_kwargs = {
+            "category": {"required": True},
+            "restaurant": {"required": True},
+        }
 
 
 class PromoSerializer(ModelSerializer):
