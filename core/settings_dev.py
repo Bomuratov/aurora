@@ -6,14 +6,14 @@ load_dotenv()
 DEBUG = True
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "koyebdb",
-        "USER": "aurora",
-        "PASSWORD": "npg_QGriLCUpA58c",
-        "HOST": "ep-empty-term-a22mzt2a.eu-central-1.pg.koyeb.app",
-        "PORT": "5432",
-    }
+   "default": {
+       "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("POSTGRES_DB", "aurora"),
+        "USER": os.environ.get("POSTGRES_USER", "aurora"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "admin"),
+        "HOST": os.environ.get("POSTGRES_HOST", "localhost"),
+        "PORT": os.environ.get("POSTGRES_PORT", 5432),
+   }
 }
 # DATABASES = {
 #     "default": {
