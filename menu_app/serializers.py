@@ -47,8 +47,10 @@ class MenuSerializer(ModelSerializer):
             "restaurant",
             "price",
             "description",
+            "photo",
             "is_active",
             "availability",
+
         ]
         read_only_fields = ["photo"]
 
