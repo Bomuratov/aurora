@@ -45,13 +45,12 @@ class MenuSerializer(ModelSerializer):
             "name",
             "category",
             "restaurant",
-            "photo",
             "price",
             "description",
             "is_active",
             "availability",
         ]
-
+        read_only_fields = ["photo"]
 
 class PromoSerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
