@@ -84,14 +84,7 @@ class Permissions(models.Model):
 class UserRole(models.Model):
     role = models.CharField(choices=ROLES, max_length=255)
     code = models.ManyToManyField(Permissions, related_name="roles")
-    permissions = models.JSONField(null=True, blank=True, editable=False)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.role and self.code.exists():
-            permissions = [f"{perm.perms}" for perm in self.code.all()]
-            self.permissions = permissions
-        super().save(*args, **kwargs)
+    permissions = models.JSONField(null=True, blank=True)
 
     def __str__(self):
         return self.role

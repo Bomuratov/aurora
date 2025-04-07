@@ -28,6 +28,3 @@ env.bak/
 venv.bak/ 
 
 # migrations
-
-*/migrations/*.py
-!**/migrations/__init__.py
