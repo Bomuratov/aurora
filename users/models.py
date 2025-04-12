@@ -45,3 +45,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return f"{self.first_name} {self.last_name} – {self.phone}"
 
+
+class UserLocation(models.Model):
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, blank=True, null=True, related_name="user_location")
+    lat = models.CharField(max_length=255, null=True, blank=True)
+    long = models.CharField(max_length=255, null=True, blank=True)
+    house = models.CharField(max_length=225, null=True, blank=True)
+    apartment = models.CharField(max_length=225, null=True, blank=True)
+    floor = models.CharField(max_length=225, null=True, blank=True)
+    entrance = models.CharField(max_length=225, null=True, blank=True)
+    is_active = models.BooleanField(default=False)
+
+
+    def __str__(self):
+        return f"location of {self.user}"
