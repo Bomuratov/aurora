@@ -1,8 +1,8 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions, parsers
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
 from menu_app.models import Restaurant
-from menu_app.serializers import RestaurantSerializer
+from menu_app.serializer.restaurant_serializer import RestaurantSerializer
 
 
 

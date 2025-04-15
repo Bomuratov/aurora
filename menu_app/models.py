@@ -91,7 +91,7 @@ class Restaurant(BaseModel):
 class Category(BaseModel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     name = models.CharField(max_length=225)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     order = models.IntegerField(default=0)
     slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
@@ -110,7 +110,7 @@ class Menu(BaseModel):
     category = models.ForeignKey(
         Category, CASCADE, null=True, blank=True, related_name="title"
     )
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     availability = models.BooleanField(default=True)
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)
     thumb = models.FileField(upload_to=upload_path_menu, null=True, blank=True)
@@ -119,6 +119,7 @@ class Menu(BaseModel):
     def __str__(self):
         return f"{self.name} in {self.restaurant.name}"
     
+
     def save(self, *args, **kwargs):
         if self.photo:
             self.thumb = thumbnail(self.photo, size=(150, 150))
