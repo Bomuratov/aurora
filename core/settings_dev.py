@@ -1,7 +1,6 @@
 from .settings import *
-from dotenv import load_dotenv
 import os
-
+from dotenv import load_dotenv
 load_dotenv()
 
 DEBUG = True
@@ -16,6 +15,16 @@ DATABASES = {
         "PORT": os.environ.get("POSTGRES_PORT", 5432),
    }
 }
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "aurora",
+#         "USER": "aurora",
+#         "PASSWORD": "admin",
+#         "HOST": "localhost",
+#         "PORT": "5432",
+#     }
+# }
 
 
 #DATABASES = {

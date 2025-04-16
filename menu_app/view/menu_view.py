@@ -8,9 +8,6 @@ from menu_app.serializers import MenuSerializer, PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
 
 
-
-
-
 @extend_schema(tags=["Menu API v1.01"])
 class MenuView(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
@@ -73,7 +70,7 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
                     scaleY=scaleY,
                     rotate=rotate,
                 )
-        serializer = self.serializer_class(data=request.data, instance=instance)
+        serializer = self.serializer_class(data=request.data, instance=instance, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)
         serializer.save()
         # cat_id = request.data["category"]
