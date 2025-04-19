@@ -26,6 +26,10 @@ urlpatterns = [
     path('api/admins/categories/update_order/', CategoryView.as_view({'post': 'post_update'}), name='category_update_order'),
     path("api/admins/generate/qr", GenerateQR.as_view(), name='qr-generate'),
     path("api/admins/download/qr", DownloadQR.as_view(), name='qr-download'),
+
+    path("api/v1/menu/thumb/<int:pk>", menu_view.UpdatePhotoMenu.as_view({"put": "update", "get": "retrieve"}), name='update-photo'),
+    path("api/v1/menu/thumb/", menu_view.UpdatePhotoMenu.as_view({"get": "list"}), name='update-photo'),
+
     
     # new routes
     path("api/v1/", include(router.urls)),
