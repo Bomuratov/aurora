@@ -51,16 +51,16 @@ class User(AbstractBaseUser, PermissionsMixin):
         return f"{self.first_name} {self.last_name} – {self.phone}"
     
     def has_custom_perm(self, perm, obj=None):
-        return perm in self.get_custom_permissions()
+        return perm in self.get_custom_permissions() if perm else None
 
     def get_custom_permissions(self):
-        return list(self.permissions.values_list("perms", flat=True))
+        return list(self.permissions.values_list("perms", flat=True)) if self.permissions else None
     
     def get_user_role(self):
-        return self.role.role
+        return self.role.role if self.role else None
     
     def get_user_role_perms(self):
-        return self.role.permissions
+        return self.role.permissions if self.role else None 
 
 
 class Permissions(models.Model):
