@@ -22,5 +22,5 @@ class UserLocationView(viewsets.ModelViewSet):
             instance.is_active=True
             instance.save()
             UserLocation.objects.filter(user=instance.user).exclude(pk=instance.pk).update(is_active=False)
-            return response.Response({"nice"})
-        return response.Response({"not nice"})
+            return response.Response({"message": "is_active успешно изменен", "code": 2})
+        return response.Response({"message": "is_active и так True", "code": 3})

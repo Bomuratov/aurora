@@ -12,5 +12,9 @@ class UserAdmin(admin.ModelAdmin):
     actions_on_bottom = True
 
 
+class LocationAdmin(admin.ModelAdmin):
+    list_filter = ("user",)
+
+
 admin.site.register(User, UserAdmin)
-admin.site.register(UserLocation)
+admin.site.register(UserLocation, LocationAdmin)
