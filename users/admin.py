@@ -23,5 +23,5 @@ class LocationAdmin(admin.ModelAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(UserRole)
 admin.site.register(Permissions)
-admin.site.register(UserLocation)
+admin.site.register(UserLocation, LocationAdmin)
 
