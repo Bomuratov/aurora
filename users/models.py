@@ -63,3 +63,6 @@ class UserLocation(models.Model):
 
     def __str__(self):
         return f"location of {self.user}"
+    
+    class Meta:
+        ordering = ['id']
