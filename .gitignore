@@ -6,7 +6,10 @@
 __pycache__
 db.sqlite3
 media/
-
+media_old/
+/media_old/
+/media_old
+media_old
 
 
 # Visual Studio Code # 

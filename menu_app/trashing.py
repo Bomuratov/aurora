@@ -4,7 +4,7 @@
 #     parser_classes = [MultiPartParser, FormParser]
 #     serializer_class = RestaurantSerializers
 #     lookup_field = "name"
-
+# admin.site.register(UserLocation)
 
 # # Категории фильтрация по ресторанам
 # class Category_view(ModelViewSet):

@@ -50,9 +50,13 @@ class MenuSerializer(ModelSerializer):
             "photo",
             "is_active",
             "availability",
-
+            "photo",
         ]
-        read_only_fields = ["photo"]
+        extra_kwargs = {
+            "category": {"required": True},
+            "restaurant": {"required": True},
+        }
+
 
 class PromoSerializer(ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())

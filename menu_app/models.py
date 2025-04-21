@@ -7,6 +7,7 @@ from PIL import Image
 import io
 from django.core.files.base import ContentFile
 
+
 def thumbnail(image, size=(200, 200)):
     """
     Уменьшает изображение до указанного размера с сохранением пропорций.

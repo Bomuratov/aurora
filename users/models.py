@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from users.utils.phone_validator import UZB_PHONE_VALIDATOR
+from users.utils.phone_validator import INTERNATIONAL_PHONE_VALIDATOR
 from users.utils.constants import PERMISSIONS, ROLES
 from django.contrib.contenttypes.models import ContentType
 
@@ -32,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=255, null=True, blank=True)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    phone=models.CharField(max_length=14, null=True, blank=True, unique=True, validators=[UZB_PHONE_VALIDATOR])
+    phone=models.CharField(max_length=14, null=True, blank=True, unique=True, validators=[INTERNATIONAL_PHONE_VALIDATOR])
     avatar = models.ImageField(upload_to="media", null=True)
     telegram_id = models.PositiveBigIntegerField(null=True, blank=True)
     user_registered_at = models.DateTimeField(auto_now_add=True, editable=False, null=True)
@@ -92,10 +92,14 @@ class UserLocation(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, blank=True, null=True, related_name="user_location")
     lat = models.CharField(max_length=255, null=True, blank=True)
     long = models.CharField(max_length=255, null=True, blank=True)
+    address = models.CharField(max_length=255, null=True, blank=True)
+    street = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
     house = models.CharField(max_length=225, null=True, blank=True)
     apartment = models.CharField(max_length=225, null=True, blank=True)
     floor = models.CharField(max_length=225, null=True, blank=True)
     entrance = models.CharField(max_length=225, null=True, blank=True)
+    comment = models.TextField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
 
