@@ -63,6 +63,13 @@ class GenerateQR(views.APIView):
         )
         output_path = os.path.join(output_folder, f"qr_{str(queryset).lower()}.png")
         image.save(output_path)
+        if os.path.exists(output_path):
+            with open(output_path, 'rb') as file:
+                result = HttpResponse(file.read(), content_type="image/png")
+                result["Content-Disposition"] = f"attachment; filename=qr_{str(queryset).lower()}.png"
+                return result
+        else:
+            return response.Response({"message": "Такой файл не сушествует", "code": "4"})
         return response.Response({"detail": "QR Code успешно сгенерирован"}, status=status.HTTP_201_CREATED)
     
 class DownloadQR(views.APIView):
