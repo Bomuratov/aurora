@@ -6,8 +6,8 @@ from qrcode.image.styledpil import StyledPilImage
 from PIL import Image, ImageOps, ImageDraw
 from django.http import HttpResponse
 from core import settings
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from rest_framework import views, response
+
 from rest_framework import status
 from .models import Restaurant
 from urllib.parse import quote
@@ -18,7 +18,7 @@ import zipfile
 
 
 
-class GenerateQR(APIView):
+class GenerateQR(views.APIView):
 
     def process_image(self, input_path):
         im = Image.open(input_path)
@@ -37,74 +37,48 @@ class GenerateQR(APIView):
         output.save(outpu_path)
         return outpu_path
 
+
     def post(self, request):
-        quantity = request.data["quantity"]
         user = request.user
-        queryset = Restaurant.objects.filter(user=user)
-        restaurant_names = queryset.values_list("name", flat=True)
-
-        name_rest = ", ".join(restaurant_names)
-
-        output_folder = os.path.join(settings.MEDIA_ROOT, f"{name_rest}/qrcodes")
+        queryset: str = Restaurant.objects.filter(user=user).first()
+        output_folder = os.path.join(settings.MEDIA_ROOT, f"{str(queryset).lower()}/qrcodes")
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
-        for count in range(1, quantity + 1):
-            qr = qrcode.QRCode(
+        qr = qrcode.QRCode(
                 version=7,
                 error_correction=qrcode.constants.ERROR_CORRECT_H,
                 box_size=50,
                 border=8,
             )
 
-            data = f"https://www.aurora-app.uz/vendor/{quote(name_rest)}/{count}"
-            qr.add_data(data)
-            qr.make(fit=True)
-            image = qr.make_image(
-                fill_color="black",
-                back_color="white",
-                image_factory=StyledPilImage,
-                module_drawer=RoundedModuleDrawer(),
-                # embeded_image_path=(
-                #     os.path.join(settings.MEDIA_ROOT, f"{logo_round}")
-                #     if logo_round
-                #     else None
-                # ),
-            )
-            output_path = os.path.join(output_folder, f"menu_qr_{count}.png")
-            image.save(output_path)
+        data = f"https://stage.aurora-app.uz/vendor/{quote(str(queryset))}"
+        qr.add_data(data)
+        qr.make(fit=True)
+        image = qr.make_image(
+            fill_color="black",
+            back_color="white",
+            image_factory=StyledPilImage,
+            module_drawer=RoundedModuleDrawer(),
 
-        # img_path = f"{name_rest}/qrcodes/menu_qr1.png"
-        # img_url = f"https://aurora-api.uz/media/{quote(img_path)}"
-        return Response({"detail": "QR Code успешно сгенерирован"}, status=status.HTTP_201_CREATED)
-
-class DownloadQR(APIView):
+        )
+        output_path = os.path.join(output_folder, f"qr_{str(queryset).lower()}.png")
+        image.save(output_path)
+        return response.Response({"detail": "QR Code успешно сгенерирован"}, status=status.HTTP_201_CREATED)
+    
+class DownloadQR(views.APIView):
     def get(self, request):
-        response = HttpResponse(content_type="application/zip")
-        response["Content-Disposition"] = "attachment; filename=qrcodes.zip"
-
         user = request.user
-        queryset = Restaurant.objects.filter(user=user)
-        restaurant_names = queryset.values_list("name", flat=True)
-        name_rest = ", ".join(restaurant_names)
-        qr_image_path = os.path.join(
-            settings.MEDIA_ROOT, f"{name_rest}/qrcodes")
-
+        queryset = Restaurant.objects.filter(user=user).first()
+        qr_image_path = os.path.join(settings.MEDIA_ROOT, f"{queryset}/qrcodes", f"qr_{str(queryset).lower()}.png")
+        
         if os.path.exists(qr_image_path):
-
-            with zipfile.ZipFile(response, "w") as zf:
-                for filename in os.listdir(os.path.join(settings.MEDIA_ROOT, qr_image_path)):
-                    zf.write(os.path.join(qr_image_path, filename), filename)
-            return response
+            with open(qr_image_path, 'rb') as file:
+                result = HttpResponse(file.read(), content_type="image/png")
+                result["Content-Disposition"] = f"attachment; filename=qr_{str(queryset).lower()}.png"
+                return result
         else:
-            return HttpResponse(status=404)
+            return response.Response({"message": "Такой файл не сушествует", "code": "4"})
 
-        """ 
-        print("######################")
-        print("######################")
-        print()
-        print("######################")
-        print("######################")
-        """
 
 
 def image_resize(image):
@@ -166,3 +140,36 @@ def crop_image_by_percentage(
         img_tmp.seek(0)
         
         return img_tmp  
+
+
+
+"""
+class DownloadQR(APIView):
+    def get(self, request):
+        response = HttpResponse(content_type="application/zip")
+        response["Content-Disposition"] = "attachment; filename=qrcodes.zip"
+
+        user = request.user
+        queryset = Restaurant.objects.filter(user=user)
+        restaurant_names = queryset.values_list("name", flat=True)
+        name_rest = ", ".join(restaurant_names)
+        qr_image_path = os.path.join(
+            settings.MEDIA_ROOT, f"{name_rest}/qrcodes")
+
+        if os.path.exists(qr_image_path):
+
+            with zipfile.ZipFile(response, "w") as zf:
+                for filename in os.listdir(os.path.join(settings.MEDIA_ROOT, qr_image_path)):
+                    zf.write(os.path.join(qr_image_path, filename), filename)
+            return response
+        else:
+            return HttpResponse(status=404)
+
+            
+print("######################")
+print("######################")
+print()
+print("######################")
+print("######################")
+
+"""
