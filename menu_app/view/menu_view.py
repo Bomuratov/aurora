@@ -18,7 +18,7 @@ class MenuView(viewsets.ModelViewSet):
     filterset_fields = ["restaurant__name", "category_id"]
     
     def create(self, request):
-        cat_id = request.data.get["category"]
+        cat_id = request.data.get("category", None)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
