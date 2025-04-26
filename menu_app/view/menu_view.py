@@ -1,4 +1,5 @@
 import json
+import logging
 from rest_framework import viewsets, response, permissions
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
@@ -7,6 +8,7 @@ from menu_app.models import Menu, Category
 from menu_app.serializers import MenuSerializer, PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
 
+logger = logging.getLogger(__name__)
 
 @extend_schema(tags=["Menu API v1.01"])
 class MenuView(viewsets.ModelViewSet):
@@ -16,10 +18,34 @@ class MenuView(viewsets.ModelViewSet):
     filterset_fields = ["restaurant__name", "category_id"]
     
     def create(self, request):
+        cat_id = request.data.get["category"]
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
+        if cat_id:
+            instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
+            category = Category.objects.get(id=int(cat_id))
+            category.is_active = instance
+            category.save()
+
         return response.Response({"data": serializer.data})
+    
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        cat_id = request.data.get("category", None)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if cat_id:
+            instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
+            category = Category.objects.get(id=int(cat_id))
+            category.is_active = instance
+            category.save()
+
+        return response.Response(serializer.data)
 
 
 
@@ -73,14 +99,6 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data, instance=instance, context=self.get_serializer_context())
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        # cat_id = request.data["category"]
-
-        # Филтрация категории по активности
-        # instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
-
-        # # Филтрация категории для приминение изменение активности
-        # category = Category.objects.get(id=int(cat_id))
-        # category.is_active = instance
-        # category.save()
+       
         return response.Response(serializer.data)
             
