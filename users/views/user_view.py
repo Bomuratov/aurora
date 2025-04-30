@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, views, response, permissions
 from rest_framework.exceptions import NotFound
 from drf_spectacular.utils import extend_schema
 from users.models import User
@@ -11,4 +11,3 @@ class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     lookup_field = "pk"
-

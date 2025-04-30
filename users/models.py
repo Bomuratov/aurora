@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseUserManager
-from users.utils.phone_validator import UZB_PHONE_VALIDATOR, INTERNATIONAL_PHONE_VALIDATOR
+from users.utils.phone_validator import INTERNATIONAL_PHONE_VALIDATOR
+from users.utils.constants import PERMISSIONS, ROLES
+from django.contrib.contenttypes.models import ContentType
 
 
 class UserManager(BaseUserManager):
@@ -38,13 +40,53 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_user = models.BooleanField(default=False)
     is_vendor = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    role = models.ForeignKey("users.UserRole", on_delete=models.SET_NULL, null=True, blank=True, related_name="user_role")
+    permissions = models.ManyToManyField("users.Permissions", related_name="user_perms", blank=True)
 
     USERNAME_FIELD = "phone"
     objects = UserManager()
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name} – {self.phone}"
+    
+    def has_custom_perm(self, perm, obj=None):
+        return perm in self.get_custom_permissions() if perm else None
 
+    def get_custom_permissions(self):
+        return list(self.permissions.values_list("perms", flat=True)) if self.permissions else None
+    
+    def get_user_role(self):
+        return self.role.role if self.role else None
+    
+    def get_user_role_perms(self):
+        return self.role.permissions if self.role else None 
+
+
+class Permissions(models.Model):
+    code = models.CharField(choices=PERMISSIONS, max_length=255)
+    content = models.ForeignKey(ContentType, on_delete=models.CASCADE, null=True, blank=True)
+    perms = models.CharField(null=True, blank=True, max_length=225)
+
+    def __str__(self):
+        return f"{self.code}_{self.content.model}"
+    
+    def save(self, *args, **kwargs):
+        if self.content:
+            self.perms = f"{self.code}_{self.content.model}"
+        super().save(*args, **kwargs)
+    
+    class Meta:
+        default_permissions = ()
+    
+
+class UserRole(models.Model):
+    role = models.CharField(choices=ROLES, max_length=255)
+    code = models.ManyToManyField(Permissions, related_name="roles")
+    permissions = models.JSONField(null=True, blank=True)
+
+    def __str__(self):
+        return self.role
 
 class UserLocation(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE, blank=True, null=True, related_name="user_location")

@@ -79,7 +79,7 @@ class Restaurant(BaseModel):
     instagram_link = models.CharField(max_length=255, null=True, blank=True)
     background_photo = models.FileField(upload_to=upload_path_rest, null=True, blank=False)
     logo = models.FileField(upload_to=upload_logo_rest, null=True, blank=False)
-    # slug = AutoSlugField(populate_from='name', null=True, blank=True)
+    editors = models.ManyToManyField("users.User", blank=True, related_name="editors") 
     availability_orders = models.BooleanField(default=False)
     orders_chat_id = models.BigIntegerField(null=True, blank=True) 
     waiter_chat_id = models.BigIntegerField(null=True, blank=True)

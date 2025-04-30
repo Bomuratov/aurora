@@ -5,6 +5,12 @@ from users.exceptions.validation_error import ValidateErrorException
 
 
 class UserSerializer(serializers.ModelSerializer):
+    permissions = serializers.ListField(
+        child=serializers.CharField(), source="get_custom_permissions"
+    )
+    role=serializers.CharField(source="get_user_role")
+    role_permissions = serializers.CharField(source="get_user_role_perms")
+
     location = serializers.SerializerMethodField()
     class Meta:
         model = User
@@ -19,7 +25,10 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active",
             "is_user",
             "is_vendor",
-            "location"
+            "location",
+            "permissions",
+            "role",
+            "role_permissions",
             ]
         
     def get_location(self, instance):
