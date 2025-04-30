@@ -4,8 +4,9 @@ from rest_framework import viewsets, response, permissions
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
-from menu_app.models import Menu, Category
-from menu_app.serializers import MenuSerializer, PhotoMenuSerializer
+from menu_app.models import Menu, Category, Options
+from menu_app.serializer.menu_serializer import MenuSerializer
+from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
 
 logger = logging.getLogger(__name__)
@@ -17,19 +18,7 @@ class MenuView(viewsets.ModelViewSet):
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name", "category_id"]
     
-    def create(self, request):
-        cat_id = request.data.get("category", None)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        if cat_id:
-            instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
-            category = Category.objects.get(id=int(cat_id))
-            category.is_active = instance
-            category.save()
-
-        return response.Response({"data": serializer.data})
     
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -102,3 +91,25 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
        
         return response.Response(serializer.data)
             
+
+
+"""
+{
+  "name": "Holva",
+  "category": 4,
+  "restaurant": 3,
+  "price": 2147,
+  "description": "Vkusniy holva",
+  "is_active": true,
+  "availability": true,
+  "options" : [{
+        "size": "35 cm",
+        "price": "12000"
+},
+{
+        "size": "75 cm",
+        "price": "22000"
+}
+]
+}
+"""
