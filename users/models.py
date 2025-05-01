@@ -108,3 +108,14 @@ class UserLocation(models.Model):
     
     class Meta:
         ordering = ['id']
+
+
+class UserSettings(models.Model):
+    fcm_token = models.TextField(db_index=True)
+    user = models.OneToOneField("users.User", on_delete=models.CASCADE, related_name="user_settings", primary_key=True)
+    device_type = models.CharField(max_length=250, null=True, blank=True)
+    device_model = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user}"
+

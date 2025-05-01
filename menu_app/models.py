@@ -87,6 +87,8 @@ class Restaurant(BaseModel):
     def __str__(self):
         return self.name
 
+    def get_restaurant_editors(self):
+        return self.editors
 
 class Category(BaseModel):
     restaurant = models.ForeignKey(Restaurant, CASCADE, null=True, blank=True)

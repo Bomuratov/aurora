@@ -30,6 +30,7 @@ urlpatterns = [
     path("api/v1/menu/thumb/<int:pk>", menu_view.UpdatePhotoMenu.as_view({"put": "update", "get": "retrieve"}), name='update-photo'),
     path("api/v1/menu/thumb/", menu_view.UpdatePhotoMenu.as_view({"get": "list"}), name='update-photo'),
 
+    path("api/v1/restaurant/channel/", restaurant_view.RestaurantChannelsView.as_view({"get": "list"}), name='restaurant-channel'),
     
     # new routes
     path("api/v1/", include(router.urls)),

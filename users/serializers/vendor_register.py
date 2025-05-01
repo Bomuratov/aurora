@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.conf import settings
 from users.utils import phone_validator, unique_validator
 from menu_app.models import Restaurant
-from users.models import User
+from users.models import User, UserSettings
 from users.exceptions.validation_error import ValidateErrorException
 
 
@@ -71,4 +71,10 @@ class VendorRegisterSerializer(serializers.ModelSerializer):
         user.permissions.set(permissions)
         user.set_password(validated_data["password_1"])
         user.save()
+        user_settings = UserSettings.objects.create(user=user)
+        user_settings.save()
         return user
+    
+
+
+    

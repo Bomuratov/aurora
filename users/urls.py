@@ -1,5 +1,5 @@
 from django.urls import path
-from users.views import register, user_token, user_view, vendor_register, user_location_view
+from users.views import register, user_token, user_view, vendor_register, user_location_view, user_settings_view
 from rest_framework_simplejwt.views import TokenRefreshView
 
 
@@ -19,6 +19,12 @@ urlpatterns = [
     path("user/location", user_location_view.UserLocationView.as_view({"get": "list", "post": "create"}), name="user-location"),
     path("user/location/<int:pk>", user_location_view.UserLocationView.as_view({"put": "update", "delete": "destroy"}), name="user-location-update"),
     path("user/location/<int:pk>/toggle_active", user_location_view.UserLocationView.as_view({"patch": "toggle_active"}), name="user-location-toggle"),
+
+    path("user/channel/", user_settings_view.UserSettingsView.as_view({"get": "list",}), name="user-channel"),
+    path("user/channel/<int:pk>", user_settings_view.UserSettingsView.as_view({"patch": "update_token"}), name="user-update"),
+
+
+
 ]
 
 

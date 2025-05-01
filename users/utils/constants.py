@@ -5,13 +5,16 @@ DIRECTOR = "is_director"
 ANALYTIC = "is_analytic"
 HR = "is_hr"
 AGENT = "is_agent"
-OWNER = "is_owner"
-SUPERADMIN = "is_superadmin"
+COURIER = "is_courier"
+DISPATCHER = "is_dispatcher"
+OPERATOR = "is_operator"
+
 
 ADD = "can_add"
 UPDATE = "can_update"
 DELETE = "can_delete"
 VIEW = "can_view"
+
 
 ROLES = (
     (SUPERVISOR, "Супервайзер"),
@@ -20,9 +23,11 @@ ROLES = (
     (ANALYTIC, "Аналитик"),
     (HR, "HR"),
     (AGENT, "Агент"),
-    (OWNER, "Создатель"),
-    (SUPERADMIN, "Super admin"),
+    (COURIER, "Курьер"),
+    (DISPATCHER, "Диспетчер"),
+    (OPERATOR, "Оператор"),
 )
+
 
 PERMISSIONS = (
     (ADD, "Доступ добавить"),
