@@ -51,7 +51,7 @@ class GenerateQR(views.APIView):
                 border=8,
             )
 
-        data = f"https://stage.aurora-app.uz/vendor/{quote(str(queryset))}"
+        data = f"https://aurora-app.uz/vendor/{quote(str(queryset))}"
         qr.add_data(data)
         qr.make(fit=True)
         image = qr.make_image(
