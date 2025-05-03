@@ -12,7 +12,7 @@ class RestaurantView(viewsets.ModelViewSet):
     serializer_class = RestaurantSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('user_id', "name", "id")
-
+    lookup_field = "name"
 
 @extend_schema(tags=["Channels API v1.01"])
 class RestaurantChannelsView(viewsets.ModelViewSet):
