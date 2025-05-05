@@ -11,7 +11,8 @@ from datetime import timedelta
 from django.contrib.auth import login
 from django.middleware.csrf import get_token
 from users.models import User
-from django.db.models import Q
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 
 
@@ -24,7 +25,6 @@ class UserTokenView(TokenObtainPairView):
 @extend_schema(tags=["User login API NATIVE"])
 class RefreshTokenView(TokenRefreshView):
     pass
-
 
 # @method_decorator(csrf_exempt, name='dispatch')
 class CookieUserTokensView(TokenObtainPairView):
@@ -133,8 +133,6 @@ class CookieUserTokensView(TokenObtainPairView):
 #         return response
 
 
-from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
-from django.conf import settings
 
 class CookieRefreshTokensView(TokenRefreshView):
     """
