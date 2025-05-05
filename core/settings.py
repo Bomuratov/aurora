@@ -29,11 +29,11 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 
-SESSION_COOKIE_DOMAIN = "*.aurora-app.uz"
+SESSION_COOKIE_DOMAIN = "https://stage.aurora-app.uz"
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 
-CSRF_COOKIE_DOMAIN = "*.aurora-app.uz"
+CSRF_COOKIE_DOMAIN = "https://stage.aurora-app.uz"
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
 
