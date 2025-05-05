@@ -198,6 +198,12 @@ SPECTACULAR_SETTINGS = {
 
 }
 
+with open(BASE_DIR / "keys" / "private_key.pem", "r") as f:
+    PRIVATE_KEY = f.read()
+
+with open(BASE_DIR / "keys" / "public_key.pem", "r") as f:
+    PUBLIC_KEY = f.read()
+
 # JWT Authentication settings
 
 SIMPLE_JWT = {
@@ -207,7 +213,8 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
-    "VERIFYING_KEY": "",
+    "VERIFYING_KEY": PUBLIC_KEY,
+    "SIGNING_KEY": PRIVATE_KEY,
     "AUDIENCE": None,
     "ISSUER": None,
     "JSON_ENCODER": None,
