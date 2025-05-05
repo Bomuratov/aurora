@@ -120,5 +120,15 @@ class CookieRefreshTokensView(TokenRefreshView):
             samesite="None",
             path="/",
         )
+        csrf = get_token(request)
+        response.set_cookie(
+            "csrftoken",
+            csrf,
+            max_age=int(timedelta(days=7).total_seconds()),
+            httponly=False,
+            secure=True,
+            samesite="None",
+            path="/",
+        )
 
         return response
