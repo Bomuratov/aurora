@@ -62,7 +62,7 @@ class CookieUserTokensView(TokenObtainPairView):
             max_age=int(timedelta(days=7).total_seconds()),
             httponly=True,
             secure=True,
-            samesite="None",
+            samesite="Lax",
             path="/",
         )
         return response
@@ -95,7 +95,7 @@ class CookieRefreshTokensView(TokenRefreshView):
             max_age=int(timedelta(days=1).total_seconds()),
             httponly=True,
             secure=True,
-            samesite="None",
+            samesite="Lax",
             path="/",
         )
 
