@@ -12,8 +12,13 @@ urlpatterns = [
     path("user/<int:pk>", user_view.UserView.as_view({"get":"retrieve"}), name="user-get"),
     path("user/<int:pk>/", user_view.UserView.as_view({"put":"update"}), name="user-update"),
 
-    path("user/login", user_token.UserTokenView.as_view(), name="user-login"),
-    path("refresh", user_token.RefreshTokenView.as_view(), name="refresh-token"),
+    # LOGIN FOR NATIVE MOBILE 
+    path("native/login", user_token.UserTokenView.as_view(), name="user-login"),
+    path("native/refresh", user_token.RefreshTokenView.as_view(), name="refresh-token"),
+
+    # HTTPONLY COOKIE LOGIN APIS
+    path("user/login", user_token.UserTokensView.as_view(), name="user-login"),
+    path("refresh", user_token.RefreshTokensView.as_view(), name="refresh-token"),
 
     # User location CRUD's
     path("user/location", user_location_view.UserLocationView.as_view({"get": "list", "post": "create"}), name="user-location"),
