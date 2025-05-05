@@ -53,8 +53,7 @@ class CookieUserTokensView(TokenObtainPairView):
         response = Response({
             "access_token": access_token,
             "access_expires": refresh.access_token.payload['exp'],
-            "refresh_expires": refresh.payload['exp'],
-            "refresh": refresh_token
+            "refresh_expires": refresh.payload['exp']
         }, status=HTTP_200_OK)
 
 
