@@ -82,43 +82,118 @@ class CookieUserTokensView(TokenObtainPairView):
 
 
 
+# class CookieRefreshTokensView(TokenRefreshView):
+
+#     def post(self, request, *args, **kwargs):
+#         refresh_token = request.COOKIES.get("refresh_token")
+#         print(request.user)
+#         if not refresh_token:
+#             raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=4)
+#         try:
+#             old_refresh = RefreshToken(refresh_token)
+#             user_id = old_refresh["user_id"]
+#             new_refresh = RefreshToken()
+#             new_refresh["user_id"] = user_id
+#             access_token = new_refresh.access_token
+#             user = get_object_or_404(User, pk=user_id)
+#             restaurant = Restaurant.objects.filter(user_id=user_id).first()
+#             access_token["email"] = user.email
+#             access_token["is_user"] = user.is_user
+#             access_token["is_vendor"] = user.is_vendor
+#             access_token["vendor"] = str(restaurant) if restaurant else None
+#         except Exception:
+#             raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=3)
+        
+#         response = Response({
+#             "access_token": str(access_token),
+#             "access_expires": access_token.payload['exp'],
+#             "refresh_expires": new_refresh.payload['exp'],
+#         }, status=HTTP_200_OK)
+
+#         response.set_cookie(
+#             key="refresh_token",
+#             value=new_refresh,
+#             max_age=int(timedelta(days=1).total_seconds()),
+#             httponly=True,
+#             secure=True,
+#             samesite="None",
+#             path="/",
+#         )
+#         csrf = get_token(request)
+#         response.set_cookie(
+#             "csrftoken",
+#             csrf,
+#             max_age=int(timedelta(days=7).total_seconds()),
+#             httponly=False,
+#             secure=True,
+#             samesite="None",
+#             path="/",
+#         )
+
+#         return response
+
+
+from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
+from django.conf import settings
+
 class CookieRefreshTokensView(TokenRefreshView):
+    """
+    Кастомная версия TokenRefreshView, 
+    но с ротацией + черным списком старых токенов
+    """
 
     def post(self, request, *args, **kwargs):
-        refresh_token = request.COOKIES.get("refresh_token")
-        print(request.user)
-        if not refresh_token:
-            raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=4)
+        raw_token = request.COOKIES.get("refresh_token")
+        if not raw_token:
+            raise AuthenticationErrorException("Токен недействителен или просрочен", code=4)
+
         try:
-            old_refresh = RefreshToken(refresh_token)
-            user_id = old_refresh["user_id"]
-            new_refresh = RefreshToken()
-            new_refresh["user_id"] = user_id
-            access_token = new_refresh.access_token
-            user = get_object_or_404(User, pk=user_id)
-            restaurant = Restaurant.objects.filter(user_id=user_id).first()
-            access_token["email"] = user.email
-            access_token["is_user"] = user.is_user
-            access_token["is_vendor"] = user.is_vendor
-            access_token["vendor"] = str(restaurant) if restaurant else None
+            # 1) Декодим старый токен (валидация подписи, срока жизни)
+            old_refresh = RefreshToken(raw_token)
         except Exception:
-            raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=3)
-        
+            raise AuthenticationErrorException("Токен недействителен или просрочен", code=3)
+
+        # 2) Чёрный список (если включена опция BLACKLIST_AFTER_ROTATION)
+        if settings.SIMPLE_JWT["BLACKLIST_AFTER_ROTATION"]:
+            try:
+                # Сохраняем старый токен в таблице черных
+                old_refresh.blacklist()
+            except AttributeError:
+                # если модель BlacklistedToken не подхватили
+                pass
+
+        # 3) Генерируем новый refresh через for_user() — это гарантированно
+        #    создаст правильный JTI, exp и сделает запись OutstandingToken
+        user_id = old_refresh["user_id"]
+        user = get_object_or_404(User, pk=user_id)
+        new_refresh = RefreshToken.for_user(user)
+
+        # 4) Собираем новый access и доп. claim'ы
+        access = new_refresh.access_token
+        # ваши дополнительные поля
+        access["email"]       = user.email
+        access["is_user"]     = user.is_user
+        access["is_vendor"]   = user.is_vendor
+        access["vendor"]      = str(Restaurant.objects.filter(user_id=user_id).first() or "")
+
+        # 5) Отдаём их в Response и в куки
         response = Response({
-            "access_token": str(access_token),
-            "access_expires": access_token.payload['exp'],
-            "refresh_expires": new_refresh.payload['exp'],
+            "access_token": str(access),
+            "access_expires":   access.payload["exp"],
+            "refresh_expires":  new_refresh.payload["exp"],
         }, status=HTTP_200_OK)
 
+        # Положим новый refresh в httponly-куку
         response.set_cookie(
-            key="refresh_token",
-            value=new_refresh,
-            max_age=int(timedelta(days=1).total_seconds()),
+            "refresh_token",
+            str(new_refresh),
+            max_age=int(settings.SIMPLE_JWT["REFRESH_TOKEN_LIFETIME"].total_seconds()),
             httponly=True,
             secure=True,
             samesite="None",
             path="/",
         )
+        # Обновим CSRF-токен
         csrf = get_token(request)
         response.set_cookie(
             "csrftoken",
@@ -129,5 +204,4 @@ class CookieRefreshTokensView(TokenRefreshView):
             samesite="None",
             path="/",
         )
-
         return response
