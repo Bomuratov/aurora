@@ -1,17 +1,18 @@
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
-from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.views import TokenRefreshView
 from drf_spectacular.utils import extend_schema
 from users.serializers.user_token import UserTokenSerializer
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from users.exceptions.authentication_error import AuthenticationErrorException
 from menu_app.models import Restaurant
-from datetime import timedelta, datetime
+from datetime import timedelta
+from django.contrib.auth import login
+from django.middleware.csrf import get_token
+from users.models import User
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 
@@ -29,7 +30,7 @@ class RefreshTokenView(TokenRefreshView):
 class CookieUserTokensView(TokenObtainPairView):
     serializer_class = UserTokenSerializer
 
-    # @csrf_exempt
+
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
 
@@ -37,9 +38,9 @@ class CookieUserTokensView(TokenObtainPairView):
             serializer.is_valid(raise_exception=True)
         except Exception:
             raise AuthenticationErrorException(detail="Логин или пароль не верный", code=4)
-
  
         user = serializer.user
+        login(request, user)
         refresh = RefreshToken.for_user(user)
         access_token = refresh.access_token
         restaurant = Restaurant.objects.filter(user_id=user.id).first()
@@ -53,6 +54,7 @@ class CookieUserTokensView(TokenObtainPairView):
             "access_token": access_token,
             "access_expires": refresh.access_token.payload['exp'],
             "refresh_expires": refresh.payload['exp'],
+            "refresh": refresh_token
         }, status=HTTP_200_OK)
 
 
@@ -65,13 +67,27 @@ class CookieUserTokensView(TokenObtainPairView):
             samesite="None",
             path="/",
         )
+
+        csrf = get_token(request)
+        response.set_cookie(
+            "csrftoken",
+            csrf,
+            max_age=int(timedelta(days=7).total_seconds()),
+            httponly=False,
+            secure=True,
+            samesite="None",
+            path="/",
+        )
         return response
+
+
 
 
 class CookieRefreshTokensView(TokenRefreshView):
 
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get("refresh_token")
+        print(request.user)
         if not refresh_token:
             raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=4)
         try:
@@ -80,6 +96,12 @@ class CookieRefreshTokensView(TokenRefreshView):
             new_refresh = RefreshToken()
             new_refresh["user_id"] = user_id
             access_token = new_refresh.access_token
+            user = get_object_or_404(User, pk=user_id)
+            restaurant = Restaurant.objects.filter(user_id=user_id).first()
+            access_token["email"] = user.email
+            access_token["is_user"] = user.is_user
+            access_token["is_vendor"] = user.is_vendor
+            access_token["vendor"] = str(restaurant) if restaurant else None
         except Exception:
             raise AuthenticationErrorException(detail="Токен недействителен или просрочен", code=3)
         
@@ -95,7 +117,7 @@ class CookieRefreshTokensView(TokenRefreshView):
             max_age=int(timedelta(days=1).total_seconds()),
             httponly=True,
             secure=True,
-            samesite="Lax",
+            samesite="None",
             path="/",
         )
 
