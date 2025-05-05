@@ -17,8 +17,8 @@ urlpatterns = [
     path("native/refresh", user_token.RefreshTokenView.as_view(), name="refresh-token"),
 
     # HTTPONLY COOKIE LOGIN APIS
-    path("user/login", user_token.UserTokensView.as_view(), name="user-login"),
-    path("refresh", user_token.RefreshTokensView.as_view(), name="refresh-token"),
+    path("user/login", user_token.CookieUserTokensView.as_view(), name="user-login"),
+    path("refresh", user_token.CookieRefreshTokensView.as_view(), name="refresh-token"),
 
     # User location CRUD's
     path("user/location", user_location_view.UserLocationView.as_view({"get": "list", "post": "create"}), name="user-location"),

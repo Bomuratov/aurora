@@ -26,7 +26,7 @@ class RefreshTokenView(TokenRefreshView):
 
 
 # @method_decorator(csrf_exempt, name='dispatch')
-class UserTokensView(TokenObtainPairView):
+class CookieUserTokensView(TokenObtainPairView):
     serializer_class = UserTokenSerializer
 
     # @csrf_exempt
@@ -68,7 +68,7 @@ class UserTokensView(TokenObtainPairView):
         return response
 
 
-class RefreshTokensView(TokenRefreshView):
+class CookieRefreshTokensView(TokenRefreshView):
 
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get("refresh_token")
