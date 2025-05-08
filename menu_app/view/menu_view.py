@@ -3,15 +3,40 @@ import logging
 from rest_framework import viewsets, response, permissions
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Menu, Category, Options
 from menu_app.serializer.menu_serializer import MenuSerializer
 from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
+from menu_app.view.docs.menu_view_docs import docs
 
-logger = logging.getLogger(__name__)
 
-@extend_schema(tags=["Menu API v1.01"])
+@extend_schema_view(
+    list=extend_schema(
+        tags=docs.tags,
+        description=docs.description.get_list
+    ),
+    retrieve=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Получить один пункт меню по ID."
+    ),
+    create=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Создать новый пункт меню."
+    ),
+    update=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Полное обновление пункта меню (PUT)."
+    ),
+    partial_update=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Частичное обновление пункта меню (PATCH)."
+    ),
+    destroy=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Удаление пункта меню по ID."
+    )
+)
 class MenuView(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
