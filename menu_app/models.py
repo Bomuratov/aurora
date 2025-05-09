@@ -83,6 +83,8 @@ class Restaurant(BaseModel):
     availability_orders = models.BooleanField(default=False)
     orders_chat_id = models.BigIntegerField(null=True, blank=True) 
     waiter_chat_id = models.BigIntegerField(null=True, blank=True)
+    lat = models.CharField(max_length=225, null=True, blank=True)
+    long = models.CharField(max_length=225, null=True, blank=True)
 
     def __str__(self):
         return self.name
