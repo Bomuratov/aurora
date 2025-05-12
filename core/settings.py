@@ -28,6 +28,8 @@ CORS_ALLOWED_ORIGINS = [
     "https://www.aurora-app.uz"
 ]
 
+
+
 SESSION_COOKIE_SAMESITE = "None"
 SESSION_COOKIE_SECURE = True
 
@@ -49,6 +51,14 @@ CORS_ALLOW_HEADERS = [
     "access-control-allow-origin",
     "authorization",
     "content-type",
+    "accept",
+    "accept-encoding",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+
 ]
 
 
@@ -208,7 +218,7 @@ SPECTACULAR_SETTINGS = {
 # JWT Authentication settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(seconds=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,

@@ -8,6 +8,8 @@ AGENT = "is_agent"
 COURIER = "is_courier"
 DISPATCHER = "is_dispatcher"
 OPERATOR = "is_operator"
+WAITER = "is_waiter"
+SUPER_WAITER = "is_super_waiter"
 
 
 ADD = "can_add"
@@ -26,6 +28,8 @@ ROLES = (
     (COURIER, "Курьер"),
     (DISPATCHER, "Диспетчер"),
     (OPERATOR, "Оператор"),
+    (WAITER, "Официант"),
+    (SUPER_WAITER, "Старший официант"),
 )
 
 

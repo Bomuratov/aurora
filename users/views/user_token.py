@@ -3,7 +3,6 @@ from rest_framework.status import HTTP_200_OK
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
-from drf_spectacular.utils import extend_schema
 from users.serializers.user_token import UserTokenSerializer
 from users.exceptions.authentication_error import AuthenticationErrorException
 from menu_app.models import Restaurant
@@ -14,6 +13,7 @@ from users.models import User
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from django.conf import settings
 from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import extend_schema
 
 
 
@@ -27,6 +27,7 @@ class RefreshTokenView(TokenRefreshView):
     pass
 
 # @method_decorator(csrf_exempt, name='dispatch')
+@extend_schema(tags=["USER WEB LOGIN API"])
 class CookieUserTokensView(TokenObtainPairView):
     serializer_class = UserTokenSerializer
 
@@ -133,7 +134,7 @@ class CookieUserTokensView(TokenObtainPairView):
 #         return response
 
 
-
+@extend_schema(tags=["USER WEB LOGIN API"])
 class CookieRefreshTokensView(TokenRefreshView):
     """
     Кастомная версия TokenRefreshView, 

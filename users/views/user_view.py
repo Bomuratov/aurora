@@ -1,5 +1,5 @@
 from rest_framework import viewsets, views, response, permissions
-from rest_framework.exceptions import NotFound
+from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
 from users.models import User
 from users.serializers.user_serializer import UserSerializer

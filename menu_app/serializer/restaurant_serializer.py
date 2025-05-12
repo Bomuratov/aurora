@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from menu_app.models import Restaurant
-from users.models import UserSettings
+from users.models import UserSettings, User
 from users.serializers.user_settings_serializer import UserSettingsSerializer
+from users.serializers.user_serializer import UserSerializer
+
 
 
 class RestaurantSerializer(serializers.ModelSerializer):
@@ -29,3 +31,17 @@ class RestaurantChannels(serializers.ModelSerializer):
         couriers = obj.editors.filter(role__role="is_courier")
         user_settings = UserSettings.objects.filter(user__in=couriers)
         return UserSettingsSerializer(user_settings, many=True).data
+    
+
+class RestaurantEditors(serializers.ModelSerializer):
+    editors = serializers.SerializerMethodField()
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "editors"
+            ]
+        
+    def get_editors(self, obj):
+        editors = obj.editors.all()
+        return UserSerializer(editors, many=True).data

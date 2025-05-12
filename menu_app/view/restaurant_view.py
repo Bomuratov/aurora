@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions, parsers
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
 from menu_app.models import Restaurant
-from menu_app.serializer.restaurant_serializer import RestaurantSerializer, RestaurantChannels
+from menu_app.serializer.restaurant_serializer import RestaurantSerializer, RestaurantChannels, RestaurantEditors
 
 
 
@@ -15,6 +15,7 @@ class RestaurantView(viewsets.ModelViewSet):
     lookup_field = "name"
     permission_classes = [permissions.AllowAny]
 
+
 @extend_schema(tags=["Channels API v1.01"])
 class RestaurantChannelsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
@@ -22,3 +23,12 @@ class RestaurantChannelsView(viewsets.ModelViewSet):
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('user_id', 'id')
     lookup_field = "pk"
+
+
+@extend_schema(tags=["EDITORS API v1.01"])
+class RestaurantEditorsView(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantEditors
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('id', "name")
+    lookup_field = "name"
