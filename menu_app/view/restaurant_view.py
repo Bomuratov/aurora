@@ -31,4 +31,4 @@ class RestaurantEditorsView(viewsets.ModelViewSet):
     serializer_class = RestaurantEditors
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('id', "name")
-    lookup_field = "name"
+    lookup_field = "pk"
