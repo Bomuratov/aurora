@@ -2,6 +2,7 @@ from rest_framework import serializers
 from users.models import User
 from users.serializers.user_location_serializer import UserLocationSerializer
 from users.exceptions.validation_error import ValidateErrorException
+from users.utils.constants import ROLES
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -10,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     )
     role=serializers.CharField(source="get_user_role")
     role_permissions = serializers.CharField(source="get_user_role_perms")
-
+    role_label = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
     class Meta:
         model = User
@@ -28,7 +29,9 @@ class UserSerializer(serializers.ModelSerializer):
             "location",
             "permissions",
             "role",
+            "role_label",
             "role_permissions",
+            
             ]
         
     def get_location(self, instance):
@@ -41,3 +44,8 @@ class UserSerializer(serializers.ModelSerializer):
         except Exception as e:
             return ValidateErrorException(code=2, detail=e)
         return None
+    
+    def get_role_label(self, instance):
+        role_value = instance.get_user_role()
+        role_dict = dict(ROLES)
+        return role_dict.get(role_value, None)
