@@ -48,4 +48,4 @@ class CategoryAdmin(admin.ModelAdmin):
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Category, CategoryAdmin)
-admin.site.register(Promo)
+# admin.site.register(Promo)

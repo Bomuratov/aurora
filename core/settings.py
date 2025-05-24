@@ -82,7 +82,8 @@ INSTALLED_APPS = [
 
     # apps
     "menu_app",
-    "users"
+    "users",
+    "discount",
 ]
 
 MIDDLEWARE = [

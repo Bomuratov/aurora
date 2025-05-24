@@ -20,6 +20,6 @@ urlpatterns = [
 
 
     # API Promo
-    path("promo/<str:restaurant_name>", PromoClientView.as_view({"get":"list"}), name="promo"),
+    # path("promo/<str:restaurant_name>", PromoClientView.as_view({"get":"list"}), name="promo"),
 
 ]

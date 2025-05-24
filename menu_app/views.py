@@ -41,12 +41,12 @@ class MenuView(CustomViewSet):
         return self.get_filtered_queryset(Menu, "restaurant", "restaurant_name")
 
 
-class PromoView(CustomViewSet):
-    queryset = Promo.objects.all()
-    serializer_class = PromoSerializer
+# class PromoView(CustomViewSet):
+#     queryset = Promo.objects.all()
+#     serializer_class = PromoSerializer
 
-    def get_queryset(self):
-        return self.get_filtered_queryset(Promo, "restaurant", "restaurant_name")
+#     def get_queryset(self):
+#         return self.get_filtered_queryset(Promo, "restaurant", "restaurant_name")
     
 
 class CustomTokenObtain(TokenObtainPairView):

@@ -15,7 +15,7 @@ router = SimpleRouter()
 router.register(r"restaurant", restaurant_view.RestaurantView, basename="restaurant")
 router.register(r"category", category_view.CategoryView, basename="category")
 router.register(r"menu", menu_view.MenuView, basename="menu")
-router.register(r"promo", promo_view.PromoView, basename="promo")
+# router.register(r"promo", promo_view.PromoView, basename="promo")
 
 
 

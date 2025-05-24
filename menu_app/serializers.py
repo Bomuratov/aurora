@@ -58,25 +58,25 @@ class MenuSerializer(ModelSerializer):
         }
 
 
-class PromoSerializer(ModelSerializer):
-    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    restaurant = serializers.PrimaryKeyRelatedField(queryset=Restaurant.objects.all())
-    photo = serializers.FileField(required=False)
+# class PromoSerializer(ModelSerializer):
+#     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+#     update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+#     restaurant = serializers.PrimaryKeyRelatedField(queryset=Restaurant.objects.all())
+#     photo = serializers.FileField(required=False)
 
-    class Meta:
-        model = Promo
-        fields = [
-            "id",
-            "restaurant",
-            "name",
-            "description",
-            "price",
-            "is_active",
-            "photo",
-            "created_by",
-            "update_by",
-        ]
+#     class Meta:
+#         model = Promo
+#         fields = [
+#             "id",
+#             "restaurant",
+#             "name",
+#             "description",
+#             "price",
+#             "is_active",
+#             "photo",
+#             "created_by",
+#             "update_by",
+#         ]
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

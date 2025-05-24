@@ -1,6 +1,6 @@
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status, response
-from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
+from menu_app.views import RestaurantView, CategoryView, MenuView
 from menu_app.utils import image_resize, image_resize_asyc, crop_image_by_percentage
 from menu_app.models import Category
 import json
@@ -104,79 +104,79 @@ class MenuAdminView(MenuView):
 
 
 
-@extend_schema(tags=["Promo API for admins"])
-class PromoAdminView(PromoView):
-    permission_classes = (IsAuthenticated,)
-    lookup_field="pk"
+# @extend_schema(tags=["Promo API for admins"])
+# class PromoAdminView(PromoView):
+#     permission_classes = (IsAuthenticated,)
+#     lookup_field="pk"
 
-    def create(self, request):
-        if request.data["crop"]:
-            sizes = json.loads(request.data["crop"])
-            x = float(sizes["x"])
-            y = float(sizes["y"])
-            width = float(sizes["width"])
-            height = float(sizes["height"])
-            rotate = float(sizes["rotate"])
-            scaleX = float(sizes["scaleX"])
-            scaleY = float(sizes["scaleY"])
-            request.data["photo"] = crop_image_by_percentage(
-                image_path=request.data.get("photo", None),
-                x=x,
-                y=y,
-                width=width,
-                height=height,
-                scaleX=scaleX,
-                scaleY=scaleY,
-                rotate=rotate,
-            )
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return response.Response({"data": serializer.data})
+#     def create(self, request):
+#         if request.data["crop"]:
+#             sizes = json.loads(request.data["crop"])
+#             x = float(sizes["x"])
+#             y = float(sizes["y"])
+#             width = float(sizes["width"])
+#             height = float(sizes["height"])
+#             rotate = float(sizes["rotate"])
+#             scaleX = float(sizes["scaleX"])
+#             scaleY = float(sizes["scaleY"])
+#             request.data["photo"] = crop_image_by_percentage(
+#                 image_path=request.data.get("photo", None),
+#                 x=x,
+#                 y=y,
+#                 width=width,
+#                 height=height,
+#                 scaleX=scaleX,
+#                 scaleY=scaleY,
+#                 rotate=rotate,
+#             )
+#         serializer = self.get_serializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return response.Response({"data": serializer.data})
 
 
-    def update(self, request, *args, **kwargs):
-        pk = kwargs.get("pk")
-        if not pk:
-            return response.Response(
-                {"error": "ID not provided. UPDATE method not defined."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        try:
-            instance = self.queryset.get(pk=pk)
-        except self.queryset.model.DoesNotExist:
-            return response.Response(
-                {"error": "Record with the provided ID not found."},
-                status=status.HTTP_404_NOT_FOUND
-            )
-        resized_image = request.data.get("photo")
-        sizes = request.data.get("crop")
-        if resized_image and sizes:
-            try:
-                sizes = json.loads(sizes)
-                x = float(sizes["x"])
-                y = float(sizes["y"])
-                width = float(sizes["width"])
-                height = float(sizes["height"])
-                rotate = float(sizes["rotate"])
-                scaleX = float(sizes["scaleX"])
-                scaleY = float(sizes["scaleY"])
-                request.data["photo"] = crop_image_by_percentage(
-                    image_path=resized_image,
-                    x=x,
-                    y=y,
-                    width=width,
-                    height=height,
-                    scaleX=scaleX,
-                    scaleY=scaleY,
-                    rotate=rotate,
-                )
-            except (KeyError, ValueError, TypeError) as e:
-                return response.Response(
-                    {"error": f"Invalid crop data: {str(e)}"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-        serializer = self.serializer_class(instance=instance, data=request.data, context=self.get_serializer_context())
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return response.Response({"data": serializer.data}, status=status.HTTP_200_OK)
+#     def update(self, request, *args, **kwargs):
+#         pk = kwargs.get("pk")
+#         if not pk:
+#             return response.Response(
+#                 {"error": "ID not provided. UPDATE method not defined."},
+#                 status=status.HTTP_400_BAD_REQUEST
+#             )
+#         try:
+#             instance = self.queryset.get(pk=pk)
+#         except self.queryset.model.DoesNotExist:
+#             return response.Response(
+#                 {"error": "Record with the provided ID not found."},
+#                 status=status.HTTP_404_NOT_FOUND
+#             )
+#         resized_image = request.data.get("photo")
+#         sizes = request.data.get("crop")
+#         if resized_image and sizes:
+#             try:
+#                 sizes = json.loads(sizes)
+#                 x = float(sizes["x"])
+#                 y = float(sizes["y"])
+#                 width = float(sizes["width"])
+#                 height = float(sizes["height"])
+#                 rotate = float(sizes["rotate"])
+#                 scaleX = float(sizes["scaleX"])
+#                 scaleY = float(sizes["scaleY"])
+#                 request.data["photo"] = crop_image_by_percentage(
+#                     image_path=resized_image,
+#                     x=x,
+#                     y=y,
+#                     width=width,
+#                     height=height,
+#                     scaleX=scaleX,
+#                     scaleY=scaleY,
+#                     rotate=rotate,
+#                 )
+#             except (KeyError, ValueError, TypeError) as e:
+#                 return response.Response(
+#                     {"error": f"Invalid crop data: {str(e)}"},
+#                     status=status.HTTP_400_BAD_REQUEST
+#                 )
+#         serializer = self.serializer_class(instance=instance, data=request.data, context=self.get_serializer_context())
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return response.Response({"data": serializer.data}, status=status.HTTP_200_OK)

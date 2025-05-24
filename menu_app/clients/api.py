@@ -1,4 +1,4 @@
-from menu_app.views import RestaurantView, CategoryView, MenuView, PromoView
+from menu_app.views import RestaurantView, CategoryView, MenuView
 from drf_spectacular.utils import extend_schema
 
 
@@ -16,6 +16,6 @@ class CategoryClientView(CategoryView):
 class MenuClientView(MenuView):
     pass
 
-@extend_schema(tags=["Promo API for clients"])
-class PromoClientView(PromoView):
-    pass
+# @extend_schema(tags=["Promo API for clients"])
+# class PromoClientView(PromoView):
+#     pass
