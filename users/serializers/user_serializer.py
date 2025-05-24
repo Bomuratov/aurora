@@ -13,6 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
     role_permissions = serializers.CharField(source="get_user_role_perms")
     role_label = serializers.SerializerMethodField()
     location = serializers.SerializerMethodField()
+    channels = serializers.SerializerMethodField()
     class Meta:
         model = User
         fields = [
@@ -31,6 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
             "role",
             "role_label",
             "role_permissions",
+            "channels",
             
             ]
         
@@ -49,3 +51,7 @@ class UserSerializer(serializers.ModelSerializer):
         role_value = instance.get_user_role()
         role_dict = dict(ROLES)
         return role_dict.get(role_value, None)
+    
+    def get_channels(self, instance):
+        channels = instance.editors.values_list("id", flat=True)
+        return channels

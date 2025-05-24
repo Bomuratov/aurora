@@ -32,6 +32,7 @@ urlpatterns = [
 
     path("api/v1/restaurant/channel/", restaurant_view.RestaurantChannelsView.as_view({"get": "list"}), name='restaurant-channel'),
     path("api/v1/restaurant/channel/<int:pk>", restaurant_view.RestaurantChannelsView.as_view({"get": "retrieve"}), name='restaurant-channel'),
+    
     path("api/v1/restaurant/editors/<int:pk>", restaurant_view.RestaurantEditorsView.as_view({"get": "retrieve"}), name='restaurant-editors'),
     
     # new routes

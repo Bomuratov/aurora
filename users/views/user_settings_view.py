@@ -1,9 +1,21 @@
 from rest_framework import viewsets, decorators, response
 from users.models import UserSettings
 from users.serializers.user_settings_serializer import UserSettingsSerializer
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from users.views.docs.user_settings_docs import docs
 
-@extend_schema(tags=["USER WEB LOGIN API"])
+
+@extend_schema_view(
+    list=extend_schema(
+        tags=docs.tags,
+        description=docs.description.list
+    ),
+    update_token=extend_schema(
+        tags=docs.tags,
+        description=docs.description.update
+    ),
+)
+
 class UserSettingsView(viewsets.ModelViewSet):
     queryset = UserSettings.objects.all()
     serializer_class = UserSettingsSerializer

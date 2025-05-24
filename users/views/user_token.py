@@ -13,21 +13,35 @@ from users.models import User
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from django.conf import settings
 from django.shortcuts import get_object_or_404
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from users.views.docs.user_token_docs import docs, web_docs
 
-
-
-@extend_schema(tags=["User login API NATIVE"])
+@extend_schema_view(
+    post=extend_schema(
+        tags=docs.tags,
+        description=docs.description.access
+    )
+)
 class UserTokenView(TokenObtainPairView):
     serializer_class = UserTokenSerializer
 
 
-@extend_schema(tags=["User login API NATIVE"])
+@extend_schema_view(
+    post=extend_schema(
+        tags=docs.tags,
+        description=docs.description.refresh
+    )
+)
 class RefreshTokenView(TokenRefreshView):
     pass
 
 # @method_decorator(csrf_exempt, name='dispatch')
-@extend_schema(tags=["USER WEB LOGIN API"])
+@extend_schema_view(
+    post=extend_schema(
+        tags=web_docs.tags,
+        description=web_docs.description.access
+    )
+)
 class CookieUserTokensView(TokenObtainPairView):
     serializer_class = UserTokenSerializer
 
@@ -134,7 +148,12 @@ class CookieUserTokensView(TokenObtainPairView):
 #         return response
 
 
-@extend_schema(tags=["USER WEB LOGIN API"])
+@extend_schema_view(
+    post=extend_schema(
+        tags=web_docs.tags,
+        description=web_docs.description.refresh
+    )
+)
 class CookieRefreshTokensView(TokenRefreshView):
     """
     Кастомная версия TokenRefreshView, 
