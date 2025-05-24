@@ -9,6 +9,7 @@ docs = SimpleNamespace(
         refresh="""
         USER LOGIN NATIVE 'POST' данный API нужен чтобы взять новый access токен API ожидает старый refresh токен.
         """,
+        
     )
 )
 
