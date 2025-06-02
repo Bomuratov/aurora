@@ -4,6 +4,8 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.serializer.variant_serializer import VariantSerializer
 from menu_app.models import Variant
 from menu_app.view.docs.variant_docs import docs
+from rest_framework.response import Response
+from rest_framework import status
 
 
 @extend_schema_view(
@@ -28,10 +30,17 @@ from menu_app.view.docs.variant_docs import docs
         description=docs.description.destroy
     )
 )
-
 class VariantView(viewsets.ModelViewSet):
     queryset = Variant.objects.all()
     serializer_class = VariantSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('menu_id',)
     lookup_field = "id"
+
+    def create(self, request, *args, **kwargs):
+        is_many = isinstance(request.data, list) 
+        serializer = self.get_serializer(data=request.data, many=is_many)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
