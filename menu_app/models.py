@@ -130,14 +130,14 @@ class Menu(BaseModel):
         return super().save(*args, **kwargs)
 
 
-class Options(BaseModel):
-    menu = models.ForeignKey("menu_app.Menu", CASCADE, related_name="options", null=True, blank=True)
-    size = models.CharField(max_length=225, null=True, blank=False)
+class Variant(BaseModel):
+    menu = models.ForeignKey("menu_app.Menu", CASCADE, related_name="variant", null=True, blank=True)
+    name = models.CharField(max_length=225, null=True, blank=False)
     price = models.IntegerField(null=True, blank=False)
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.menu} option {self.size} price {self.price}"
+        return f"{self.menu} option {self.name} price {self.price}"
 
 
 class Promo(BaseModel):

@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from menu_app.models import Options
+from menu_app.models import Variant
 
 
-class OptionsSerializer(serializers.ModelSerializer):
+class VariantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Options
+        model = Variant
         fields = [
             "id",
             "menu",
-            "size",
+            "name",
             "price",
         ]

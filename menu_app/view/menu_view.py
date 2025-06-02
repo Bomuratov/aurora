@@ -4,7 +4,7 @@ from rest_framework import viewsets, response, permissions
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from menu_app.models import Menu, Category, Options
+from menu_app.models import Menu, Category
 from menu_app.serializer.menu_serializer import MenuSerializer
 from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
@@ -118,23 +118,3 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
             
 
 
-"""
-{
-  "name": "Holva",
-  "category": 4,
-  "restaurant": 3,
-  "price": 2147,
-  "description": "Vkusniy holva",
-  "is_active": true,
-  "availability": true,
-  "options" : [{
-        "size": "35 cm",
-        "price": "12000"
-},
-{
-        "size": "75 cm",
-        "price": "22000"
-}
-]
-}
-"""

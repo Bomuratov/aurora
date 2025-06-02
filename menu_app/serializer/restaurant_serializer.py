@@ -27,7 +27,7 @@ class RestaurantChannels(serializers.ModelSerializer):
             "channels"
             ]
         
-    def get_channels(self, obj):
+    def get_channels(self, obj) -> dict:
         couriers = obj.editors.filter(role__role="is_courier")
         user_settings = UserSettings.objects.filter(user__in=couriers)
         return UserSettingsSerializer(user_settings, many=True).data
@@ -42,6 +42,6 @@ class RestaurantEditors(serializers.ModelSerializer):
             "editors"
             ]
         
-    def get_editors(self, obj):
+    def get_editors(self, obj) -> dict:
         editors = obj.editors.all()
         return UserSerializer(editors, many=True).data
