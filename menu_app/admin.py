@@ -5,6 +5,13 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 
+class OptionsAdmin(admin.ModelAdmin):
+    list_display = ("id", "menu",)
+
+class VariantsAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "price", "option_group_id",)
+
+
 class MenuAdmin(admin.ModelAdmin):
     list_display = ("id","name", "category", "availability", "is_active","restaurant",)
     list_display_links = ("name",)
@@ -41,6 +48,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Menu, MenuAdmin)
+admin.site.register(OptionGroup, OptionsAdmin)
+admin.site.register(Variant, VariantsAdmin)
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Promo)
