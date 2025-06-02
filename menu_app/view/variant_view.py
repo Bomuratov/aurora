@@ -34,13 +34,12 @@ class VariantView(viewsets.ModelViewSet):
     queryset = Variant.objects.all()
     serializer_class = VariantSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('menu_id',)
-    lookup_field = "id"
+    filterset_fields = ('option_group__menu_id', "option_group_id")
+
 
     def create(self, request, *args, **kwargs):
-        is_many = isinstance(request.data, list) 
+        is_many = isinstance(request.data, list)
         serializer = self.get_serializer(data=request.data, many=is_many)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

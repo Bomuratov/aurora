@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from menu_app.models import Variant
 
-
 class VariantListSerializer(serializers.ListSerializer):
     def create(self, validated_data):
         variants = [Variant(**item) for item in validated_data]
@@ -11,10 +10,5 @@ class VariantListSerializer(serializers.ListSerializer):
 class VariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Variant
-        fields = [
-            "id",
-            "menu",
-            "name",
-            "price",
-        ]
+        fields = ['id', 'name', 'price', 'is_active']
         list_serializer_class = VariantListSerializer

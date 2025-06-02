@@ -5,12 +5,7 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 
-class OptionsInline(admin.TabularInline):
-    model = Variant 
-    extra = 1 
-
 class MenuAdmin(admin.ModelAdmin):
-    inlines = [OptionsInline]
     list_display = ("id","name", "category", "availability", "is_active","restaurant",)
     list_display_links = ("name",)
     list_editable = ("is_active",)
