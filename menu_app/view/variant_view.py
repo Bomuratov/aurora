@@ -21,6 +21,7 @@ class VariantView(viewsets.ModelViewSet):
     serializer_class = VariantCreateItemSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("option_group__menu_id", "option_group_id")
+    lookup_field= "pk"
 
     def create(self, request, *args, **kwargs):
         serializer = VariantBulkCreateSerializer(data=request.data)
