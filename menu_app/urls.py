@@ -39,6 +39,9 @@ urlpatterns = [
     # API FOR GET EDITORS RESTAURANT
     path("api/v1/restaurant/editors/<int:pk>", restaurant_view.RestaurantEditorsView.as_view({"get": "retrieve"}), name='restaurant-editors'),
 
+    # API FOR GET COURIERS RESTAURANT
+    path("api/v1/restaurant/couriers/<int:pk>", restaurant_view.RestaurantCouriersView.as_view({"get": "retrieve"}), name='restaurant-editors'),
+    
     # API FOR MENU VARIANTS
     path("api/v1/variant", variant_view.VariantView.as_view({"post": "create", "get": "list"}), name="menu-variant"),
     path("api/v1/variant/<int:pk>", variant_view.VariantView.as_view({"get": "retrieve", "delete":"destroy"}), name="menu-variant-update"),

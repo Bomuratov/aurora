@@ -2,7 +2,7 @@ from rest_framework import viewsets, permissions
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Restaurant
-from menu_app.serializer.restaurant_serializer import RestaurantSerializer, RestaurantChannels, RestaurantEditors
+from menu_app.serializer.restaurant_serializer import RestaurantSerializer, RestaurantChannels, RestaurantEditors, RestaurantCouriersSerializer
 from menu_app.view.docs.restaurant_view_docs import docs
 
 
@@ -70,6 +70,19 @@ class RestaurantChannelsView(viewsets.ModelViewSet):
 class RestaurantEditorsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantEditors
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ('id', "name")
+    lookup_field = "pk"
+
+@extend_schema_view(
+    retrieve=extend_schema(
+        tags=docs.tags,
+        description=docs.description.get_editors
+    ),
+)
+class RestaurantCouriersView(viewsets.ModelViewSet):
+    queryset = Restaurant.objects.all()
+    serializer_class = RestaurantCouriersSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ('id', "name")
     lookup_field = "pk"

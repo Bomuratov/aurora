@@ -32,6 +32,7 @@ class RestaurantChannels(serializers.ModelSerializer):
         user_settings = UserSettings.objects.filter(user__in=couriers)
         return UserSettingsSerializer(user_settings, many=True).data
     
+    
 
 class RestaurantEditors(serializers.ModelSerializer):
     editors = serializers.SerializerMethodField()
@@ -45,3 +46,17 @@ class RestaurantEditors(serializers.ModelSerializer):
     def get_editors(self, obj) -> dict:
         editors = obj.editors.all()
         return UserSerializer(editors, many=True).data
+    
+class RestaurantCouriersSerializer(serializers.ModelSerializer):
+    couriers = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Restaurant
+        fields = [
+            "id",
+            "couriers",
+        ]
+
+    def get_couriers(self, obj) -> dict:
+        couriers = obj.editors.filter(role__role="is_courier")
+        return UserSerializer(couriers, many=True).data
