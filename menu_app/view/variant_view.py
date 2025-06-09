@@ -1,9 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, renderers
 from rest_framework.views import APIView
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.serializer.variant_serializer import VariantBulkCreateSerializer, VariantCreateItemSerializer
-from menu_app.models import Variant
+from menu_app.models import Variant, Menu, OptionGroup
 from menu_app.view.docs.variant_docs import docs
 from rest_framework.response import Response
 from rest_framework import status
@@ -29,3 +29,26 @@ class VariantView(viewsets.ModelViewSet):
         created_variants = serializer.save()
         response_serializer = VariantCreateItemSerializer(created_variants, many=True)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from django.core.exceptions import PermissionDenied
+
+@extend_schema(
+    parameters=[
+        OpenApiParameter(name='rest', description='Ресторан ID', required=True, type=int),
+    ],
+    responses={200: "ok"}
+)
+@api_view(['GET'])
+def create_option_group(request):
+    user = request.user
+    id_rest = request.query_params.get("rest")
+    if user.is_superuser:
+        menu = Menu.objects.filter(restaurant_id=id_rest)
+        option_groups = [
+            OptionGroup(menu=menu_item, created_by=user) for menu_item in menu
+        ]
+        OptionGroup.objects.bulk_create(option_groups)
+        return Response({"detail": "ok"})
+    raise PermissionDenied()

@@ -127,7 +127,7 @@ class Menu(BaseModel):
     # slug = AutoSlugField(populate_from='name', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} in {self.restaurant.name}"
+        return f"{self.name} in {self.restaurant}"
 
     def save(self, *args, **kwargs):
         if self.photo:
@@ -139,7 +139,7 @@ class OptionGroup(BaseModel):
     menu = models.OneToOneField('menu_app.Menu', on_delete=models.CASCADE, related_name="options", null=True, blank=True)
 
     def __str__(self):
-        return f"Options for {self.menu.name}"
+        return f"Options for {self.menu}"
 
 class Variant(BaseModel):
     option_group = models.ForeignKey(OptionGroup, on_delete=models.CASCADE, related_name="variants", null=True, blank=True)
