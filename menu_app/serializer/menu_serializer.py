@@ -8,7 +8,7 @@ class MenuSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     options = OptionGroupSerializer(required=False)
-    description = serializers.CharField(required=False, allow_blank=True)
+
     
     class Meta:
         model = Menu
