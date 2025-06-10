@@ -1,4 +1,4 @@
-from rest_framework import viewsets, renderers
+from rest_framework import viewsets, decorators, response
 from rest_framework.views import APIView
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -15,6 +15,7 @@ from rest_framework import status
     create=extend_schema(tags=docs.tags, description=docs.description.create),
     update=extend_schema(tags=docs.tags, description=docs.description.update),
     destroy=extend_schema(tags=docs.tags, description=docs.description.destroy),
+    toggle_active=extend_schema(tags=docs.tags, description=docs.description.update),
 )
 class VariantView(viewsets.ModelViewSet):
     queryset = Variant.objects.all()
@@ -29,6 +30,22 @@ class VariantView(viewsets.ModelViewSet):
         created_variants = serializer.save()
         response_serializer = VariantCreateItemSerializer(created_variants, many=True)
         return Response(response_serializer.data, status=status.HTTP_201_CREATED)
+    
+    @decorators.action(detail=False, methods=["PATCH"])
+    def toggle_active(self, request, pk):
+        instance = self.get_object()
+        if instance.is_active:
+            instance.is_active = False
+            instance.save()
+            return response.Response({"message": "variant with ID: {} deacticvated".format(instance.id), "code": 2})
+        elif not instance.is_active:
+            instance.is_active = True
+            instance.save()
+            return response.Response({"message": "variant with ID: {} acticvated".format(instance.id), "code": 2})
+        
+        return response.Response({"message": "Не предвиденная ошибка отправьте запрос заново", "code": 5})
+
+
 
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema, OpenApiParameter

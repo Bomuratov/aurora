@@ -44,7 +44,7 @@ urlpatterns = [
     
     # API FOR MENU VARIANTS
     path("api/v1/variant", variant_view.VariantView.as_view({"post": "create", "get": "list"}), name="menu-variant"),
-    path("api/v1/variant/<int:pk>", variant_view.VariantView.as_view({"get": "retrieve", "delete":"destroy"}), name="menu-variant-update"),
+    path("api/v1/variant/<int:pk>", variant_view.VariantView.as_view({"get": "retrieve", "delete":"destroy", "patch":"toggle_active"}), name="menu-variant-update"),
 
     
     # new routes
