@@ -40,6 +40,7 @@ class VendorRegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             "first_name",
+            "last_name",
             "phone",
             "password_1",
             "password_2",
@@ -58,6 +59,7 @@ class VendorRegisterSerializer(serializers.ModelSerializer):
         restaurant = validated_data.pop("restaurant_id", None)
         user = User.objects.create(
             first_name = validated_data["first_name"],
+            last_name = validated_data["last_name"],
             phone = validated_data["phone"],
             role = validated_data["role"],
             is_vendor = True,
