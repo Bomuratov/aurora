@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from menu_app.models import Menu, OptionGroup
+from menu_app.models import Menu, OptionGroup, Category
 from menu_app.serializer.option_group_serializer import OptionGroupSerializer
 
 
@@ -8,6 +8,7 @@ class MenuSerializer(serializers.ModelSerializer):
     created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     options = OptionGroupSerializer(required=False)
+    category_label = serializers.SerializerMethodField()
 
     
     class Meta:
@@ -19,6 +20,7 @@ class MenuSerializer(serializers.ModelSerializer):
             "price",
             "photo",
             "category",
+            "category_label",
             "is_active",
             "availability",
             "restaurant",
@@ -38,4 +40,6 @@ class MenuSerializer(serializers.ModelSerializer):
 
         return data
     
+    def get_category_label(self, instance):
+        return instance.category.name if instance.category else None
 
