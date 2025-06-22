@@ -80,7 +80,7 @@ class RestaurantStatusView(views.APIView):
         is_open = False
 
         if not schedules_today:
-            return response.Response({"is_open": True, "message": "График не указан"})
+            return response.Response({"is_open": True, "message": "График не указан", "code": 4})
 
         for schedule in schedules_today:
             open_time = schedule.open_time
@@ -105,5 +105,5 @@ class RestaurantStatusView(views.APIView):
                         break
 
         return response.Response(
-            {"is_open": is_open, "message": "Открыто." if is_open else "Закрыто."}
+            {"is_open": is_open, "message": "Открыто." if is_open else "Закрыто.", "code": 1 if is_open else 0}
         )
