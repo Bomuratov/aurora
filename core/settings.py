@@ -175,11 +175,11 @@ PASSWORD_MIN_LENGTH = 8
 
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "asia/Samarkand"
+USE_TZ = True
+
+TIME_ZONE = "Asia/Samarkand"
 
 USE_I18N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
