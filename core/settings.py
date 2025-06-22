@@ -175,7 +175,7 @@ PASSWORD_MIN_LENGTH = 8
 
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "asia/Samarkand"
 
 USE_I18N = True
 

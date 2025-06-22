@@ -6,7 +6,7 @@ from menu_app.admins.router import *
 from menu_app.clients.router import *
 from menu_app.utils import GenerateQR, DownloadQR
 
-from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view
+from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view
 
 
 
@@ -46,7 +46,12 @@ urlpatterns = [
     path("api/v1/variant", variant_view.VariantView.as_view({"post": "create", "get": "list"}), name="menu-variant"),
     path("api/v1/variant/<int:pk>", variant_view.VariantView.as_view({"get": "retrieve", "delete":"destroy", "patch":"toggle_active"}), name="menu-variant-update"),
 
-    
+    # API FOR SCHEDULE RESTAURANT
+    path("api/v1/restaurant/schedule", schedule_view.ScheduleView.as_view({"post":"create", "get":"list"}), name="restaurant-schedule"),
+    path("api/v1/restaurant/schedule/<int:pk>", schedule_view.ScheduleView.as_view({"put":"update", "delete":"destroy", "get":"retrieve"}), name="restaurant-schedule"),
+    path("api/v1/restaurant/<int:pk>/status", restaurant_view.RestaurantStatusView.as_view(), name="restaurant-status"),
+
+
     # new routes
     path("api/v1/", include(router.urls)),
 ] 

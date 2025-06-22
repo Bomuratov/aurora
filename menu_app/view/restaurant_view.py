@@ -1,88 +1,109 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, views, response
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from menu_app.models import Restaurant
-from menu_app.serializer.restaurant_serializer import RestaurantSerializer, RestaurantChannels, RestaurantEditors, RestaurantCouriersSerializer
+from menu_app.models import Restaurant, Schedule
+from menu_app.serializer.restaurant_serializer import (
+    RestaurantSerializer,
+    RestaurantChannels,
+    RestaurantEditors,
+    RestaurantCouriersSerializer,
+)
 from menu_app.view.docs.restaurant_view_docs import docs
-
+from django.utils import timezone
+from datetime import datetime
+import datetime as dt
 
 
 @extend_schema_view(
-    list=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_list
-    ),
-    retrieve=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_retrieve
-    ),
-    create=extend_schema(
-        tags=docs.tags,
-        description=docs.description.create
-    ),
-    update=extend_schema(
-        tags=docs.tags,
-        description=docs.description.update
-    ),
+    list=extend_schema(tags=docs.tags, description=docs.description.get_list),
+    retrieve=extend_schema(tags=docs.tags, description=docs.description.get_retrieve),
+    create=extend_schema(tags=docs.tags, description=docs.description.create),
+    update=extend_schema(tags=docs.tags, description=docs.description.update),
     partial_update=extend_schema(
-        tags=docs.tags,
-        description=docs.description.partial_update
+        tags=docs.tags, description=docs.description.partial_update
     ),
-    destroy=extend_schema(
-        tags=docs.tags,
-        description=docs.description.destroy
-    ),
-    
+    destroy=extend_schema(tags=docs.tags, description=docs.description.destroy),
 )
 class RestaurantView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('user_id', "name", "id")
+    filterset_fields = ("user_id", "name", "id")
     lookup_field = "name"
     permission_classes = [permissions.AllowAny]
 
 
 @extend_schema_view(
-    list=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_channel_pm
-    ),
-    retrieve=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_channel
-    ),
+    list=extend_schema(tags=docs.tags, description=docs.description.get_channel_pm),
+    retrieve=extend_schema(tags=docs.tags, description=docs.description.get_channel),
 )
 class RestaurantChannelsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantChannels
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('user_id', 'id')
+    filterset_fields = ("user_id", "id")
     lookup_field = "pk"
 
 
 @extend_schema_view(
-    retrieve=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_editors
-    ),
+    retrieve=extend_schema(tags=docs.tags, description=docs.description.get_editors),
 )
 class RestaurantEditorsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantEditors
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('id', "name")
+    filterset_fields = ("id", "name")
     lookup_field = "pk"
 
+
 @extend_schema_view(
-    retrieve=extend_schema(
-        tags=docs.tags,
-        description=docs.description.get_editors
-    ),
+    retrieve=extend_schema(tags=docs.tags, description=docs.description.get_editors),
 )
 class RestaurantCouriersView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantCouriersSerializer
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ('id', "name")
+    filterset_fields = ("id", "name")
     lookup_field = "pk"
+
+
+class RestaurantStatusView(views.APIView):
+    def get(self, request, pk):
+        now = timezone.localtime()
+        current_time = now.time()
+        current_weekday = now.weekday()
+        next_weekday = (current_weekday + 1) % 7
+        schedules_today = Schedule.objects.filter(restaurant_id=pk, day=current_weekday)
+        schedules_yesterday = Schedule.objects.filter(
+            restaurant_id=pk, day=next_weekday
+        )
+        is_open = False
+
+        if not schedules_today:
+            return response.Response({"is_open": True, "message": "График не указан"})
+
+        for schedule in schedules_today:
+            open_time = schedule.open_time
+            close_time = schedule.close_time
+            if open_time < close_time:
+                if open_time <= current_time <= close_time:
+                    is_open = True
+                    break
+            else:
+                if current_time >= open_time or current_time <= close_time:
+                    is_open = True
+                    break
+
+        if not is_open:
+            for schedule in schedules_yesterday:
+                open_time = schedule.open_time
+                close_time = schedule.close_time
+
+                if open_time > close_time:
+                    if current_time <= close_time:
+                        is_open = True
+                        break
+
+        return response.Response(
+            {"is_open": is_open, "message": "Открыто." if is_open else "Закрыто."}
+        )

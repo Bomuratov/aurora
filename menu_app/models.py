@@ -161,3 +161,28 @@ class Promo(BaseModel):
 
     def __str__(self) -> str:
         return f"Promo is {self.restaurant.name}, {self.name}"
+    
+
+
+class Schedule(BaseModel):
+
+    class WeekDays(models.TextChoices):
+        MONDAY = 0, "Понедельник"
+        TUESDAY = 1, "Вторник"
+        WEDNESDAY = 2, "Среда"
+        THURSDAY = 3, "Четверг"
+        FRIDAY = 4, "Пятница"
+        SATURDAY = 5, "Суббота"
+        SUNDAY = 6, "Воскресенье"
+
+    restaurant = models.ForeignKey("menu_app.Restaurant", on_delete=models.CASCADE, null=True, blank=True, related_name="schedule")
+    day = models.CharField(max_length=100, choices=WeekDays.choices)
+    open_time = models.TimeField(db_index=True, null=True, blank=True)
+    close_time = models.TimeField(db_index=True, null=True, blank=True)
+
+    class Meta:
+        # unique_together = ('restaurant', 'day')  # Один график на день
+        ordering = ['day']
+
+    def __str__(self):
+        return f'{self.get_day_display()}: {self.open_time} - {self.close_time}'

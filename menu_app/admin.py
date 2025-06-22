@@ -12,6 +12,10 @@ class VariantsAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "price", "option_group_id",)
 
 
+class ScheduleAdmin(admin.ModelAdmin):
+    list_display = ("id", "day", "open_time", "close_time", "restaurant")
+
+
 class MenuAdmin(admin.ModelAdmin):
     list_display = ("id","name", "category", "availability", "is_active","restaurant",)
     list_display_links = ("name",)
@@ -53,3 +57,4 @@ admin.site.register(Variant, VariantsAdmin)
 admin.site.register(Restaurant, RestaurantAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Promo)
+admin.site.register(Schedule, ScheduleAdmin)
