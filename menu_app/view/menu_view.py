@@ -1,6 +1,6 @@
 import json
 import logging
-from rest_framework import viewsets, response, permissions
+from rest_framework import viewsets, response, permissions, views
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
@@ -9,6 +9,7 @@ from menu_app.serializer.menu_serializer import MenuSerializer
 from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
 from menu_app.view.docs.menu_view_docs import docs
+from django.db.models import Prefetch
 
 
 @extend_schema_view(
@@ -42,6 +43,7 @@ class MenuView(viewsets.ModelViewSet):
     serializer_class = MenuSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name", "category_id"]
+    lookup_field = "pk"
     
 
     
@@ -118,3 +120,25 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
             
 
 
+class MenuFilterByCategoryView(views.APIView):
+    def get(self, request, pk):
+        # Готовим подзапрос для активных блюд
+        active_menus_qs = Menu.objects.filter(is_active=True)
+
+        # Загружаем категории с уже подгруженными активными блюдами
+        categories = Category.objects.filter(restaurant_id=pk, is_active=True).prefetch_related(
+            Prefetch('title', queryset=active_menus_qs, to_attr='active_menus')
+        )
+
+        if not categories:
+            return response.Response({"message": "В данном заведении нет активных категорий."})
+
+        menu_of_categories = {}
+        for category in categories:
+            if category.active_menus:
+                menu_of_categories[category.name] = MenuSerializer(category.active_menus, many=True).data
+
+        if not menu_of_categories:
+            return response.Response({"message": "Нет активных блюд в категориях."})
+
+        return response.Response(menu_of_categories)

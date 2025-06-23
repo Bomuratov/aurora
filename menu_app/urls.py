@@ -51,6 +51,7 @@ urlpatterns = [
     path("api/v1/restaurant/schedule/<int:pk>", schedule_view.ScheduleView.as_view({"put":"update", "delete":"destroy", "get":"retrieve"}), name="restaurant-schedule"),
     path("api/v1/restaurant/<int:pk>/status", restaurant_view.RestaurantStatusView.as_view(), name="restaurant-status"),
 
+    path("api/v1/category/menu/<int:pk>", menu_view.MenuFilterByCategoryView.as_view(), name="filter-menu-by-category"),
 
     # new routes
     path("api/v1/", include(router.urls)),

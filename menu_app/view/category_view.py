@@ -13,6 +13,7 @@ class CategoryView(viewsets.ModelViewSet):
     # permission_classes=[RoleCheck]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name"]
+    lookup_field = "pk"
 
     @decorators.action(detail=False, methods=["post"], url_path="update_order")
     @extend_schema(tags=["Category API v1.01"])
