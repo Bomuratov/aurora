@@ -51,6 +51,44 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 
+
+class DeliveryRuleAdmin(admin.ModelAdmin):
+    list_display = (
+        'restaurant',
+        'calculation_type',
+        'is_active',
+        'min_distance',
+        'max_distance',
+        'fixed_price',
+        'price_per_km',
+        'max_order_price_for_free_delivery',
+        "price_per_percent",
+        'created',
+    )
+    list_filter = ('calculation_type', 'is_active', 'restaurant')
+    search_fields = ('restaurant__name',)
+    ordering = ('restaurant', 'min_distance')
+    list_editable = ('is_active',)
+
+    fieldsets = (
+        (None, {
+            'fields': ('restaurant', 'calculation_type', 'is_active')
+        }),
+        ('Диапазон расстояния', {
+            'fields': ('min_distance', 'max_distance')
+        }),
+        ('Цены', {
+            'fields': ('fixed_price', 'price_per_km', "price_per_percent"),
+        }),
+        ('Бесплатная доставка', {
+            'fields': ('max_order_price_for_free_delivery',)
+        }),
+
+    )
+
+
+
+admin.site.register(DeliveryRule, DeliveryRuleAdmin)
 admin.site.register(Menu, MenuAdmin)
 admin.site.register(OptionGroup, OptionsAdmin)
 admin.site.register(Variant, VariantsAdmin)
