@@ -10,5 +10,5 @@ class ScheduleView(viewsets.ModelViewSet):
     serializer_class = ScheduleSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant_id"]
-    lookup_field = "id"
+    lookup_field = "pk"
 
