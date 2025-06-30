@@ -1,35 +1,51 @@
 import json
 import logging
-from rest_framework import viewsets, response, permissions
+from rest_framework import viewsets, response, permissions, views
 from users.exceptions.validation_error import ValidateErrorException
 from django_filters import rest_framework as filters
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Menu, Category
-from menu_app.serializers import MenuSerializer, PhotoMenuSerializer
+from menu_app.serializer.menu_serializer import MenuSerializer
+from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
+from menu_app.view.docs.menu_view_docs import docs
+from django.db.models import Prefetch
 
-logger = logging.getLogger(__name__)
 
-@extend_schema(tags=["Menu API v1.01"])
+@extend_schema_view(
+    list=extend_schema(
+        tags=docs.tags,
+        description=docs.description.get_list
+    ),
+    retrieve=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Получить один пункт меню по ID."
+    ),
+    create=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Создать новый пункт меню."
+    ),
+    update=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Полное обновление пункта меню (PUT)."
+    ),
+    partial_update=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Частичное обновление пункта меню (PATCH)."
+    ),
+    destroy=extend_schema(
+        tags=["Menu API v1.01"],
+        description="Удаление пункта меню по ID."
+    )
+)
 class MenuView(viewsets.ModelViewSet):
     queryset = Menu.objects.all()
     serializer_class = MenuSerializer
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name", "category_id"]
+    lookup_field = "pk"
     
-    def create(self, request):
-        cat_id = request.data.get("category", None)
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
 
-        if cat_id:
-            instance = bool(self.queryset.filter(category=int(cat_id), is_active=True))
-            category = Category.objects.get(id=int(cat_id))
-            category.is_active = instance
-            category.save()
-
-        return response.Response({"data": serializer.data})
     
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
@@ -102,3 +118,27 @@ class UpdatePhotoMenu(viewsets.ModelViewSet):
        
         return response.Response(serializer.data)
             
+
+
+class MenuFilterByCategoryView(views.APIView):
+    def get(self, request, pk):
+        # Готовим подзапрос для активных блюд
+        active_menus_qs = Menu.objects.filter(is_active=True)
+
+        # Загружаем категории с уже подгруженными активными блюдами
+        categories = Category.objects.filter(restaurant_id=pk, is_active=True).prefetch_related(
+            Prefetch('title', queryset=active_menus_qs, to_attr='active_menus')
+        )
+
+        if not categories:
+            return response.Response({"message": "В данном заведении нет активных категорий."})
+
+        menu_of_categories = {}
+        for category in categories:
+            if category.active_menus:
+                menu_of_categories[category.name] = MenuSerializer(category.active_menus, many=True).data
+
+        if not menu_of_categories:
+            return response.Response({"message": "Нет активных блюд в категориях."})
+
+        return response.Response(menu_of_categories)

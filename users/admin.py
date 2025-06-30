@@ -1,5 +1,7 @@
 from django.contrib import admin
+from .models import User, UserRole, Permissions, UserSettings
 from .models import User, UserLocation
+
 
 
 
@@ -17,6 +19,13 @@ class LocationAdmin(admin.ModelAdmin):
     list_editable = ("is_active",)
     list_filter = ("user",)
 
+class UserRoleAdmin(admin.ModelAdmin):
+    list_display = ("id", "role", "permissions")
+
 
 admin.site.register(User, UserAdmin)
+admin.site.register(UserRole, UserRoleAdmin)
+admin.site.register(UserSettings)
+admin.site.register(Permissions)
 admin.site.register(UserLocation, LocationAdmin)
+

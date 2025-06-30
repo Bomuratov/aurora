@@ -40,9 +40,6 @@
 #     lookup_field = "pk"
 
 
-
-
-
 # urlpatterns = [
 #     # path("api/", include(router.urls)),
 #     # path(
@@ -84,16 +81,22 @@
 # ]
 
 
+"""
+with io.BytesIO() as img_byte_arr:
+    cropped_image.save(img_byte_arr, format=f"{image_format}")
+    img_byte_arr.seek(0)
 
+    img_tmp = TemporaryUploadedFile(
+        name=f'cropped_image.{image_format}',
+        size=img_byte_arr.getbuffer().nbytes,
+        content_type=f'image/{image_format}',
+        charset=None,
+    )
 """
-        with io.BytesIO() as img_byte_arr:
-            cropped_image.save(img_byte_arr, format=f"{image_format}")
-            img_byte_arr.seek(0)
-            
-            img_tmp = TemporaryUploadedFile(
-                name=f'cropped_image.{image_format}',
-                size=img_byte_arr.getbuffer().nbytes,
-                content_type=f'image/{image_format}',
-                charset=None,
-            )
-"""
+
+
+[
+    {"menu": 1, "name": "qwer", "price": 12},
+    {"menu": 1, "name": "qwer", "price": 12},
+    {"menu": 1, "name": "qwer", "price": 12},
+]

@@ -19,9 +19,22 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 
-CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://stage.aurora-app.uz",
+    "http://localhost:5173",
+    "http://localhost:8000",
+    "https://aurora-app.uz",
+    "https://www.aurora-app.uz"
+]
+
+
+
+SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SECURE = True
+
+CSRF_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SECURE = True
 
 
 CORS_ALLOW_METHODS = [
@@ -38,6 +51,14 @@ CORS_ALLOW_HEADERS = [
     "access-control-allow-origin",
     "authorization",
     "content-type",
+    "accept",
+    "accept-encoding",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+
 ]
 
 
@@ -57,6 +78,8 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_filters",
     'drf_spectacular',
+    "rest_framework_simplejwt.token_blacklist",
+
     # apps
     "menu_app",
     "users"
@@ -116,14 +139,10 @@ WSGI_APPLICATION = "core.wsgi.application"
 REST_FRAMEWORK = {
    "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-        # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
     ),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.BasicAuthentication',
-    #     'rest_framework.authentication.SessionAuthentication',
-    # ],
+
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
@@ -156,11 +175,11 @@ PASSWORD_MIN_LENGTH = 8
 
 LANGUAGE_CODE = "ru"
 
-TIME_ZONE = "UTC"
+USE_TZ = True
+
+TIME_ZONE = "Asia/Samarkand"
 
 USE_I18N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
@@ -189,14 +208,21 @@ SPECTACULAR_SETTINGS = {
 
 }
 
+# with open(BASE_DIR / "keys/private_key.pem", "r") as f:
+#     PRIVATE_KEY = f.read()
+
+# with open(BASE_DIR / "keys/public_key.pem", "r") as f:
+#     PUBLIC_KEY = f.read()
+
+
 # JWT Authentication settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=20),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": False,
-    "UPDATE_LAST_LOGIN": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "HS256",
     "VERIFYING_KEY": "",
     "AUDIENCE": None,
