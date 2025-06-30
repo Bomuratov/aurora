@@ -6,7 +6,7 @@ from menu_app.admins.router import *
 from menu_app.clients.router import *
 from menu_app.utils import GenerateQR, DownloadQR
 
-from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view
+from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view
 
 
 
@@ -52,6 +52,8 @@ urlpatterns = [
     path("api/v1/restaurant/<int:pk>/status", restaurant_view.RestaurantStatusView.as_view(), name="restaurant-status"),
 
     path("api/v1/category/menu/<int:pk>", menu_view.MenuFilterByCategoryView.as_view(), name="filter-menu-by-category"),
+
+    path("api/v1/delivery/rule", delivery_rule_view.DeliveryRuleView.as_view({"get": "get_delivery_info"}), name="delivery-calculate"),
 
     # new routes
     path("api/v1/", include(router.urls)),
