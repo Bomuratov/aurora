@@ -1,4 +1,5 @@
 from rest_framework import response, viewsets, decorators, status
+from django_filters import rest_framework as filters
 from menu_app.models import DeliveryRule, Restaurant
 from menu_app.serializer.delivery_rule_serializer import DeliveryRuleSerializer
 from users.models import UserLocation
@@ -7,6 +8,8 @@ from users.models import UserLocation
 class DeliveryRuleView(viewsets.ModelViewSet):
     queryset = DeliveryRule.objects.all()
     serializer_class = DeliveryRuleSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_fields = ("restaurant_id", "id")
     lookup_field = "pk"
 
     @decorators.action(detail=True, methods=["get"])

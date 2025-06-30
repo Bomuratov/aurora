@@ -54,6 +54,8 @@ urlpatterns = [
     path("api/v1/category/menu/<int:pk>", menu_view.MenuFilterByCategoryView.as_view(), name="filter-menu-by-category"),
 
     path("api/v1/delivery/rule", delivery_rule_view.DeliveryRuleView.as_view({"get": "get_delivery_info"}), name="delivery-calculate"),
+    path("api/v1/delivery/rules", delivery_rule_view.DeliveryRuleView.as_view({"get": "list", "post":"create"}), name="delivery-calculate"),
+    path("api/v1/delivery/rules/<int:pk>", delivery_rule_view.DeliveryRuleView.as_view({"get": "retrieve", "put":"update", "delete":"destroy"}), name="delivery-calculate"),
 
     # new routes
     path("api/v1/", include(router.urls)),
