@@ -1,12 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models import SET_NULL, PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
-from django.core.validators import MaxValueValidator, MinValueValidator
 from PIL import Image
 import io
 from django.core.files.base import ContentFile
-from typing import List
 
 
 def thumbnail(image, size=(200, 200)):
@@ -185,4 +182,51 @@ class Schedule(BaseModel):
         ordering = ['day']
 
     def __str__(self):
-        return f'{self.get_day_display()}: {self.open_time} - {self.close_time}'
+        return f'{self.get_day_display()}: {self.open_time} - {self.close_time}'    
+
+
+class DeliveryRule(BaseModel):
+    CALCULATION_TYPE_CHOICES = [
+        ('fixed', 'Фиксированная цена'),
+        ('per_km', 'Цена за километр'),
+        ('percent', 'Процент от суммы заказа'),
+
+    ]
+
+    restaurant = models.ForeignKey('menu_app.Restaurant', on_delete=models.CASCADE, related_name='delivery_rules')
+    calculation_type = models.CharField(max_length=10, choices=CALCULATION_TYPE_CHOICES)
+    min_distance = models.FloatField(null=True, blank=True)
+    max_distance = models.FloatField(null=True, blank=True)
+    fixed_price = models.PositiveIntegerField(null=True, blank=True)
+    price_per_km = models.PositiveIntegerField(null=True, blank=True)
+    price_per_percent = models.FloatField(null=True, blank=True)
+    max_order_price_for_free_delivery = models.PositiveIntegerField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def clean(self):
+        from django.core.exceptions import ValidationError
+
+        if self.min_distance >= self.max_distance:
+            raise ValidationError("Минимальное расстояние должно быть меньше максимального.")
+
+        if self.calculation_type == 'fixed' and self.fixed_price is None:
+            raise ValidationError("Укажите фиксированную цену.")
+        if self.calculation_type == 'per_km' and self.price_per_km is None:
+            raise ValidationError("Укажите цену за километр.")
+
+    def __str__(self):
+        title = f"{self.calculation_type.upper()} | {self.min_distance}-{self.max_distance} км"
+        if self.calculation_type == 'fixed':
+            title += f" | {self.fixed_price} сум"
+        else:
+            title += f" | {self.price_per_km} сум/км"
+        return f"{self.restaurant.name} | {title}"
+
+
+{
+    "restaurant_id":3,
+    "distance": 25,
+    "order_price": 5650,
+    "type":"percent"
+}
