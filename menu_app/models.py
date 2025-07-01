@@ -220,6 +220,7 @@ class DeliveryRule(BaseModel):
         if self.calculation_type == 'percent' and self.price_per_percent is None:
             raise ValidationError("Укажите цену за километр.")
     
+    
     def save(self, *args, **kwargs):
         self.clean()  # Вызов валидации
 
