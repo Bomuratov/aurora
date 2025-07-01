@@ -4,6 +4,7 @@ from django_extensions.db.fields import AutoSlugField
 from PIL import Image
 import io
 from django.core.files.base import ContentFile
+from menu_app.util.model_utils import generate_description
 
 
 def thumbnail(image, size=(200, 200)):
@@ -195,25 +196,38 @@ class DeliveryRule(BaseModel):
 
     restaurant = models.ForeignKey('menu_app.Restaurant', on_delete=models.CASCADE, related_name='delivery_rules')
     calculation_type = models.CharField(max_length=10, choices=CALCULATION_TYPE_CHOICES)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     min_distance = models.FloatField(null=True, blank=True)
     max_distance = models.FloatField(null=True, blank=True)
     fixed_price = models.PositiveIntegerField(null=True, blank=True)
     price_per_km = models.PositiveIntegerField(null=True, blank=True)
     price_per_percent = models.FloatField(null=True, blank=True)
     max_order_price_for_free_delivery = models.PositiveIntegerField(null=True, blank=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
         from django.core.exceptions import ValidationError
-
-        if self.min_distance >= self.max_distance:
-            raise ValidationError("Минимальное расстояние должно быть меньше максимального.")
+        if all([self.min_distance and self.max_distance]):
+            if self.min_distance >= self.max_distance:
+                raise ValidationError("Минимальное расстояние должно быть меньше максимального.")
 
         if self.calculation_type == 'fixed' and self.fixed_price is None:
             raise ValidationError("Укажите фиксированную цену.")
         if self.calculation_type == 'per_km' and self.price_per_km is None:
             raise ValidationError("Укажите цену за километр.")
+        if self.calculation_type == 'percent' and self.price_per_percent is None:
+            raise ValidationError("Укажите цену за километр.")
+    
+    def save(self, *args, **kwargs):
+        self.clean()  # Вызов валидации
+
+        generate_description(self)
+
+        return super().save(*args, **kwargs)
+
+            
 
     def __str__(self):
         title = f"{self.calculation_type.upper()} | {self.min_distance}-{self.max_distance} км"
@@ -224,9 +238,3 @@ class DeliveryRule(BaseModel):
         return f"{self.restaurant.name} | {title}"
 
 
-{
-    "restaurant_id":3,
-    "distance": 25,
-    "order_price": 5650,
-    "type":"percent"
-}

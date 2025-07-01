@@ -55,6 +55,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class DeliveryRuleAdmin(admin.ModelAdmin):
     list_display = (
         'restaurant',
+        "name",
         'calculation_type',
         'is_active',
         'min_distance',
@@ -72,7 +73,7 @@ class DeliveryRuleAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('restaurant', 'calculation_type', 'is_active')
+            'fields': ('restaurant', 'calculation_type', 'is_active', "name", "description")
         }),
         ('Диапазон расстояния', {
             'fields': ('min_distance', 'max_distance')
