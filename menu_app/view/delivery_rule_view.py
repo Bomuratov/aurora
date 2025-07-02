@@ -12,6 +12,37 @@ class DeliveryRuleView(viewsets.ModelViewSet):
     filterset_fields = ("restaurant_id", "id")
     lookup_field = "pk"
 
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        if instance.is_active:
+            # Деактивируем все остальные правила в этом ресторане
+            DeliveryRule.objects.filter(
+                restaurant=instance.restaurant
+            ).exclude(pk=instance.pk).update(is_active=False)
+
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        if instance.is_active:
+            DeliveryRule.objects.filter(
+                restaurant=instance.restaurant
+            ).exclude(pk=instance.pk).update(is_active=False)
+
+    @decorators.action(detail=True, methods=["post"])
+    def toggle_active(self, request, pk=None):
+        try:
+            rule = self.get_object()
+        except DeliveryRule.DoesNotExist:
+            return response.Response({"detail": "Не найдено"}, status=status.HTTP_404_NOT_FOUND)
+
+        if not rule.is_active:
+            rule.is_active = True
+            rule.save()
+            DeliveryRule.objects.filter(
+                restaurant=rule.restaurant
+            ).exclude(pk=rule.pk).update(is_active=False)
+
+        return response.Response({"detail": "Правило успешно активировано."}, status=status.HTTP_200_OK)
+
     @decorators.action(detail=True, methods=["get"])
     def get_delivery_info(self, request, pk=None):
         restaurant_id = request.query_params.get("restaurant_id")
