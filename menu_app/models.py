@@ -206,6 +206,7 @@ class DeliveryRule(BaseModel):
     max_order_price_for_free_delivery = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
+    reverse_calculate = models.BooleanField(default=False)
 
     def clean(self):
         from django.core.exceptions import ValidationError

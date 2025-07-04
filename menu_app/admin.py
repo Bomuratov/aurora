@@ -82,7 +82,7 @@ class DeliveryRuleAdmin(admin.ModelAdmin):
             'fields': ('fixed_price', 'price_per_km', "price_per_percent"),
         }),
         ('Бесплатная доставка', {
-            'fields': ('max_order_price_for_free_delivery',)
+            'fields': ('max_order_price_for_free_delivery', "reverse_calculate")
         }),
 
     )

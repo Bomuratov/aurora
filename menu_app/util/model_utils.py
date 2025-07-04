@@ -15,7 +15,10 @@ def generate_description(self):
 
     free_delivery_part = ""
     if self.max_order_price_for_free_delivery is not None:
-        free_delivery_part = f"\nОбратите внимание, если сумма заказа превышает {self.max_order_price_for_free_delivery} сум то доставка будет бесплатным."
+        free_delivery_part = f"\nОбратите внимание, если сумма заказа выше или ровно {self.max_order_price_for_free_delivery} сум то доставка будет бесплатным."
+    
+    if self.max_order_price_for_free_delivery and self.reverse_calculate:
+        free_delivery_part = f"\nОбратите внимание, если сумма заказа ниже или ровно {self.max_order_price_for_free_delivery} сум то доставка будет бесплатным."
 
     if self.calculation_type == "fixed" and self.fixed_price is not None:
         self.description = (
@@ -25,12 +28,12 @@ def generate_description(self):
         )
     elif self.calculation_type == "per_km" and self.price_per_km is not None:
         self.description = (
-            f"Доставка рассчитывается по расстоянию: {self.price_per_km} сум за каждый километр."
+            f"Доставка рассчитывается по расстоянию: {round(self.price_per_km)} сум за каждый километр."
             f"{free_delivery_part}"
         )
     elif self.calculation_type == "percent" and self.price_per_percent is not None:
         self.description = (
-            f"Доставка составит {self.price_per_percent}% от суммы заказа."
+            f"Доставка составит {round(self.price_per_percent)}% от суммы заказа."
             f"{free_delivery_part}"
         )
     else:

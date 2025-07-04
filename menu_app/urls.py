@@ -6,7 +6,7 @@ from menu_app.admins.router import *
 from menu_app.clients.router import *
 from menu_app.utils import GenerateQR, DownloadQR
 
-from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view
+from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view, delivery_calculation
 
 
 
@@ -57,6 +57,8 @@ urlpatterns = [
     path("api/v1/delivery/rules", delivery_rule_view.DeliveryRuleView.as_view({"get": "list", "post":"create"}), name="delivery-calculate"),
     path("api/v1/delivery/rules/<int:pk>", delivery_rule_view.DeliveryRuleView.as_view({"get": "retrieve", "put":"update", "delete":"destroy"}), name="delivery-calculate"),
     path("api/v1/delivery/rules/<int:pk>/active", delivery_rule_view.DeliveryRuleView.as_view({"post": "toggle_active"}), name="delivery-calculate"),
+
+    path("api/v1/delivery/calculate", delivery_calculation.DeliveryCalculationView.as_view(), name="delivery-calculate"),
 
     # new routes
     path("api/v1/", include(router.urls)),
