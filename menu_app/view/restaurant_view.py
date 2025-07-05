@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions, views, response
+from rest_framework import viewsets, permissions, views, response, decorators
 from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Restaurant, Schedule
@@ -66,6 +66,23 @@ class RestaurantCouriersView(viewsets.ModelViewSet):
     filterset_fields = ("id", "name")
     lookup_field = "pk"
 
+    @decorators.action(methods=["GET"], detail=True)
+    def get_restaurant_couriers(self, request, pk):
+        instance = self.get_object()
+        couriers = instance.editors.filter(role__role="is_courier")
+        couriers_list = []
+
+        for courier in couriers:
+            couriers_list.append(
+                {
+                    "id": courier.id,
+                    "full_name": f"{courier.first_name} {courier.last_name}",
+                    "role": courier.role.role if courier.role else None,  # если role это FK
+                    "is_active": courier.is_active,
+                }
+            )
+        return response.Response(couriers_list)
+
 
 class RestaurantStatusView(views.APIView):
     def get(self, request, pk):
@@ -80,7 +97,9 @@ class RestaurantStatusView(views.APIView):
         is_open = False
 
         if not schedules_today:
-            return response.Response({"is_open": True, "message": "График не указан", "code": 4})
+            return response.Response(
+                {"is_open": True, "message": "График не указан", "code": 4}
+            )
 
         for schedule in schedules_today:
             open_time = schedule.open_time
@@ -105,5 +124,9 @@ class RestaurantStatusView(views.APIView):
                         break
 
         return response.Response(
-            {"is_open": is_open, "message": "Открыто." if is_open else "Закрыто.", "code": 1 if is_open else 0}
+            {
+                "is_open": is_open,
+                "message": "Открыто." if is_open else "Закрыто.",
+                "code": 1 if is_open else 0,
+            }
         )

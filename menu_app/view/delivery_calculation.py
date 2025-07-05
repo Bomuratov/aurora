@@ -17,8 +17,8 @@ class DeliveryCalculationView(APIView):
             )
 
         try:
-            order_price = int(order_price)
-            distance = int(distance) if distance else 0
+            order_price = float(order_price)
+            distance = float(distance) if distance else 0
         except ValueError:
             return Response(
                 {"message": "Некорректный тип параметров", "code": 4},

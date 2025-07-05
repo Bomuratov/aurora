@@ -41,6 +41,7 @@ urlpatterns = [
 
     # API FOR GET COURIERS RESTAURANT
     path("api/v1/restaurant/couriers/<int:pk>", restaurant_view.RestaurantCouriersView.as_view({"get": "retrieve"}), name='restaurant-editors'),
+    path("api/v1/restaurant/courier/<int:pk>", restaurant_view.RestaurantCouriersView.as_view({"get": "get_restaurant_couriers"}), name='restaurant-editors'),
     
     # API FOR MENU VARIANTS
     path("api/v1/variant", variant_view.VariantView.as_view({"post": "create", "get": "list"}), name="menu-variant"),
@@ -66,3 +67,15 @@ urlpatterns = [
 
 # urlpatterns+=adminpatterns
 # urlpatterns+=clientpatterns
+
+
+"""
+https://map.project-osrm.org/?z=17&center=39.747916%2C64.410760&loc=39.770515%2C64.445063&loc=39.74836518916527%2C64.41675972659581&hl=en&alt=0&srv=1
+"""
+"""
+curl "https://router.project-osrm.org/route/v1/driving/69.2401,41.3112;69.2005,41.3275?overview=false"
+
+curl https://router.project-osrm.org/route/v1/driving/64.445063,39.770515;64.41675972659581,39.74836518916527?overview=false
+curl "https://router.project-osrm.org/route/v1/driving/64.445063,39.770515;64.416760,39.748365?overview=false&alternatives=false&steps=false"
+
+"""
