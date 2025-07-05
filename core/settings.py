@@ -12,8 +12,10 @@ from datetime import timedelta
 
 SECRET_KEY = "django-insecure-pl+(h+sfdiotagz&rz&lo45w^qa)j0b=sbcfv&r1(&##n-44s%"
 
+SWAGGER_USERNAME = os.getenv("SWAGGER_USERNAME")
+SWAGGER_PASSWORD = os.getenv("SWAGGER_PASSWORD")
 
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ["*"]
@@ -94,6 +96,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.middlewares.BasicAuthMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
