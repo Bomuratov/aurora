@@ -37,20 +37,20 @@ class DeliveryCalculationView(APIView):
         
         if rule.reverse_calculate:
             if order_price <= rule.max_order_price_for_free_delivery:
-                return Response({"message": "Сумма доставки 0", "code": 0})
+                return Response({"message": "Сумма доставки 0", "price": 0, "code": 0})
             
         if rule.reverse_calculate == False:
             if rule.max_order_price_for_free_delivery and \
             order_price >= rule.max_order_price_for_free_delivery:
-                return Response({"message": "Сумма доставки 0", "code": 0})
+                return Response({"message": "Сумма доставки 0", "price": 0, "code": 0})
 
         if rule.calculation_type == "per_km":
             result = rule.price_per_km * distance
-            return Response({"message": f"Сумма доставки {result} UZS", "code": 2})
+            return Response({"message": f"Сумма доставки {result} UZS", "price": result, "code": 2})
 
         if rule.calculation_type == "percent":
             result = round(order_price * rule.price_per_percent / 100)
-            return Response({"message": f"Сумма доставки {result} UZS", "code": 3})
+            return Response({"message": f"Сумма доставки {result} UZS", "price": result, "code": 3})
 
         return Response(
             {"message": "Такое правило пока не поддерживается", "code": 4},
