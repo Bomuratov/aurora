@@ -19,4 +19,5 @@ class DeliveryRuleSerializer(serializers.ModelSerializer):
             "price_per_percent",
             "max_order_price_for_free_delivery",
             "is_active",
+            "reverse_calculate",
         ]
