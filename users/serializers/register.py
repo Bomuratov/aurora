@@ -16,15 +16,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             ),
         ]
     )
-    email = serializers.EmailField(
-        validators=[
-            unique_validator.UniqueValidator(
-                queryset=User.objects.all(),
-                message="Пользователь с такими данными уже существует.",
-                code="2",
-            )
-        ]
-    )
     password_1 = serializers.CharField(
         required=True,
         write_only=True,
@@ -49,7 +40,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone",
-            "email",
             "password_1",
             "password_2",
             "user_registered_at",
@@ -66,7 +56,6 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
             phone=validated_data["phone"],
-            email=validated_data["email"],
             is_active = True,
             is_user = True,
         )
