@@ -46,11 +46,11 @@ class DeliveryCalculationView(APIView):
 
         if rule.calculation_type == "per_km":
             result = rule.price_per_km * distance
-            return Response({"message": f"Сумма доставки {result} UZS", "price": result, "code": 2})
+            return Response({"message": f"Сумма доставки {round(result)} UZS", "price": round(result), "code": 2})
 
         if rule.calculation_type == "percent":
             result = round(order_price * rule.price_per_percent / 100)
-            return Response({"message": f"Сумма доставки {result} UZS", "price": result, "code": 3})
+            return Response({"message": f"Сумма доставки {round(result)} UZS", "price": round(result), "code": 3})
 
         return Response(
             {"message": "Такое правило пока не поддерживается", "code": 4},
