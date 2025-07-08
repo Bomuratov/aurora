@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-DEBUG = False
+DEBUG = True
 
 DATABASES = {
    "default": {

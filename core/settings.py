@@ -15,7 +15,7 @@ SECRET_KEY = "django-insecure-pl+(h+sfdiotagz&rz&lo45w^qa)j0b=sbcfv&r1(&##n-44s%
 SWAGGER_USERNAME = os.getenv("SWAGGER_USERNAME")
 SWAGGER_PASSWORD = os.getenv("SWAGGER_PASSWORD")
 
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ["*"]
@@ -211,23 +211,24 @@ SPECTACULAR_SETTINGS = {
 
 }
 
-# with open(BASE_DIR / "keys/private_key.pem", "r") as f:
-#     PRIVATE_KEY = f.read()
+with open(BASE_DIR / "keys/private_key.pem", "r") as f:
+    PRIVATE_KEY = f.read()
 
-# with open(BASE_DIR / "keys/public_key.pem", "r") as f:
-#     PUBLIC_KEY = f.read()
+with open(BASE_DIR / "keys/public_key.pem", "r") as f:
+    PUBLIC_KEY = f.read()
 
 
 # JWT Authentication settings
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=10),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
-    "ALGORITHM": "HS256",
-    "VERIFYING_KEY": "",
+    "ALGORITHM": "RS256",
+    "SIGNING_KEY": PRIVATE_KEY,
+    "VERIFYING_KEY": PUBLIC_KEY,
     "AUDIENCE": None,
     "ISSUER": None,
     "JSON_ENCODER": None,

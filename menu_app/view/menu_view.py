@@ -10,6 +10,8 @@ from menu_app.serializers import PhotoMenuSerializer
 from menu_app.utils import crop_image_by_percentage
 from menu_app.view.docs.menu_view_docs import docs
 from django.db.models import Prefetch
+from users.permissions.role_checks import RoleCheck
+
 
 
 @extend_schema_view(
@@ -44,6 +46,7 @@ class MenuView(viewsets.ModelViewSet):
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name", "category_id"]
     lookup_field = "pk"
+    permission_classes = [RoleCheck]
     
 
     

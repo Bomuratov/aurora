@@ -10,7 +10,7 @@ from users.permissions.role_checks import RoleCheck, PermissionCheck
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes=[RoleCheck]
+    permission_classes=[RoleCheck]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name"]
     lookup_field = "pk"
