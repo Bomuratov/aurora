@@ -47,25 +47,25 @@ class VariantView(viewsets.ModelViewSet):
 
 
 
-from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema, OpenApiParameter
-from django.core.exceptions import PermissionDenied
+# from rest_framework.decorators import api_view
+# from drf_spectacular.utils import extend_schema, OpenApiParameter
+# from django.core.exceptions import PermissionDenied
 
-@extend_schema(
-    parameters=[
-        OpenApiParameter(name='rest', description='Ресторан ID', required=True, type=int),
-    ],
-    responses={200: "ok"}
-)
-@api_view(['GET'])
-def create_option_group(request):
-    user = request.user
-    id_rest = request.query_params.get("rest")
-    if user.is_superuser:
-        menu = Menu.objects.filter(restaurant_id=id_rest)
-        option_groups = [
-            OptionGroup(menu=menu_item, created_by=user) for menu_item in menu
-        ]
-        OptionGroup.objects.bulk_create(option_groups)
-        return Response({"detail": "ok"})
-    raise PermissionDenied()
+# @extend_schema(
+#     parameters=[
+#         OpenApiParameter(name='rest', description='Ресторан ID', required=True, type=int),
+#     ],
+#     responses={200: "ok"}
+# )
+# @api_view(['GET'])
+# def create_option_group(request):
+#     user = request.user
+#     id_rest = request.query_params.get("rest")
+#     if user.is_superuser:
+#         menu = Menu.objects.filter(restaurant_id=id_rest)
+#         option_groups = [
+#             OptionGroup(menu=menu_item, created_by=user) for menu_item in menu
+#         ]
+#         OptionGroup.objects.bulk_create(option_groups)
+#         return Response({"detail": "ok"})
+#     raise PermissionDenied()
