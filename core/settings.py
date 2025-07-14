@@ -215,7 +215,7 @@ SPECTACULAR_SETTINGS = {
 #     PRIVATE_KEY = f.read()
 
 # with open(BASE_DIR / "keys/public_key.pem", "r") as f:
-#     PUBLIC_KEY = f.read()
+#     PUBLIC_KEY = f.
 
 
 # JWT Authentication settings
