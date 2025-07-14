@@ -76,7 +76,3 @@ class VendorRegisterSerializer(serializers.ModelSerializer):
         user_settings = UserSettings.objects.create(user=user)
         user_settings.save()
         return user
-    
-
-
-    
