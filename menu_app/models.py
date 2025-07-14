@@ -1,11 +1,11 @@
 from django.db import models
-from django.db.models import SET_NULL, PROTECT, CASCADE
+from django.db.models import PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
 from PIL import Image
 import io
 from django.core.files.base import ContentFile
 from menu_app.util.model_utils import generate_description
-
+from menu_app.util.phone_validators import UZB_PHONE_VALIDATOR
 
 def thumbnail(image, size=(200, 200)):
     """
@@ -94,6 +94,14 @@ class Restaurant(BaseModel):
 
     def get_restaurant_editors(self):
         return self.editors
+
+
+class RestaurantDetails(BaseModel):
+    restaurant = models.ForeignKey("menu_app.Restaurant", on_delete=models.CASCADE, null=True, blank=True, related_name="contacts")
+    phone_number = models.CharField(max_length=255, null=True, blank=True, validators=[UZB_PHONE_VALIDATOR])
+
+    def __str__(self):
+        return f"Phone number of {self.restaurant.name} — {self.phone_number}"
 
 
 class Category(BaseModel):

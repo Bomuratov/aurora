@@ -5,6 +5,7 @@ from users.serializers.user_settings_serializer import UserSettingsSerializer
 from users.serializers.user_serializer import UserSerializer
 from menu_app.serializer.schedule_serializer import ScheduleSerializer
 from datetime import datetime
+from menu_app.serializer.restaurant_details_serializer import RestaurantDetailsSerializer
 
 
 
@@ -15,6 +16,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
     update_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     schedule = serializers.SerializerMethodField()
+    contacts = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -37,13 +39,18 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "lat",
             "long",
             "schedule",
+            "contacts",
         ]
 
     def get_schedule(self, obj):
         if hasattr(obj, "schedule"):
             schedule = obj.schedule.all()
-            print(datetime.weekday(datetime.now()))
             return ScheduleSerializer(schedule, many=True).data
+    
+    def get_contacts(self, obj):
+        if hasattr(obj, "contacts"):
+            contacts = obj.contacts.all().values_list("phone_number", flat=True)
+            return list(contacts)
 
     
 
