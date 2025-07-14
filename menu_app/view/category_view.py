@@ -3,14 +3,14 @@ from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema
 from menu_app.models import Category
 from menu_app.serializer.category_serializer import CategorySerializer
-from users.permissions.role_checks import RoleCheck, PermissionCheck
+from users.permissions.role_checks import RoleCheck
 
 
 @extend_schema(tags=["Category API v1.01"])
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    # permission_classes=[RoleCheck]
+    permission_classes=[RoleCheck]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name"]
     lookup_field = "pk"

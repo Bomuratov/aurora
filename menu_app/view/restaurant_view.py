@@ -12,6 +12,7 @@ from menu_app.view.docs.restaurant_view_docs import docs
 from django.utils import timezone
 from datetime import datetime
 import datetime as dt
+from users.permissions.role_checks import RoleCheck
 
 
 @extend_schema_view(
@@ -27,6 +28,7 @@ import datetime as dt
 class RestaurantView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantSerializer
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("user_id", "name", "id")
     lookup_field = "name"
@@ -40,6 +42,7 @@ class RestaurantView(viewsets.ModelViewSet):
 class RestaurantChannelsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantChannels
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("user_id", "id")
     lookup_field = "pk"
@@ -51,6 +54,7 @@ class RestaurantChannelsView(viewsets.ModelViewSet):
 class RestaurantEditorsView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantEditors
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("id", "name")
     lookup_field = "pk"
@@ -62,6 +66,7 @@ class RestaurantEditorsView(viewsets.ModelViewSet):
 class RestaurantCouriersView(viewsets.ModelViewSet):
     queryset = Restaurant.objects.all()
     serializer_class = RestaurantCouriersSerializer
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("id", "name")
     lookup_field = "pk"

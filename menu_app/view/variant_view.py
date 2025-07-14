@@ -7,6 +7,8 @@ from menu_app.models import Variant, Menu, OptionGroup
 from menu_app.view.docs.variant_docs import docs
 from rest_framework.response import Response
 from rest_framework import status
+from users.permissions.role_checks import RoleCheck
+
 
 
 @extend_schema_view(
@@ -20,6 +22,7 @@ from rest_framework import status
 class VariantView(viewsets.ModelViewSet):
     queryset = Variant.objects.all()
     serializer_class = VariantCreateItemSerializer
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("option_group__menu_id", "option_group_id")
     lookup_field= "pk"

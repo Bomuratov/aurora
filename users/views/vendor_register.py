@@ -3,6 +3,7 @@ from users.models import User
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from users.serializers.vendor_register import VendorRegisterSerializer
 from users.views.docs.register_docs import docs
+from users.permissions.role_checks import RoleCheck
 
 
 
@@ -15,4 +16,5 @@ from users.views.docs.register_docs import docs
 class VendorRegisterView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = VendorRegisterSerializer
+    permission_classes=[RoleCheck]
     lookup_field = "pk"

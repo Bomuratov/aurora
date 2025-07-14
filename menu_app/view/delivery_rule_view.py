@@ -3,11 +3,12 @@ from django_filters import rest_framework as filters
 from menu_app.models import DeliveryRule, Restaurant
 from menu_app.serializer.delivery_rule_serializer import DeliveryRuleSerializer
 from users.models import UserLocation
-
+from users.permissions.role_checks import RoleCheck
 
 class DeliveryRuleView(viewsets.ModelViewSet):
     queryset = DeliveryRule.objects.all()
     serializer_class = DeliveryRuleSerializer
+    permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_fields = ("restaurant_id", "id")
     lookup_field = "pk"

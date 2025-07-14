@@ -5,12 +5,15 @@ from drf_spectacular.utils import extend_schema
 from menu_app.models import Promo
 from menu_app.serializer.promo_serializer import PromoSerializer
 from menu_app.utils import crop_image_by_percentage
+from users.permissions.role_checks import RoleCheck
+
 
 
 @extend_schema(tags=["Promo API v1.01"])
 class PromoView(viewsets.ModelViewSet):
     queryset = Promo.objects.all()
     serializer_class = PromoSerializer
+    permission_classes=[RoleCheck]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_fields = ["restaurant__name"]
 

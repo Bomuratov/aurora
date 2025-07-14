@@ -7,7 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 perms_map = {
-    'GET': "can_view",
     'POST': "can_add",
     'PUT': "can_update",
     'PATCH': "can_update",
@@ -24,7 +23,9 @@ class RoleCheck(permissions.BasePermission):
         logger.info(user.get_user_role_perms())
         logger.info(model_name)
         
-
+        if request.method in permissions.SAFE_METHODS and (user.is_user or user.is_vendor):
+            return True
+        
         if request.method not in perms_map:
             return False
         
@@ -51,6 +52,8 @@ class PermissionCheck(permissions.BasePermission):
     def has_permission(self, request, view):
         user = request.user
         model_name = view.queryset.model.__name__.lower()
+
+
 
         if request.method not in perms_map:
             return False

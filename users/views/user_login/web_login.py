@@ -30,7 +30,7 @@ class CookieUserWebLoginView(views.TokenObtainPairView):
         login(request, user)
         refresh = tokens.RefreshToken.for_user(user)
         access_token = refresh.access_token
-        # restaurant = list(user.editors.all().values_list("name", flat=True))
+        # vendor = list(user.editors.all().values_list("name", flat=True))
         vendor = user.editors.all().first()
         access_token["is_user"] = user.is_user
         access_token["is_vendor"] = user.is_vendor
