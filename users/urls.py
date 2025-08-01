@@ -1,6 +1,7 @@
 from django.urls import path
 from users.views import register, user_view, vendor_register, user_location_view, user_settings_view, user_role_views
 from users.views.user_login import native_login, native_refresh, web_login, web_refresh
+from users.views.user_register import user_register
 
 
 urlpatterns = [
@@ -36,7 +37,10 @@ urlpatterns = [
     path("user/roles/<int:pk>", user_role_views.UserRoleView.as_view({"put": "update", "delete": "destroy"}), name="user-role-update-delete"),
     
 
-
+    # OTP VERIFICATION LOGIC CRUD'S
+    path('auth/send-otp/', user_register.SendOtpView.as_view(), name='send_otp'),
+    path('auth/verify-otp/', user_register.VerifyOtpView.as_view(), name='verify_otp'),
+    path('auth/regenerate-otp/', user_register.RegenerateOtpView.as_view(), name='regenerate_otp'),
 
 ]
 

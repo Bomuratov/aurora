@@ -138,6 +138,16 @@ WSGI_APPLICATION = "core.wsgi.application"
 #     "default": dj_database_url.parse("postgres://testdb_58uy_user:dKgGp6isU0D84InriWz0AgoONFxGE7aS@dpg-cmu07m2cn0vc73bi6v1g-a.oregon-postgres.render.com/testdb_58uy")
 # }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
 
 REST_FRAMEWORK = {
    "DEFAULT_AUTHENTICATION_CLASSES": (
