@@ -1,13 +1,13 @@
+import io
 from django.db import models
 from django.db.models import PROTECT, CASCADE
 from django_extensions.db.fields import AutoSlugField
 from PIL import Image
-import io
 from django.core.files.base import ContentFile
 from menu_app.util.model_utils import generate_description
 from menu_app.util.phone_validators import UZB_PHONE_VALIDATOR
 
-def thumbnail(image, size=(200, 200)):
+def thumbnail(image, size=(600, 450)):
     """
     Уменьшает изображение до указанного размера с сохранением пропорций.
 
@@ -137,7 +137,7 @@ class Menu(BaseModel):
 
     def save(self, *args, **kwargs):
         if self.photo:
-            self.thumb = thumbnail(self.photo, size=(150, 150))
+            self.thumb = thumbnail(self.photo, size=(600, 450))
         return super().save(*args, **kwargs)
 
 
