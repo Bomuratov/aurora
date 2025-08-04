@@ -20,11 +20,11 @@ class RoleCheck(permissions.BasePermission):
         user = request.user
         model_name = view.queryset.model.__name__.lower()
 
-        logger.info(user.get_user_role_perms())
-        logger.info(model_name)
-        
-        if request.method in permissions.SAFE_METHODS and (user.is_user or user.is_vendor):
+        if request.method in permissions.SAFE_METHODS:
             return True
+        
+        if not user or not user.is_authenticated:
+            return False
         
         if request.method not in perms_map:
             return False
