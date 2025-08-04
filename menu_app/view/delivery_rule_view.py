@@ -28,7 +28,7 @@ class DeliveryRuleView(viewsets.ModelViewSet):
                 pk=instance.pk
             ).update(is_active=False)
 
-    @decorators.action(detail=True, methods=["post"])
+    @decorators.action(detail=True, methods=["post"], permission_classes=[RoleCheck])
     def toggle_active(self, request, pk=None):
         try:
             rule = self.get_object()
