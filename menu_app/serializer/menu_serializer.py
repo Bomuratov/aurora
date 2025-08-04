@@ -19,6 +19,7 @@ class MenuSerializer(serializers.ModelSerializer):
             "description",
             "price",
             "photo",
+            "thumb",
             "category",
             "category_label",
             "is_active",
