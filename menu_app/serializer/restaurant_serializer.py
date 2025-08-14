@@ -17,6 +17,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     schedule = serializers.SerializerMethodField()
     contacts = serializers.SerializerMethodField()
+    is_open = serializers.SerializerMethodField()
 
     class Meta:
         model = Restaurant
@@ -40,6 +41,7 @@ class RestaurantSerializer(serializers.ModelSerializer):
             "long",
             "schedule",
             "contacts",
+            "is_open",
         ]
 
     def get_schedule(self, obj):
@@ -51,6 +53,10 @@ class RestaurantSerializer(serializers.ModelSerializer):
         if hasattr(obj, "contacts"):
             contacts = obj.contacts.all().values_list("phone_number", flat=True)
             return list(contacts)
+        
+    def get_is_open(self, obj):
+        return obj.get_status()
+    
 
     
 

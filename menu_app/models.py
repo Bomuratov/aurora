@@ -92,8 +92,57 @@ class Restaurant(BaseModel):
     def __str__(self):
         return self.name
 
+
     def get_restaurant_editors(self):
         return self.editors
+    
+
+    def get_schedule_for_day(self, day: int):
+        return self.schedule.filter(day=day)
+
+
+    def get_today_schedule(self):
+        from django.utils import timezone
+        return self.get_schedule_for_day(timezone.localtime().weekday())
+
+
+    def get_tomorrow_schedule(self):
+        from django.utils import timezone
+        tomorrow = (timezone.localtime().weekday() + 1) % 7
+        return self.get_schedule_for_day(tomorrow)
+
+
+    def get_status(self):
+        from django.utils import timezone
+        now = timezone.localtime()
+        current_time = now.time()
+
+        schedules_today = list(self.get_today_schedule())
+        schedules_tomorrow = list(self.get_tomorrow_schedule())
+
+        if not schedules_today:
+            return False
+
+        is_open = False
+
+        for s in schedules_today:
+            if s.open_time < s.close_time:
+                if s.open_time <= current_time <= s.close_time:
+                    is_open = True
+                    break
+            else:  # через полночь
+                if current_time >= s.open_time or current_time <= s.close_time:
+                    is_open = True
+                    break
+
+        if not is_open:
+            for s in schedules_tomorrow:
+                if s.open_time > s.close_time:
+                    if current_time <= s.close_time:
+                        is_open = True
+                        break
+
+        return is_open
 
 
 class RestaurantDetails(BaseModel):
