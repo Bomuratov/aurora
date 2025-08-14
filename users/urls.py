@@ -1,6 +1,6 @@
 from django.urls import path
 from users.views import register, user_view, vendor_register, user_location_view, user_settings_view, user_role_views
-from users.views.user_login import native_login, native_refresh, web_login, web_refresh
+from users.views.user_login import native_login, native_refresh, web_login, web_refresh, user_native_login, user_native_refresh
 
 
 urlpatterns = [
@@ -16,6 +16,10 @@ urlpatterns = [
     # LOGIN FOR NATIVE APPLICATIONS 
     path("native/login", native_login.UserNativeLoginView.as_view(), name="user-native-login"),
     path("native/refresh", native_refresh.UserNativeRefreshView.as_view(), name="refresh-token-native"),
+
+    # LOGIN FOR USER NATIVE APPLICATIONS
+    path("user/native/login", user_native_login.NativeUserLogin.as_view(), name="user-native-login"),
+    path("user/native/refresh", user_native_refresh.UserNativeRefreshView.as_view(), name="refresh-token-native"),
 
     # HTTPONLY COOKIE LOGIN API'S FOR WEB LOGIN
     path("user/login", web_login.CookieUserWebLoginView.as_view(), name="user-web-login"),

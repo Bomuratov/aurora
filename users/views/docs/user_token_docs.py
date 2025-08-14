@@ -1,13 +1,13 @@
 from types import SimpleNamespace
 
 docs = SimpleNamespace(
-    tags=["USER LOGIN NATIVE API v1.01"],
+    tags=["COURIER LOGIN NATIVE API v1.01"],
     description=SimpleNamespace(
         access="""
-        USER LOGIN NATIVE 'POST' данный API для входа в сервис API ожиданет два поля phone и password b возврашает access и refresh токены
+        COURIER LOGIN NATIVE 'POST' данный API для входа в сервис API ожиданет два поля phone и password b возврашает access и refresh токены
         """,
         refresh="""
-        USER LOGIN NATIVE 'POST' данный API нужен чтобы взять новый access токен API ожидает старый refresh токен.
+        COURIER LOGIN NATIVE 'POST' данный API нужен чтобы взять новый access токен API ожидает старый refresh токен.
         """,
     )
 )
@@ -22,6 +22,19 @@ web_docs = SimpleNamespace(
         refresh="""
         USER LOGIN NATIVE 'POST' данный API предназначен для получения нового access токена API ожидает refresh токен и в ответ возврашает access токен, 
         срок жизни access токена (в формате unix), срок жизни нового refresh токена (в формате unix) и в куках самостоятельно устанавливает новый refresh токен.
+        """,
+    )
+)
+
+
+native_docs = SimpleNamespace(
+    tags=["USER LOGIN NATIVE API v1.01"],
+    description=SimpleNamespace(
+        access="""
+        USER LOGIN NATIVE 'POST' данный API для входа в сервис API ожиданет два поля phone и password b возврашает access и refresh токены
+        """,
+        refresh="""
+        USER LOGIN NATIVE 'POST' данный API нужен чтобы взять новый access токен API ожидает старый refresh токен.
         """,
     )
 )
