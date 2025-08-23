@@ -28,6 +28,8 @@ urlpatterns = [
     path("api/admins/generate/qr", GenerateQR.as_view(), name='qr-generate'),
     path("api/admins/download/qr", DownloadQR.as_view(), name='qr-download'),
 
+    path("api/v1/restaurant/<int:pk>", restaurant_view.RestaurantView.as_view({"get": "get_restaurant_by_id"}), name="get-restaurant-by-id"),
+
     # API FOT UPDATE AND GET PHOTO MENU
     path("api/v1/menu/thumb/<int:pk>", menu_view.UpdatePhotoMenu.as_view({"put": "update", "get": "retrieve"}), name='update-photo'),
     path("api/v1/menu/thumb/", menu_view.UpdatePhotoMenu.as_view({"get": "list"}), name='update-photo'),

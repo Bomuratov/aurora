@@ -34,6 +34,13 @@ class RestaurantView(viewsets.ModelViewSet):
     lookup_field = "name"
     permission_classes = [permissions.AllowAny]
 
+    @decorators.action(methods=["GET"], detail=False)
+    def get_restaurant_by_id(self, request, pk):
+        obj = self.get_queryset().get(id=pk)
+        serializer = self.get_serializer(obj)
+        return response.Response(serializer.data)
+
+
 
 @extend_schema_view(
     list=extend_schema(tags=docs.tags, description=docs.description.get_channel_pm),
