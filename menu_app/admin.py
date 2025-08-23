@@ -3,6 +3,7 @@ from .models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+from menu_app.promo.models.promo_model import Promo
 
 
 class OptionsAdmin(admin.ModelAdmin):

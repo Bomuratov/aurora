@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import *
+from menu_app.promo.models.promo_model import Promo
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 

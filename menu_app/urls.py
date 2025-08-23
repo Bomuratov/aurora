@@ -5,8 +5,8 @@ from menu_app.clients.urls import urlpatterns as clientpatterns
 from menu_app.admins.router import *
 from menu_app.clients.router import *
 from menu_app.utils import GenerateQR, DownloadQR
-
-from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view, delivery_calculation
+from menu_app.promo.views import promo_view
+from menu_app.view import restaurant_view, category_view, menu_view, variant_view, schedule_view, delivery_rule_view, delivery_calculation
 
 
 
