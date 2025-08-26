@@ -188,6 +188,13 @@ class Menu(BaseModel):
         if self.photo:
             self.thumb = thumbnail(self.photo, size=(600, 450))
         return super().save(*args, **kwargs)
+    
+    @property
+    def option_group(self):
+        try:
+            return self.options
+        except OptionGroup.DoesNotExist:
+            return None
 
 
 class OptionGroup(BaseModel):
