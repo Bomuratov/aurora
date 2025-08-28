@@ -6,13 +6,16 @@ from menu_app.admins.router import *
 from menu_app.clients.router import *
 from menu_app.utils import GenerateQR, DownloadQR
 
-from menu_app.view import restaurant_view, category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view, delivery_calculation
+from menu_app.view import category_view, menu_view, promo_view, variant_view, schedule_view, delivery_rule_view, delivery_calculation
 
+from menu_app.restaurant.views.web import restaurant_view
+from menu_app.restaurant.views.native import restaurant_view_native
 
 
 router = SimpleRouter()
 
 router.register(r"restaurant", restaurant_view.RestaurantView, basename="restaurant")
+router.register(r"native/restaurant", restaurant_view_native.RestaurantView, basename="restaurant")
 router.register(r"category", category_view.CategoryView, basename="category")
 router.register(r"menu", menu_view.MenuView, basename="menu")
 router.register(r"promo", promo_view.PromoView, basename="promo")
@@ -69,15 +72,3 @@ urlpatterns = [
 
 # urlpatterns+=adminpatterns
 # urlpatterns+=clientpatterns
-
-
-"""
-https://map.project-osrm.org/?z=17&center=39.747916%2C64.410760&loc=39.770515%2C64.445063&loc=39.74836518916527%2C64.41675972659581&hl=en&alt=0&srv=1
-"""
-"""
-curl "https://router.project-osrm.org/route/v1/driving/69.2401,41.3112;69.2005,41.3275?overview=false"
-
-curl https://router.project-osrm.org/route/v1/driving/64.445063,39.770515;64.41675972659581,39.74836518916527?overview=false
-curl "https://router.project-osrm.org/route/v1/driving/64.445063,39.770515;64.416760,39.748365?overview=false&alternatives=false&steps=false"
-
-"""

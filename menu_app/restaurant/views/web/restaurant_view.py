@@ -4,13 +4,13 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Schedule
 from menu_app.restaurant.models import Restaurant
 
-from menu_app.serializer.restaurant_serializer import (
+from menu_app.restaurant.serializers.web.restaurant_serializer import (
     RestaurantSerializer,
     RestaurantChannels,
     RestaurantEditors,
     RestaurantCouriersSerializer,
 )
-from menu_app.view.docs.restaurant_view_docs import docs
+from menu_app.restaurant.views.docs.restaurant_view_docs import docs
 from django.utils import timezone
 from datetime import datetime
 import datetime as dt
