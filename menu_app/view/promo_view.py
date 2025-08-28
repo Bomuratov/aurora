@@ -9,6 +9,7 @@ from users.permissions.role_checks import RoleCheck
 
 
 
+
 @extend_schema(tags=["Promo API v1.01"])
 class PromoView(viewsets.ModelViewSet):
     queryset = Promo.objects.all()

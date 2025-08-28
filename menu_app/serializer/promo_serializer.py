@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from menu_app.models import Promo, Restaurant
+from menu_app.models import Promo
 
 
 

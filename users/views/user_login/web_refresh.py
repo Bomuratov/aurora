@@ -3,7 +3,6 @@ from rest_framework import status, response
 from rest_framework_simplejwt import views, tokens
 from users.exceptions.authentication_error import AuthenticationErrorException
 from django.middleware.csrf import get_token
-from menu_app.models import Restaurant
 from users.models import User
 from django.conf import settings
 from django.shortcuts import get_object_or_404

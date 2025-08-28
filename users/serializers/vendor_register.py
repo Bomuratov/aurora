@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.conf import settings
 from users.utils import phone_validator, unique_validator
-from menu_app.models import Restaurant
+from menu_app.restaurant.models import Restaurant
 from users.models import User, UserSettings
 from users.exceptions.validation_error import ValidateErrorException
 

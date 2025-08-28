@@ -9,12 +9,14 @@ from core import settings
 from rest_framework import views, response
 
 from rest_framework import status
-from .models import Restaurant
+from .models import *
 from urllib.parse import quote
 import asyncio
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
 import zipfile
+from menu_app.restaurant.models import Restaurant
+
 
 
 

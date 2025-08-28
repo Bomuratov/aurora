@@ -1,3 +1,8 @@
+import io
+from PIL import Image
+from django.core.files.base import ContentFile
+
+
 def generate_description(self):
     """
     Утилита для модельки DeliveryRules а именно автогенерация полей description и name
@@ -38,3 +43,20 @@ def generate_description(self):
         )
     else:
         self.description = "Правило доставки не определено."
+
+
+def thumbnail(image, size=(600, 450)):
+    """
+    Уменьшает изображение до указанного размера с сохранением пропорций.
+
+    :param image: Загруженный объект файла (models.ImageField).
+    :param size: Размер (ширина, высота) thumbnail'а.
+    :return: Уменьшенный файл для сохранения в модели.
+    """
+    img = Image.open(image)
+    img.thumbnail(size, Image.Resampling.LANCZOS)  # Уменьшает изображение
+
+    # Сохранение в памяти
+    img_io = io.BytesIO()
+    img.save(img_io, format=img.format)
+    return ContentFile(img_io.getvalue(), name=image.name)

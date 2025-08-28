@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import *
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from menu_app.restaurant.models import Restaurant
+
 
 
 class RestaurantSerializer(ModelSerializer):

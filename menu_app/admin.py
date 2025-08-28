@@ -3,6 +3,7 @@ from .models import *
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
+from menu_app.restaurant.models import Restaurant, RestaurantDetails
 
 
 class OptionsAdmin(admin.ModelAdmin):
@@ -40,7 +41,7 @@ class RestaurantAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("name", "is_active", "order",)
+    list_display = ("id","name", "is_active", "order",)
     list_display_links = ("name",)
     list_editable = ("is_active",)
     list_filter = ("restaurant",)
@@ -54,6 +55,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class DeliveryRuleAdmin(admin.ModelAdmin):
     list_display = (
+        "id",
         'restaurant',
         "name",
         'calculation_type',

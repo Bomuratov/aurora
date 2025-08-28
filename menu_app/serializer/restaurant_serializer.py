@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from menu_app.models import Restaurant
 from users.models import UserSettings, User
 from users.serializers.user_settings_serializer import UserSettingsSerializer
 from users.serializers.user_serializer import UserSerializer
 from menu_app.serializer.schedule_serializer import ScheduleSerializer
 from datetime import datetime
-from menu_app.serializer.restaurant_details_serializer import RestaurantDetailsSerializer
+from menu_app.restaurant.models import Restaurant
+
 
 
 

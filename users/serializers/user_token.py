@@ -1,5 +1,5 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from menu_app.models import Restaurant
+from menu_app.restaurant.models import Restaurant
 
 
 class UserTokenSerializer(TokenObtainPairSerializer):

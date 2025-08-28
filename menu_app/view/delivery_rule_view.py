@@ -1,6 +1,6 @@
 from rest_framework import response, viewsets, decorators, status
 from django_filters import rest_framework as filters
-from menu_app.models import DeliveryRule, Restaurant
+from menu_app.models import DeliveryRule
 from menu_app.serializer.delivery_rule_serializer import DeliveryRuleSerializer
 from users.models import UserLocation
 from users.permissions.role_checks import RoleCheck
