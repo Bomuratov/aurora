@@ -201,3 +201,98 @@ class MenuFilterByCategoryView(views.APIView):
             return response.Response({"message": "Нет активных блюд в категориях."})
 
         return response.Response(menu_of_categories)
+
+
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from menu_app.models import Menu, thumbnail
+
+
+@api_view(["POST"])
+def regenerate_thumbs(request, restaurant_id):
+    """
+    Пересоздает thumbnails для всех меню конкретного ресторана.
+    """
+    menus = Menu.objects.filter(restaurant_id=restaurant_id).exclude(photo__isnull=True)
+    total = menus.count()
+
+    if total == 0:
+        return Response({"message": "Нет меню с фотографиями"}, status=status.HTTP_404_NOT_FOUND)
+
+    updated = 0
+    for menu in menus:
+        try:
+            if menu.photo:
+                menu.thumb = thumbnail(menu.photo, size=(600, 450))  # всегда пересоздаем
+                menu.save(update_fields=["thumb"])
+                updated += 1
+        except Exception as e:
+            # Чтобы не падал весь цикл
+            print(f"Ошибка у {menu.id}: {e}")
+
+    return Response(
+        {
+            "message": f"Thumbnails пересозданы",
+            "restaurant_id": restaurant_id,
+            "total_menus": total,
+            "updated": updated,
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+import os
+from django.conf import settings
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+
+from menu_app.models import Menu
+
+
+@api_view(["DELETE"])
+def cleanup_unused_photos(request, restaurant_id):
+    """
+    Удаляет фото и thumbnails у ресторана, которые не привязаны к Menu.
+    """
+    menus = Menu.objects.filter(restaurant_id=restaurant_id)
+
+    if not menus.exists():
+        return Response(
+            {"message": "Меню не найдено для ресторана", "restaurant_id": restaurant_id},
+            status=status.HTTP_404_NOT_FOUND,
+        )
+
+    # собираем используемые пути
+    used_files = set()
+    for menu in menus:
+        if menu.photo:
+            used_files.add(menu.photo.path)
+        if menu.thumb:
+            used_files.add(menu.thumb.path)
+
+    # путь к папке ресторана (если upload_path_menu кладёт туда)
+    restaurant_name = menus.first().restaurant.name
+    restaurant_dir = os.path.join(settings.MEDIA_ROOT, restaurant_name, "category")
+
+    deleted = []
+
+    if os.path.exists(restaurant_dir):
+        for root, _, files in os.walk(restaurant_dir):
+            for file in files:
+                filepath = os.path.join(root, file)
+                if filepath not in used_files:
+                    os.remove(filepath)
+                    deleted.append(filepath)
+
+    return Response(
+        {
+            "message": "Очистка завершена",
+            "restaurant_id": restaurant_id,
+            "deleted_count": len(deleted),
+            "deleted_files": deleted,
+        },
+        status=status.HTTP_200_OK,
+    )

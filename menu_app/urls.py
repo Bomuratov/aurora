@@ -33,6 +33,9 @@ urlpatterns = [
 
     path("api/v1/restaurant/<int:pk>", restaurant_view.RestaurantView.as_view({"get": "get_restaurant_by_id"}), name="get-restaurant-by-id"),
 
+    path("restaurants/<int:restaurant_id>/regenerate-thumbs/", menu_view.regenerate_thumbs),
+    path("restaurants/<int:restaurant_id>/cleanup-photos/", menu_view.cleanup_unused_photos),
+
     # API FOT UPDATE AND GET PHOTO MENU
     path("api/v1/menu/thumb/<int:pk>", menu_view.UpdatePhotoMenu.as_view({"put": "update", "get": "retrieve"}), name='update-photo'),
     path("api/v1/menu/thumb/", menu_view.UpdatePhotoMenu.as_view({"get": "list"}), name='update-photo'),
