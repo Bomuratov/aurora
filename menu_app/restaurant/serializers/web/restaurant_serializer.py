@@ -4,7 +4,7 @@ from users.serializers.user_settings_serializer import UserSettingsSerializer
 from users.serializers.user_serializer import UserSerializer
 from menu_app.serializer.schedule_serializer import ScheduleSerializer
 from datetime import datetime
-from menu_app.restaurant.models import Restaurant
+from menu_app.restaurant.models.restaurant import Restaurant
 
 
 

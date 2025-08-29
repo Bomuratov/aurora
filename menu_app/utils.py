@@ -15,7 +15,7 @@ import asyncio
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import io
 import zipfile
-from menu_app.restaurant.models import Restaurant
+from menu_app.restaurant.models.restaurant import Restaurant
 
 
 
