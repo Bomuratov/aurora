@@ -3,7 +3,7 @@ from django_filters import rest_framework as filters
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from menu_app.models import Schedule
 from menu_app.restaurant.models.restaurant import Restaurant
-
+from menu_app.restaurant.filters.restaurant_filterset import RestaurantFilter
 from menu_app.restaurant.serializers.native.restaurant_serializer_native import (
     RestaurantSerializer,
     RestaurantChannels,
@@ -32,7 +32,7 @@ class RestaurantView(viewsets.ModelViewSet):
     serializer_class = RestaurantSerializer
     permission_classes=[RoleCheck]
     filter_backends = (filters.DjangoFilterBackend,)
-    filterset_fields = ("user_id", "name", "id")
+    filterset_class = RestaurantFilter
     lookup_field = "name"
     permission_classes = [permissions.AllowAny]
 
